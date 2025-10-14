@@ -24,4 +24,8 @@ public class BookService {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
+
+    public BookDto createBook(BookDto bookDto) {
+        return bookRepository.save(bookDto);
+    }
 }

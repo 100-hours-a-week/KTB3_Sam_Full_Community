@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>새 도서 등록</title>
+</head>
+<body>
+<h1>새 도서 등록</h1>
+
+<!-- BookController의 @GetMapping("/new")에서 넘긴 bookDto 사용 -->
+<form th:action="@{/books}" th:object="${bookDto}" method="post">
+    <div>
+        <label for="title">제목:</label>
+        <input type="text" id="title" th:field="*{title}" required>
+    </div>
+
+    <div>
+        <label for="author">저자:</label>
+        <input type="text" id="author" th:field="*{author}" required>
+    </div>
+
+    <div>
+        <label for="isbn">ISBN:</label>
+        <input type="text" id="isbn" th:field="*{isbn}" required>
+    </div>
+
+    <div>
+        <label for="description">소개:</label><br>
+        <textarea id="description" th:field="*{description}" rows="5" cols="40"></textarea>
+    </div>
+
+    <div>
+        <button type="submit">저장</button>
+        <a th:href="@{/books}">취소</a>
+    </div>
+</form>
+</body>
+</html>

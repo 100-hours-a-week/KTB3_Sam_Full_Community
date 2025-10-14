@@ -5,25 +5,27 @@
     <title>도서 목록</title>
 </head>
 <body>
-<h1>도서 목록</h1>
+    <h1>도서 목록</h1>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>제목</th>
-        <th>저자</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="book : ${books}">
-        <td th:text="${book.id}"></td>
-        <td>
-            <a th:href="@{'/books/' + ${book.id}}" th:text="${book.title}"></a>
-        </td>
-        <td th:text="${book.author}"></td>
-    </tr>
-    </tbody>
-</table>
+    <p><a th:href="@{/books/new}">새 도서 등록하기</a></p>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>제목</th>
+            <th>저자</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}"></td>
+            <td>
+                <a th:href="@{'/books/' + ${book.id}}" th:text="${book.title}"></a>
+            </td>
+            <td th:text="${book.author}"></td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>
