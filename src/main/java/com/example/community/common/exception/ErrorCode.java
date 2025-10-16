@@ -7,10 +7,16 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "internal_server_error"),
     INVALID_REQUEST(HttpStatus.BAD_REQUEST, "invalid_request"),
 
+    // 인증 관련
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "not_login_user"),
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "token_expired"),
+    TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "invalid_token"),
+
     //유저
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "not_found_user"),
     NOT_LOGIN_USER(HttpStatus.UNAUTHORIZED, "not_login_user"),
     ALREADY_DELETED_USER(HttpStatus.NOT_FOUND, "already_deleted_user"),
+    DUPLICATE_EMAIL(HttpStatus.CONFLICT, "duplicate_email"),
 
     //게시글
     NOT_FOUND_BOARD(HttpStatus.NOT_FOUND, "not_found_board"),
