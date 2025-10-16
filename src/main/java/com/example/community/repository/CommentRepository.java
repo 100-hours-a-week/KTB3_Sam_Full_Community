@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Repository
 public class CommentRepository {
-    private final Map<Long, Comment> commentDB;
+    private Map<Long, Comment> commentDB;
 
     CommentRepository() {
         this.commentDB = new LinkedHashMap<>();

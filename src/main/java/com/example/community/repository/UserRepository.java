@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Repository
 public class UserRepository {
-    private final Map<Long, User> userDB;
+    private Map<Long, User> userDB;
 
     UserRepository() {
         this.userDB = new LinkedHashMap<>();
