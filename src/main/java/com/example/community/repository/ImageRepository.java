@@ -8,9 +8,9 @@ import java.util.Map;
 
 @Repository
 public class ImageRepository {
-    private Map<Long, Image> ImageDB;
+    private Map<Long, Image> imageDB;
 
     ImageRepository() {
-        this.ImageDB = new LinkedHashMap<>();
+        this.imageDB = new LinkedHashMap<>();
     }
 }

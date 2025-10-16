@@ -27,7 +27,11 @@ public enum SuccessCode {
     COMMENT_CREATED(HttpStatus.CREATED, "comment_upload_success"),
     ALL_COMMENTS_ON_BOARD_FOUND(HttpStatus.OK, "find_all_comments_on_board_success"),
     COMMENT_UPDATED(HttpStatus.NO_CONTENT, "comment_update_success"),
-    COMMENT_DELETED(HttpStatus.NO_CONTENT, "comment_delete_sucess");
+    COMMENT_DELETED(HttpStatus.NO_CONTENT, "comment_delete_sucess"),
+
+    //좋아요
+    BOARD_LIKED(HttpStatus.OK, "board_like_success"),
+    BOARD_DISLIKED(HttpStatus.NO_CONTENT, "like_delete_success");
 
     private final HttpStatus status;
     private final String message;
