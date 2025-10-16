@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-expiration-ms: ${ACCESS_EXPIRATION_MS}
+  refresh-expiration-ms: ${REFRESH_EXPIRATION_MS}
