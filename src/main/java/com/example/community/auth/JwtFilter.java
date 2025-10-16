@@ -14,9 +14,11 @@ import java.io.IOException;
 @Component
 public class JwtFilter implements Filter {
     private final JwtUtil jwtUtil;
+    private final ExcludePathMatcher excludePathMatcher;
 
-    public JwtFilter(JwtUtil jwtUtil) {
+    public JwtFilter(JwtUtil jwtUtil, ExcludePathMatcher excludePathMatcher) {
         this.jwtUtil = jwtUtil;
+        this.excludePathMatcher = excludePathMatcher;
     }
 
     @Override
@@ -25,7 +27,12 @@ public class JwtFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        
+
+        if(excludePathMatcher.isExcluded(req)) {
+            chain.doFilter(request,response);
+            return;
+        }
+
         String header = req.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
