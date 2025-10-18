@@ -11,6 +11,7 @@ public enum ErrorCode {
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "not_login_user"),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "token_expired"),
     TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "invalid_token"),
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "invalid_password"),
 
     //유저
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "not_found_user"),
