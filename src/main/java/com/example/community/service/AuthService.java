@@ -1,6 +1,7 @@
 package com.example.community.service;
 
 import com.example.community.auth.JwtUtil;
+import com.example.community.auth.TokenBlackList;
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.dto.AuthToken;
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final TokenBlackList tokenBlackList;
 
-    AuthService(UserRepository userRepository, JwtUtil jwtUtil) {
+    AuthService(UserRepository userRepository, JwtUtil jwtUtil, TokenBlackList tokenBlackList) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
+        this.tokenBlackList = tokenBlackList;
     }
 
     public AuthToken login(String email, String password) {
@@ -24,6 +27,13 @@ public class AuthService {
         validatePassword(user, password);
 
         return new AuthToken(jwtUtil.generateAccessToken(user.getId()), jwtUtil.generateRefreshToken(user.getId()));
+    }
+
+    public void logout(Long userId, String token) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
+
+        tokenBlackList.add(userId, token);
     }
 
     private void validatePassword(User user, String password) {

@@ -1,5 +1,6 @@
 package com.example.community.controller;
 
+import com.example.community.auth.JwtUtil;
 import com.example.community.common.SuccessCode;
 import com.example.community.dto.request.PasswordModifyRequest;
 import com.example.community.dto.request.UserModifyRequest;
@@ -11,16 +12,17 @@ import com.example.community.entity.User;
 import com.example.community.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    UserController(UserService userService) {
+    UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/users")
@@ -31,28 +33,28 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<ApiResponse<UserInfoResponse>> getUser(HttpServletRequest servletRequest) {
-        Long userId = (Long) servletRequest.getAttribute("userId");
+        Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         User user = userService.getUser(userId);
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.USER_FOUND,UserInfoResponse.from(user)));
     }
 
     @PatchMapping("/users")
     public ResponseEntity<ApiResponse<Void>> modifyUser(HttpServletRequest servletRequest, @Valid @RequestBody UserModifyRequest request) {
-        Long userId = (Long) servletRequest.getAttribute("userId");
+        Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         userService.modifyUser(userId, request.nickname(), request.profileImageId());
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.USER_INFO_UPDATED,null ));
     }
 
     @PatchMapping("/users/password")
     public ResponseEntity<ApiResponse<Void>> updatePassword(HttpServletRequest servletRequest, @Valid @RequestBody PasswordModifyRequest request) {
-        Long userId = (Long) servletRequest.getAttribute("userId");
+        Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         userService.changePassword(userId, request.password(), request.checkPassword());
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.PASSWORD_UPDATED, null));
     }
 
     @DeleteMapping("/users")
     public ResponseEntity<ApiResponse<Void>> deleteUser(HttpServletRequest servletRequest) {
-        Long userId = (Long) servletRequest.getAttribute("userId");
+        Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         userService.deleteUser(userId);
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.USER_DELETED, null));
     }

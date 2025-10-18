@@ -15,10 +15,12 @@ import java.io.IOException;
 public class JwtFilter implements Filter {
     private final JwtUtil jwtUtil;
     private final ExcludePathMatcher excludePathMatcher;
+    private final TokenBlackList tokenBlackList;
 
-    public JwtFilter(JwtUtil jwtUtil, ExcludePathMatcher excludePathMatcher) {
+    public JwtFilter(JwtUtil jwtUtil, ExcludePathMatcher excludePathMatcher, TokenBlackList tokenBlackList) {
         this.jwtUtil = jwtUtil;
         this.excludePathMatcher = excludePathMatcher;
+        this.tokenBlackList = tokenBlackList;
     }
 
     @Override
@@ -47,7 +49,12 @@ public class JwtFilter implements Filter {
             return;
         }
 
-        req.setAttribute("userId", userId);
+        if(tokenBlackList.contains(userId,token)) {
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        req.setAttribute("accessToken", token);
 
         chain.doFilter(request, response);
     }
