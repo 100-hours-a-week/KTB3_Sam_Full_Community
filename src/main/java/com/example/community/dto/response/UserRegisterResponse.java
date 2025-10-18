@@ -1,6 +1,5 @@
 package com.example.community.dto.response;
 
-import com.example.community.dto.request.UserRegisterRequest;
 import com.example.community.entity.User;
 
 public record UserRegisterResponse(

@@ -15,7 +15,9 @@ public class UserRepository {
     }
 
     public User save(User user) {
-        user.setId(++sequence);
+        if(user.getId() == null) {
+            user.setId(++sequence);
+        }
         userDB.put(user.getId(), user);
         return user;
     }
@@ -26,6 +28,18 @@ public class UserRepository {
 
     public Optional<User> findById(Long id) {
         return Optional.ofNullable(userDB.get(id));
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userDB.values().stream()
+                .filter(user -> email.equals(user.getEmail()))
+                .findFirst();
+    }
+
+    public Optional<User> findByNickname(String nickname) {
+        return userDB.values().stream()
+                .filter(user -> nickname.equals(user.getNickname()))
+                .findFirst();
     }
 
     public void deleteById(Long id) {

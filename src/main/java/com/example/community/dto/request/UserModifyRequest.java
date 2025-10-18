@@ -1,15 +1,12 @@
 package com.example.community.dto.request;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 
-public record UserRegisterRequest(
-        @NotNull
-        String email,
-        @NotNull
-        String password,
+public record UserModifyRequest(
         @NotNull
         String nickname,
-        @NotNull
+        @Nullable
         Long profileImageId
 ) {
 }

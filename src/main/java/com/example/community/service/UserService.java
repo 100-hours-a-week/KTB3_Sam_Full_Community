@@ -1,5 +1,7 @@
 package com.example.community.service;
 
+import com.example.community.common.exception.BaseException;
+import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.User;
 import com.example.community.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,34 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User registerUser(String email, String password, String nickname, int profileImageId) {
+    public User registerUser(String email, String password, String nickname, Long profileImageId) {
+        validateEmail(email);
+        validateNickname(nickname);
         return userRepository.save(new User(email,password, nickname, profileImageId));
+    }
+
+    public User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
+    }
+
+    public void modifyUser(Long userId,String nickname, Long profileImageId ) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
+
+        user.updateUser(nickname,profileImageId);
+        userRepository.save(user);
+    }
+
+    private void validateEmail(String email) {
+        if(userRepository.findByEmail(email).isPresent()) {
+            throw new BaseException(ErrorCode.ALREADY_REGISTERED_EMAIL);
+        }
+    }
+
+    private void validateNickname(String nickname) {
+        if(userRepository.findByNickname(nickname).isPresent()) {
+            throw new BaseException(ErrorCode.ALREADY_REGISTERED_NICKNAME);
+        }
     }
 }
