@@ -8,6 +8,7 @@ import com.example.community.entity.Like;
 import com.example.community.service.LikeService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,5 +28,12 @@ public class LikeController {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         Like like = likeService.postLike(userId, boardId);
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_LIKED, LikePostResponse.from(like)));
+    }
+
+    @DeleteMapping("/boards/{boardId}/like")
+    public ResponseEntity<ApiResponse<Void>> deleteLike(HttpServletRequest servletRequest, @PathVariable("boardId") Long boardId) {
+        Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
+        likeService.deleteLike(userId, boardId);
+        return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_LIKE_CANCELLED, null));
     }
 }

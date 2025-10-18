@@ -31,7 +31,7 @@ public enum SuccessCode {
 
     //좋아요
     BOARD_LIKED(HttpStatus.OK, "board_like_success"),
-    BOARD_DISLIKED(HttpStatus.NO_CONTENT, "like_delete_success");
+    BOARD_LIKE_CANCELLED(HttpStatus.NO_CONTENT, "like_delete_success");
 
     private final HttpStatus status;
     private final String message;

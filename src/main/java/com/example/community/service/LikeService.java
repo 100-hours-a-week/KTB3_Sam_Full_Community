@@ -34,4 +34,11 @@ public class LikeService {
         }
         return likeRepository.save(new Like(userId, boardId));
     }
+
+    public void deleteLike(Long userId, Long boardId) {
+        Like like = likeRepository.findByUserIdAndBoardId(userId, boardId)
+                .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_LIKE));
+
+        likeRepository.deleteById(like.getId());
+    }
 }

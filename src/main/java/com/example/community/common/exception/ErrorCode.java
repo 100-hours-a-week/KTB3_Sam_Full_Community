@@ -34,7 +34,8 @@ public enum ErrorCode {
     ALREAD_DELETE_COMMENT(HttpStatus.NOT_FOUND,"already_deleted_comment"),
 
     //좋아요
-    ALREADY_LIKED_POST(HttpStatus.BAD_REQUEST, "already_liked_post");
+    ALREADY_LIKED_POST(HttpStatus.BAD_REQUEST, "already_liked_post"),
+    NOT_FOUND_LIKE(HttpStatus.NOT_FOUND, "not_found_like");
 
 
     private final HttpStatus status;
