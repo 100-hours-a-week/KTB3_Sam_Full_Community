@@ -31,4 +31,10 @@ public class Board extends BaseEntity{
     public int getVisitors() {
         return visitors.get();
     }
+
+    public void updateBoard(String title, String content, List<Long> boardImageIds) {
+        this.title = title;
+        this.content = content;
+        this.boardImageIds = boardImageIds;
+    }
 }

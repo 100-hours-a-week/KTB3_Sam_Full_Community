@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record PostBoardRequest(
+public record BoardUpdateRequest(
         @NotNull
         String title,
         @NotNull

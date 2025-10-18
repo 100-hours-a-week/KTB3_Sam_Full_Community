@@ -3,7 +3,8 @@ package com.example.community.controller;
 import com.example.community.auth.JwtUtil;
 import com.example.community.common.SuccessCode;
 import com.example.community.dto.PagedData;
-import com.example.community.dto.request.PostBoardRequest;
+import com.example.community.dto.request.BoardPostRequest;
+import com.example.community.dto.request.BoardUpdateRequest;
 import com.example.community.dto.response.ApiResponse;
 import com.example.community.dto.response.BoardInfoResponse;
 import com.example.community.dto.response.BoardPostResponse;
@@ -34,7 +35,7 @@ public class BoardController {
     }
 
     @PostMapping("/boards")
-    public ResponseEntity<ApiResponse<BoardPostResponse>> postBoard(HttpServletRequest servletRequest, @Valid @RequestBody PostBoardRequest request) {
+    public ResponseEntity<ApiResponse<BoardPostResponse>> postBoard(HttpServletRequest servletRequest, @Valid @RequestBody BoardPostRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         Board board = boardService.post(userId, request.title(), request.content(), request.boardImageIds());
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_CREATED, BoardPostResponse.from(board)));
@@ -51,5 +52,12 @@ public class BoardController {
     @GetMapping("/boards/{id}")
     public ResponseEntity<ApiResponse<BoardInfoResponse>> getBoardDetail(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_DETAIL_FOUND, boardQueryFacade.getBoardDetail(id)));
+    }
+
+    @PutMapping("/boards/{id}")
+    public ResponseEntity<ApiResponse<Void>> updateBoard(HttpServletRequest servletRequest, @PathVariable Long id, @Valid @RequestBody BoardUpdateRequest request) {
+        Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
+        boardCommandFacade.updateBoard(userId, id, request.title(), request.content(), request.boardImageIds());
+        return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_UPDATED, null));
     }
 }
