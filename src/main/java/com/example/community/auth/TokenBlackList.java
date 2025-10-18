@@ -21,4 +21,8 @@ public class TokenBlackList {
         String blackListedToken = blackList.get(userId);
         return blackListedToken != null && blackListedToken.equals(token);
     }
+
+    public boolean contains(String token) {
+        return blackList.values().stream().anyMatch(blackedToken -> blackedToken.equals(token));
+    }
 }

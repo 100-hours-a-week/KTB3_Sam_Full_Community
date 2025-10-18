@@ -11,6 +11,7 @@ public enum SuccessCode {
     USER_DELETED(HttpStatus.NO_CONTENT, "user_delete_success"),
     USER_LOGIN(HttpStatus.OK, "login_success"),
     USER_LOGOUT(HttpStatus.NO_CONTENT, "user_logout_success"),
+    TOKEN_REISSUED(HttpStatus.OK, "token_reissued"),
 
     //게시글
     BOARD_CREATED(HttpStatus.CREATED, "board_create_success"),

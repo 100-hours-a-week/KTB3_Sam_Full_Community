@@ -39,9 +39,28 @@ public class AuthService {
         tokenBlackList.add(userId, token);
     }
 
+    @Transactional
+    public AuthToken reissue(Long userId, String accessToken, String refreshToken) {
+        validateExpired(accessToken, refreshToken);
+        validateBlacked(accessToken);
+        return new AuthToken(jwtUtil.generateAccessToken(userId), jwtUtil.generateRefreshToken(userId));
+    }
+
     private void validatePassword(User user, String password) {
         if(!user.getPassword().equals(password)) {
             throw new BaseException(ErrorCode.INVALID_PASSWORD);
+        }
+    }
+
+    private void validateExpired(String accessToken, String refreshToken) {
+        if(jwtUtil.isExpired(refreshToken) || (!jwtUtil.isExpired(accessToken))) {
+            throw new BaseException(ErrorCode.INVALID_REQUEST);
+        }
+    }
+
+    private void validateBlacked(String accessToken) {
+        if(tokenBlackList.contains(accessToken)) {
+            throw new BaseException(ErrorCode.TOKEN_INVALID);
         }
     }
 }

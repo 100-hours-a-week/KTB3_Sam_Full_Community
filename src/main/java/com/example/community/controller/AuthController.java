@@ -4,15 +4,13 @@ import com.example.community.auth.JwtUtil;
 import com.example.community.common.SuccessCode;
 import com.example.community.dto.AuthToken;
 import com.example.community.dto.request.LoginRequest;
+import com.example.community.dto.request.ReissueRequest;
 import com.example.community.dto.response.ApiResponse;
 import com.example.community.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthController {
@@ -37,5 +35,13 @@ public class AuthController {
         Long userId = jwtUtil.extractUserId(token);
         authService.logout(userId, token);
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.USER_LOGOUT, null));
+    }
+
+    @PutMapping("/auth")
+    public ResponseEntity<ApiResponse<AuthToken>> reissue(HttpServletRequest servletRequest, @Valid @RequestBody ReissueRequest request) {
+        String accessToken = (String) servletRequest.getAttribute("accessToken");
+        Long userId = jwtUtil.extractUserId(accessToken);
+        AuthToken userToken = authService.reissue(userId, accessToken,request.refreshToken());
+        return ResponseEntity.ok(ApiResponse.success(SuccessCode.TOKEN_REISSUED, userToken));
     }
 }
