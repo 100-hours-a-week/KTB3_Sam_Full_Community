@@ -1,5 +1,7 @@
 package com.example.community.service;
 
+import com.example.community.common.exception.BaseException;
+import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.Like;
 import com.example.community.repository.LikeRepository;
 import org.springframework.stereotype.Service;
@@ -24,5 +26,12 @@ public class LikeService {
 
     public void deleteByBoardId(Long boardId) {
         likeRepository.deleteByBoardId(boardId);
+    }
+
+    public Like postLike(Long userId, Long boardId) {
+        if(likeRepository.findByUserIdAndBoardId(userId, boardId).isPresent()) {
+            throw new BaseException(ErrorCode.ALREADY_LIKED_POST);
+        }
+        return likeRepository.save(new Like(userId, boardId));
     }
 }

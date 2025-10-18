@@ -31,6 +31,13 @@ public class LikeRepository {
         return Optional.ofNullable(likeDB.get(id));
     }
 
+    public Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId) {
+        return likeDB.values().stream()
+                .filter(like -> like.getUserId().equals(userId)
+                        && like.getBoardId().equals(boardId))
+                .findFirst();
+    }
+
     public void deleteById(Long id) {
         likeDB.remove(id);
     }

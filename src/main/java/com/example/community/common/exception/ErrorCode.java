@@ -31,7 +31,10 @@ public enum ErrorCode {
 
     //댓글
     NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND, "not_found_comment"),
-    ALREAD_DELETE_COMMENT(HttpStatus.NOT_FOUND,"already_deleted_comment");
+    ALREAD_DELETE_COMMENT(HttpStatus.NOT_FOUND,"already_deleted_comment"),
+
+    //좋아요
+    ALREADY_LIKED_POST(HttpStatus.BAD_REQUEST, "already_liked_post");
 
 
     private final HttpStatus status;
