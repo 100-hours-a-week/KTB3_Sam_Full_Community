@@ -48,4 +48,11 @@ public class CommentController {
         commentService.updateComment(userId, id, request.content());
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.COMMENT_UPDATED, null));
     }
+
+    @DeleteMapping("/comments/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteComment(HttpServletRequest servletRequest, @PathVariable("id") Long id) {
+        Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
+        commentService.deleteComment(userId, id);
+        return ResponseEntity.ok(ApiResponse.success(SuccessCode.COMMENT_DELETED, null));
+    }
 }

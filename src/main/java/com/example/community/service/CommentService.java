@@ -54,6 +54,15 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
+    @Transactional
+    public void deleteComment(Long userId, Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_COMMENT));
+        validateUser(comment, userId);
+
+        commentRepository.deleteById(commentId);
+    }
+
     private void validateUser(Comment comment, Long userId) {
         if(!comment.getUserId().equals(userId)) {
             throw new BaseException(ErrorCode.INVALID_REQUEST);
