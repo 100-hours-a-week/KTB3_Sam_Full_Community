@@ -24,7 +24,7 @@ public class Board extends BaseEntity{
         this.userId = userId;
     }
 
-    public int recordVisite() {
+    public int recordVisit() {
         return this.visitors.incrementAndGet();
     }
 

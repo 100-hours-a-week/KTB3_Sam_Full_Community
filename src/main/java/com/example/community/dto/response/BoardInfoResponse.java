@@ -17,8 +17,8 @@ public record BoardInfoResponse(
         String nickname,
         Long profileImageId
 ) {
-    public static BoardInfoResponse of(Board board, Integer likes, Integer commentsCount, User user) {
-        return new BoardInfoResponse(board.getId(),board.getUpdatedAt(),  board.getTitle(), likes, board.getVisitors(), commentsCount,user.getNickname(), user.getProfileImageId());
+    public static BoardInfoResponse of(Board board, Integer likes,Integer visitors, Integer commentsCount, User user) {
+        return new BoardInfoResponse(board.getId(),board.getUpdatedAt(),  board.getTitle(), likes, visitors, commentsCount,user.getNickname(), user.getProfileImageId());
     }
 
 }

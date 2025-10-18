@@ -59,6 +59,7 @@ public class BoardQueryFacade {
                 .map(board -> BoardInfoResponse.of(
                         board,
                         likeMap.getOrDefault(board.getId(), List.of()).size(),
+                        board.getVisitors(),
                         commentMap.getOrDefault(board.getId(), List.of()).size(),
                         userMap.get(board.getUserId())
                 )).toList();
@@ -76,6 +77,6 @@ public class BoardQueryFacade {
         List<Like> likes = likeService.findAllByBoardId(boardId);
         User user = userService.getUser(board.getUserId());
 
-        return BoardInfoResponse.of(board, comments.size(), likes.size(), user);
+        return BoardInfoResponse.of(board, comments.size(),board.recordVisit(), likes.size(), user);
     }
 }
