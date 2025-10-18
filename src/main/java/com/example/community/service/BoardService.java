@@ -23,13 +23,18 @@ public class BoardService {
         return boardRepository.save(new Board(title, content, boardImageIds, userId));
     }
 
-    @Transactional
     public void updateBoard(Long boardId, String title, String content, List<Long> boardImageIds) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_BOARD));
 
         board.updateBoard(title, content, boardImageIds);
         boardRepository.save(board);
+    }
+
+    public void deleteBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_BOARD));
+        boardRepository.deleteById(boardId);
     }
 
     public Board findById(Long boardId) {

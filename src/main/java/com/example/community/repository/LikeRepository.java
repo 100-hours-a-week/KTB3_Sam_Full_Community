@@ -35,6 +35,10 @@ public class LikeRepository {
         likeDB.remove(id);
     }
 
+    public void deleteByBoardId(Long boardId) {
+        likeDB.values().removeIf(like -> like.getBoardId().equals(boardId));
+    }
+
     public List<Like> findAllByBoardId(Long boardId) {
         return likeDB.values().stream()
                 .filter(like -> like.getBoardId().equals(boardId))

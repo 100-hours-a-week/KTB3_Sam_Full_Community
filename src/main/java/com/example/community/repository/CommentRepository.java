@@ -35,6 +35,10 @@ public class CommentRepository {
         commentDB.remove(id);
     }
 
+    public void deleteByBoardId(Long boardId) {
+        commentDB.values().removeIf(comment -> comment.getBoardId().equals(boardId));
+    }
+
     public List<Comment> findAllByBoardId(Long boardId) {
         return commentDB.values().stream()
                 .filter(comment -> comment.getBoardId().equals(boardId))

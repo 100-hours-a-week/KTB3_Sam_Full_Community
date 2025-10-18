@@ -21,4 +21,8 @@ public class LikeService {
     public List<Like> findAllByBoardId(Long boardId) {
         return likeRepository.findAllByBoardId(boardId);
     }
+
+    public void deleteByBoardId(Long boardId) {
+        likeRepository.deleteByBoardId(boardId);
+    }
 }

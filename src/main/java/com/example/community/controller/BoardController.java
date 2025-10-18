@@ -60,4 +60,11 @@ public class BoardController {
         boardCommandFacade.updateBoard(userId, id, request.title(), request.content(), request.boardImageIds());
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_UPDATED, null));
     }
+
+    @DeleteMapping("/boards/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteBoard(HttpServletRequest servletRequest, @PathVariable Long id) {
+        Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
+        boardCommandFacade.deleteBoard(userId, id);
+        return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_DELETED, null));
+    }
 }
