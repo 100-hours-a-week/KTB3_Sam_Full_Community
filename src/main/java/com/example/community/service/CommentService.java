@@ -14,6 +14,10 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
+    public Comment postComment(Long userId, Long boardId, String content) {
+        return commentRepository.save(new Comment(userId, boardId, content));
+    }
+
     public List<Comment> findAllByBoardIds(List<Long> boardIds) {
         return commentRepository.findAllByBoardIds(boardIds);
     }
