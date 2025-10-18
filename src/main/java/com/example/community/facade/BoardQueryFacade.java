@@ -2,6 +2,7 @@ package com.example.community.facade;
 
 import com.example.community.dto.PageInfo;
 import com.example.community.dto.PagedData;
+import com.example.community.dto.response.ApiResponse;
 import com.example.community.dto.response.BoardInfoResponse;
 import com.example.community.entity.Board;
 import com.example.community.entity.Comment;
@@ -67,5 +68,15 @@ public class BoardQueryFacade {
         PageInfo pageInfo = PageInfo.from(responses, totalElements,page,size);
 
         return new PagedData(responses, pageInfo);
+    }
+
+    @Transactional(readOnly = true)
+    public BoardInfoResponse getBoardDetail(Long boardId) {
+        Board board = boardService.findById(boardId);
+        List<Comment> comments = commentService.findAllByBoardId(boardId);
+        List<Like> likes = likeService.findAllByBoardId(boardId);
+        User user = userService.getUser(board.getUserId());
+
+        return BoardInfoResponse.of(board, comments.size(), likes.size(), user);
     }
 }

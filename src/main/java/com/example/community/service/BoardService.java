@@ -23,6 +23,11 @@ public class BoardService {
         return boardRepository.save(new Board(title, content, boardImageIds, userId));
     }
 
+    public Board findById(Long boardId) {
+        return boardRepository.findById(boardId)
+                .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_BOARD));
+    }
+
     public List<Board> findPage(int page, int size) {
         return boardRepository.findPage(page,size);
     }

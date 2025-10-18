@@ -47,4 +47,9 @@ public class BoardController {
         PagedData pagedBoards = boardQueryFacade.getAllBoards(page,size);
         return ResponseEntity.ok(PageApiResponse.success(SuccessCode.ALL_BOARDS_FOUND, pagedBoards));
     }
+
+    @GetMapping("/boards/{id}")
+    public ResponseEntity<ApiResponse<BoardInfoResponse>> getBoardDetail(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_DETAIL_FOUND, boardQueryFacade.getBoardDetail(id)));
+    }
 }

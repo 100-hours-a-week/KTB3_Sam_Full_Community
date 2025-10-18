@@ -17,4 +17,8 @@ public class CommentService {
     public List<Comment> findAllByBoardIds(List<Long> boardIds) {
         return commentRepository.findAllByBoardIds(boardIds);
     }
+
+    public List<Comment> findAllByBoardId(Long boardId) {
+        return commentRepository.findAllByBoardId(boardId);
+    }
 }
