@@ -14,4 +14,11 @@ public class Board extends BaseEntity{
     private String content;
     private List<Long> boardImageIds = new ArrayList<>();
     private Long userId;
+
+    public Board(String title, String content, List<Long> boardImageIds, Long userId) {
+        this.title = title;
+        this.content = content;
+        this.boardImageIds = boardImageIds;
+        this.userId = userId;
+    }
 }

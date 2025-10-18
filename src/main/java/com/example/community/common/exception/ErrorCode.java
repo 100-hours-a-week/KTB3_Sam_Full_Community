@@ -24,6 +24,7 @@ public enum ErrorCode {
     //게시글
     NOT_FOUND_BOARD(HttpStatus.NOT_FOUND, "not_found_board"),
     ALREAD_DELETED_BOARD(HttpStatus.NOT_FOUND, "already_deleted_board"),
+    DUPLICATE_TITLE(HttpStatus.BAD_REQUEST, "duplicate_title"),
 
     //이미지
     NOT_FOUND_IMAGE(HttpStatus.NOT_FOUND, "not_found_image"),

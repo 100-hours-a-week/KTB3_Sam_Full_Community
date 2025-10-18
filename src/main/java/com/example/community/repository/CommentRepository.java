@@ -9,6 +9,7 @@ import java.util.Map;
 @Repository
 public class CommentRepository {
     private Map<Long, Comment> commentDB;
+    private long sequence = 0L;
 
     CommentRepository() {
         this.commentDB = new LinkedHashMap<>();

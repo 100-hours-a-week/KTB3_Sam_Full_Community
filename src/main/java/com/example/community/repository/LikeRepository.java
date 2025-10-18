@@ -9,6 +9,7 @@ import java.util.Map;
 @Repository
 public class LikeRepository {
     private Map<Long, Like> likeDB;
+    private long sequence = 0L;
 
     LikeRepository() {
         this.likeDB = new LinkedHashMap<>();
