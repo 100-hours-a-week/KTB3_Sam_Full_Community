@@ -8,6 +8,7 @@ import com.example.community.dto.AuthToken;
 import com.example.community.entity.User;
 import com.example.community.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService {
@@ -21,6 +22,7 @@ public class AuthService {
         this.tokenBlackList = tokenBlackList;
     }
 
+    @Transactional
     public AuthToken login(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
@@ -29,6 +31,7 @@ public class AuthService {
         return new AuthToken(jwtUtil.generateAccessToken(user.getId()), jwtUtil.generateRefreshToken(user.getId()));
     }
 
+    @Transactional
     public void logout(Long userId, String token) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));

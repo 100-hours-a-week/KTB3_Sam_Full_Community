@@ -5,6 +5,7 @@ import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.User;
 import com.example.community.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,12 +17,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public User registerUser(String email, String password, String nickname, Long profileImageId) {
         validateEmail(email);
         validateNickname(nickname);
         return userRepository.save(new User(email,password, nickname, profileImageId));
     }
 
+    @Transactional(readOnly = true)
     public User getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
@@ -31,6 +34,7 @@ public class UserService {
         return userRepository.findByIds(userIds);
     }
 
+    @Transactional
     public void modifyUser(Long userId,String nickname, Long profileImageId ) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
@@ -39,6 +43,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void changePassword(Long userId, String password, String checkPassword) {
         validatePasswordInput(password, checkPassword);
 
@@ -49,6 +54,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));

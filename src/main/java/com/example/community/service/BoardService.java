@@ -5,6 +5,7 @@ import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.Board;
 import com.example.community.repository.BoardRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class BoardService {
         this.boardRepository = boardRepository;
     }
 
+    @Transactional
     public Board post(Long userId, String title, String content, List<Long> boardImageIds) {
         validateTitle(title);
         return boardRepository.save(new Board(title, content, boardImageIds, userId));
@@ -24,6 +26,7 @@ public class BoardService {
     public List<Board> findPage(int page, int size) {
         return boardRepository.findPage(page,size);
     }
+
 
     public int count() {
         return boardRepository.count();

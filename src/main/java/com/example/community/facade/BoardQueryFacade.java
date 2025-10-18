@@ -12,6 +12,7 @@ import com.example.community.service.CommentService;
 import com.example.community.service.LikeService;
 import com.example.community.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ public class BoardQueryFacade {
         this.userService = userService;
     }
 
+    @Transactional(readOnly = true)
     public PagedData getAllBoards(int page, int size) {
         List<Board> boards = boardService.findPage(page,size);
 
