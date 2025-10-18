@@ -49,4 +49,11 @@ public class UserController {
         userService.changePassword(userId, request.password(), request.checkPassword());
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.PASSWORD_UPDATED, null));
     }
+
+    @DeleteMapping("/users")
+    public ResponseEntity<ApiResponse<Void>> deleteUser(HttpServletRequest servletRequest) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
+        userService.deleteUser(userId);
+        return ResponseEntity.ok(ApiResponse.success(SuccessCode.USER_DELETED, null));
+    }
 }

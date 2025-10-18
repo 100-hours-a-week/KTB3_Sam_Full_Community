@@ -43,6 +43,13 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
+
+        userRepository.deleteById(userId);
+    }
+
 
     private void validateEmail(String email) {
         if(userRepository.findByEmail(email).isPresent()) {
