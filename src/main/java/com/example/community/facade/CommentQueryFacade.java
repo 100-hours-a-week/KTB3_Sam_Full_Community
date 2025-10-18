@@ -6,6 +6,7 @@ import com.example.community.dto.response.CommentInfoResponse;
 import com.example.community.entity.Comment;
 import com.example.community.service.CommentService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class CommentQueryFacade {
         this.commentService = commentService;
     }
 
+    @Transactional(readOnly = true)
     public PagedData getCommentsPageByBoardId(Long boardId, int page, int size) {
         List<CommentInfoResponse> commentInfoResponses = commentService.findPageByBoardId(boardId, page,size).stream()
                 .map(CommentInfoResponse::from)

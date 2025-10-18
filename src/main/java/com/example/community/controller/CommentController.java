@@ -2,6 +2,7 @@ package com.example.community.controller;
 
 import com.example.community.auth.JwtUtil;
 import com.example.community.common.SuccessCode;
+import com.example.community.dto.request.CommentModifyRequest;
 import com.example.community.dto.request.CommentPostRequest;
 import com.example.community.dto.response.ApiResponse;
 import com.example.community.dto.response.CommentInfoResponse;
@@ -39,5 +40,12 @@ public class CommentController {
                                                                             @RequestParam(defaultValue = "1") int page,
                                                                             @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(PageApiResponse.success(SuccessCode.ALL_COMMENTS_ON_BOARD_FOUND, commentQueryFacade.getCommentsPageByBoardId(boardId, page, size)));
+    }
+
+    @PutMapping("/comments/{id}")
+    public ResponseEntity<ApiResponse<Void>> modifyComment(HttpServletRequest servletRequest, @PathVariable("id") Long id, @Valid @RequestBody CommentModifyRequest request) {
+        Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
+        commentService.updateComment(userId, id, request.content());
+        return ResponseEntity.ok(ApiResponse.success(SuccessCode.COMMENT_UPDATED, null));
     }
 }

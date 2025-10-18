@@ -16,4 +16,8 @@ public class Comment extends BaseEntity{
         this.boardId = boardId;
         this.content = content;
     }
+
+    public void updateComment(String content) {
+        this.content = content;
+    }
 }
