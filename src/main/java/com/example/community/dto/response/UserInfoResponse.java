@@ -6,7 +6,7 @@ public record UserInfoResponse(
         Long userId,
         String email,
         String nickname,
-        int profileImageId
+        Long profileImageId
 ) {
     public static UserInfoResponse from(User user) {
         return new UserInfoResponse(user.getId(), user.getEmail(), user.getNickname(), user.getProfileImageId());

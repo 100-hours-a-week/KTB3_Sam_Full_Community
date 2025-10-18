@@ -5,10 +5,12 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Setter
 public class Board extends BaseEntity{
+    private final AtomicInteger visitors = new AtomicInteger(0);
     private Long id;
     private String title;
     private String content;
@@ -20,5 +22,13 @@ public class Board extends BaseEntity{
         this.content = content;
         this.boardImageIds = boardImageIds;
         this.userId = userId;
+    }
+
+    public int recordVisite() {
+        return this.visitors.incrementAndGet();
+    }
+
+    public int getVisitors() {
+        return visitors.get();
     }
 }

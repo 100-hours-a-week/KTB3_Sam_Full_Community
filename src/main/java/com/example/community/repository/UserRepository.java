@@ -4,6 +4,7 @@ import com.example.community.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserRepository {
@@ -28,6 +29,13 @@ public class UserRepository {
 
     public Optional<User> findById(Long id) {
         return Optional.ofNullable(userDB.get(id));
+    }
+
+    public List<User> findByIds(List<Long> ids) {
+        return ids.stream()
+                .map(userDB::get)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     public Optional<User> findByEmail(String email) {

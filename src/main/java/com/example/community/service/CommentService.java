@@ -1,7 +1,10 @@
 package com.example.community.service;
 
+import com.example.community.entity.Comment;
 import com.example.community.repository.CommentRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CommentService {
@@ -9,5 +12,9 @@ public class CommentService {
 
     CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
+    }
+
+    public List<Comment> findAllByBoardIds(List<Long> boardIds) {
+        return commentRepository.findAllByBoardIds(boardIds);
     }
 }

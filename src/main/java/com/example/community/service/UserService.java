@@ -6,6 +6,8 @@ import com.example.community.entity.User;
 import com.example.community.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -23,6 +25,10 @@ public class UserService {
     public User getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
+    }
+
+    public List<User> getUserByIds(List<Long> userIds) {
+        return userRepository.findByIds(userIds);
     }
 
     public void modifyUser(Long userId,String nickname, Long profileImageId ) {

@@ -1,7 +1,10 @@
 package com.example.community.service;
 
+import com.example.community.entity.Like;
 import com.example.community.repository.LikeRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class LikeService {
@@ -9,5 +12,9 @@ public class LikeService {
 
     LikeService(LikeRepository likeRepository) {
         this.likeRepository = likeRepository;
+    }
+
+    public List<Like> findAllByBoardIds(List<Long> boardIds) {
+        return likeRepository.findAllByBoardIds(boardIds);
     }
 }

@@ -21,6 +21,14 @@ public class BoardService {
         return boardRepository.save(new Board(title, content, boardImageIds, userId));
     }
 
+    public List<Board> findPage(int page, int size) {
+        return boardRepository.findPage(page,size);
+    }
+
+    public int count() {
+        return boardRepository.count();
+    }
+
     private void validateTitle(String title) {
         if(boardRepository.findByTitle(title).isPresent()) {
             throw new BaseException(ErrorCode.DUPLICATE_TITLE);
