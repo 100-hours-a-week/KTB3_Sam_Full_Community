@@ -50,19 +50,19 @@ public class BoardController {
     }
 
     @GetMapping("/boards/{id}")
-    public ResponseEntity<ApiResponse<BoardInfoResponse>> getBoardDetail(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<BoardInfoResponse>> getBoardDetail(@PathVariable("id") Long id) {
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_DETAIL_FOUND, boardQueryFacade.getBoardDetail(id)));
     }
 
     @PutMapping("/boards/{id}")
-    public ResponseEntity<ApiResponse<Void>> updateBoard(HttpServletRequest servletRequest, @PathVariable Long id, @Valid @RequestBody BoardUpdateRequest request) {
+    public ResponseEntity<ApiResponse<Void>> updateBoard(HttpServletRequest servletRequest, @PathVariable("id") Long id, @Valid @RequestBody BoardUpdateRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         boardCommandFacade.updateBoard(userId, id, request.title(), request.content(), request.boardImageIds());
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_UPDATED, null));
     }
 
     @DeleteMapping("/boards/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteBoard(HttpServletRequest servletRequest, @PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteBoard(HttpServletRequest servletRequest, @PathVariable("id") Long id) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         boardCommandFacade.deleteBoard(userId, id);
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_DELETED, null));

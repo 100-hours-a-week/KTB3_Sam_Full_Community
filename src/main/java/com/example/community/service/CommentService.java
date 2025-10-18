@@ -26,6 +26,14 @@ public class CommentService {
         return commentRepository.findAllByBoardId(boardId);
     }
 
+    public List<Comment> findPageByBoardId(Long boardId, int page, int size) {
+        return commentRepository.findPageByBoardId(boardId, page,size);
+    }
+
+    public int count() {
+        return commentRepository.count();
+    }
+
     public void deleteByBoardId(Long boardId) {
         commentRepository.deleteByBoardId(boardId);
     }

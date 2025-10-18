@@ -28,6 +28,7 @@ public class BoardService {
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_BOARD));
 
         board.updateBoard(title, content, boardImageIds);
+        board.recordModificationTime();
         boardRepository.save(board);
     }
 

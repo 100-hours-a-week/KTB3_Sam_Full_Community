@@ -5,6 +5,7 @@ import com.example.community.entity.Comment;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class CommentRepository {
@@ -49,5 +50,17 @@ public class CommentRepository {
         return commentDB.values().stream()
                 .filter(comment -> boardIds.contains(comment.getBoardId()))
                 .toList();
+    }
+
+    public List<Comment> findPageByBoardId(Long boardId, int page, int size) {
+        return commentDB.values().stream()
+                .filter(comment -> comment.getBoardId().equals(boardId))
+                .skip((long) (page-1) * size)
+                .limit(size)
+                .collect(Collectors.toList());
+    }
+
+    public int count() {
+        return commentDB.size();
     }
 }

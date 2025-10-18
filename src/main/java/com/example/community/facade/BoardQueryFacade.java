@@ -2,7 +2,6 @@ package com.example.community.facade;
 
 import com.example.community.dto.PageInfo;
 import com.example.community.dto.PagedData;
-import com.example.community.dto.response.ApiResponse;
 import com.example.community.dto.response.BoardInfoResponse;
 import com.example.community.entity.Board;
 import com.example.community.entity.Comment;
