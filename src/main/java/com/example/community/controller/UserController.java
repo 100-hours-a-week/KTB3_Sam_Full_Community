@@ -47,6 +47,6 @@ public class UserController {
     public ResponseEntity<ApiResponse<Void>> updatePassword(HttpServletRequest servletRequest, @Valid @RequestBody PasswordModifyRequest request) {
         Long userId = (Long) servletRequest.getAttribute("userId");
         userService.changePassword(userId, request.password(), request.checkPassword());
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.PASSWORD_UPDATED, null))
+        return ResponseEntity.ok(ApiResponse.success(SuccessCode.PASSWORD_UPDATED, null));
     }
 }
