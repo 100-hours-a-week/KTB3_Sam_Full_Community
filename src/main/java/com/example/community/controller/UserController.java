@@ -1,6 +1,7 @@
 package com.example.community.controller;
 
 import com.example.community.common.SuccessCode;
+import com.example.community.dto.request.PasswordModifyRequest;
 import com.example.community.dto.request.UserModifyRequest;
 import com.example.community.dto.request.UserRegisterRequest;
 import com.example.community.dto.response.ApiResponse;
@@ -40,5 +41,12 @@ public class UserController {
         Long userId = (Long) servletRequest.getAttribute("userId");
         userService.modifyUser(userId, request.nickname(), request.profileImageId());
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.USER_INFO_UPDATED,null ));
+    }
+
+    @PatchMapping("/users/password")
+    public ResponseEntity<ApiResponse<Void>> updatePassword(HttpServletRequest servletRequest, @Valid @RequestBody PasswordModifyRequest request) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
+        userService.changePassword(userId, request.password(), request.checkPassword());
+        return ResponseEntity.ok(ApiResponse.success(SuccessCode.PASSWORD_UPDATED, null))
     }
 }

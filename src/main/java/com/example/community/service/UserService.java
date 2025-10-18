@@ -33,6 +33,17 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void changePassword(Long userId, String password, String checkPassword) {
+        validatePasswordInput(password, checkPassword);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
+
+        user.updatePassword(password);
+        userRepository.save(user);
+    }
+
+
     private void validateEmail(String email) {
         if(userRepository.findByEmail(email).isPresent()) {
             throw new BaseException(ErrorCode.ALREADY_REGISTERED_EMAIL);
@@ -42,6 +53,12 @@ public class UserService {
     private void validateNickname(String nickname) {
         if(userRepository.findByNickname(nickname).isPresent()) {
             throw new BaseException(ErrorCode.ALREADY_REGISTERED_NICKNAME);
+        }
+    }
+
+    private void validatePasswordInput(String password, String checkPassword) {
+        if(!password.equals(checkPassword)) {
+            throw new BaseException(ErrorCode.INVALID_REQUEST);
         }
     }
 }
