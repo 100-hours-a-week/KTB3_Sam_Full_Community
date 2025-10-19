@@ -1,6 +1,7 @@
 package com.example.community.facade;
 
 import com.example.community.dto.response.ImageUrlResponse;
+import com.example.community.entity.Image;
 import com.example.community.s3.S3Service;
 import com.example.community.service.ImageService;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,13 @@ public class S3ImageFacade {
     @Transactional
     public ImageUrlResponse getUploadImageUrl() {
         Long imageId = imageService.makeImage();
-        String uploadImageUrl =  s3Service.getCommunityImageUploadUrl(imageId);
+        String uploadImageUrl = s3Service.getCommunityImageUploadUrl(imageId);
         return new ImageUrlResponse(uploadImageUrl);
+    }
+
+    @Transactional(readOnly = true)
+    public ImageUrlResponse getImageUrl(Long imageId) {
+        String getImageUrl = s3Service.getCommunityImage(imageId);
+        return new ImageUrlResponse(getImageUrl);
     }
 }

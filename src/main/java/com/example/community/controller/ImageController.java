@@ -5,6 +5,8 @@ import com.example.community.dto.response.ApiResponse;
 import com.example.community.dto.response.ImageUrlResponse;
 import com.example.community.facade.S3ImageFacade;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,5 +22,11 @@ public class ImageController {
     public ResponseEntity<ApiResponse<ImageUrlResponse>> getUploadImageUrl() {
         ImageUrlResponse imageUrlResponse = s3ImageFacade.getUploadImageUrl();
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.IMAGE_UPLOADED, imageUrlResponse));
+    }
+
+    @GetMapping("/images/{id}")
+    public ResponseEntity<ApiResponse<ImageUrlResponse>> getImageUrl(@PathVariable("id") Long id) {
+        ImageUrlResponse imageUrlResponse = s3ImageFacade.getImageUrl(id);
+        return ResponseEntity.ok(ApiResponse.success(SuccessCode.IMAGE_FOUND, imageUrlResponse));
     }
 }
