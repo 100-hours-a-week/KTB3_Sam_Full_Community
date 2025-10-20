@@ -1,7 +1,7 @@
 package com.example.community.controller;
 
 import com.example.community.common.SuccessCode;
-import com.example.community.dto.response.ApiResponse;
+import com.example.community.dto.response.APIResponse;
 import com.example.community.dto.response.ImageUrlResponse;
 import com.example.community.facade.S3ImageFacade;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +19,14 @@ public class ImageController {
     }
 
     @PostMapping("/images")
-    public ResponseEntity<ApiResponse<ImageUrlResponse>> getUploadImageUrl() {
+    public ResponseEntity<APIResponse<ImageUrlResponse>> getUploadImageUrl() {
         ImageUrlResponse imageUrlResponse = s3ImageFacade.getUploadImageUrl();
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.IMAGE_UPLOADED, imageUrlResponse));
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.IMAGE_UPLOADED, imageUrlResponse));
     }
 
     @GetMapping("/images/{id}")
-    public ResponseEntity<ApiResponse<ImageUrlResponse>> getImageUrl(@PathVariable("id") Long id) {
+    public ResponseEntity<APIResponse<ImageUrlResponse>> getImageUrl(@PathVariable("id") Long id) {
         ImageUrlResponse imageUrlResponse = s3ImageFacade.getImageUrl(id);
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.IMAGE_FOUND, imageUrlResponse));
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.IMAGE_FOUND, imageUrlResponse));
     }
 }

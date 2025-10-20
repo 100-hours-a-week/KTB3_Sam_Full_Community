@@ -5,7 +5,7 @@ import com.example.community.common.SuccessCode;
 import com.example.community.dto.PagedData;
 import com.example.community.dto.request.BoardPostRequest;
 import com.example.community.dto.request.BoardUpdateRequest;
-import com.example.community.dto.response.ApiResponse;
+import com.example.community.dto.response.APIResponse;
 import com.example.community.dto.response.BoardInfoResponse;
 import com.example.community.dto.response.BoardPostResponse;
 import com.example.community.dto.response.PageApiResponse;
@@ -35,10 +35,10 @@ public class BoardController {
     }
 
     @PostMapping("/boards")
-    public ResponseEntity<ApiResponse<BoardPostResponse>> postBoard(HttpServletRequest servletRequest, @Valid @RequestBody BoardPostRequest request) {
+    public ResponseEntity<APIResponse<BoardPostResponse>> postBoard(HttpServletRequest servletRequest, @Valid @RequestBody BoardPostRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         Board board = boardService.post(userId, request.title(), request.content(), request.boardImageIds());
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_CREATED, BoardPostResponse.from(board)));
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_CREATED, BoardPostResponse.from(board)));
     }
 
     @GetMapping("/boards")
@@ -50,21 +50,21 @@ public class BoardController {
     }
 
     @GetMapping("/boards/{id}")
-    public ResponseEntity<ApiResponse<BoardInfoResponse>> getBoardDetail(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_DETAIL_FOUND, boardQueryFacade.getBoardDetail(id)));
+    public ResponseEntity<APIResponse<BoardInfoResponse>> getBoardDetail(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_DETAIL_FOUND, boardQueryFacade.getBoardDetail(id)));
     }
 
     @PutMapping("/boards/{id}")
-    public ResponseEntity<ApiResponse<Void>> updateBoard(HttpServletRequest servletRequest, @PathVariable("id") Long id, @Valid @RequestBody BoardUpdateRequest request) {
+    public ResponseEntity<APIResponse<Void>> updateBoard(HttpServletRequest servletRequest, @PathVariable("id") Long id, @Valid @RequestBody BoardUpdateRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         boardCommandFacade.updateBoard(userId, id, request.title(), request.content(), request.boardImageIds());
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_UPDATED, null));
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_UPDATED, null));
     }
 
     @DeleteMapping("/boards/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteBoard(HttpServletRequest servletRequest, @PathVariable("id") Long id) {
+    public ResponseEntity<APIResponse<Void>> deleteBoard(HttpServletRequest servletRequest, @PathVariable("id") Long id) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         boardCommandFacade.deleteBoard(userId, id);
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.BOARD_DELETED, null));
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_DELETED, null));
     }
 }

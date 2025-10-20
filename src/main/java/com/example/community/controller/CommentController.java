@@ -4,7 +4,7 @@ import com.example.community.auth.JwtUtil;
 import com.example.community.common.SuccessCode;
 import com.example.community.dto.request.CommentModifyRequest;
 import com.example.community.dto.request.CommentPostRequest;
-import com.example.community.dto.response.ApiResponse;
+import com.example.community.dto.response.APIResponse;
 import com.example.community.dto.response.CommentInfoResponse;
 import com.example.community.dto.response.CommentPostResponse;
 import com.example.community.dto.response.PageApiResponse;
@@ -29,10 +29,10 @@ public class CommentController {
     }
 
     @PostMapping("/boards/{boardId}/comments")
-    public ResponseEntity<ApiResponse<CommentPostResponse>> postComment(HttpServletRequest servletRequest, @PathVariable("boardId") Long boardId, @Valid @RequestBody CommentPostRequest request) {
+    public ResponseEntity<APIResponse<CommentPostResponse>> postComment(HttpServletRequest servletRequest, @PathVariable("boardId") Long boardId, @Valid @RequestBody CommentPostRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         Comment comment = commentService.postComment(userId, boardId, request.content());
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.COMMENT_CREATED, CommentPostResponse.from(comment)));
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.COMMENT_CREATED, CommentPostResponse.from(comment)));
     }
 
     @GetMapping("/boards/{boardId}/comments")
@@ -43,16 +43,16 @@ public class CommentController {
     }
 
     @PutMapping("/comments/{id}")
-    public ResponseEntity<ApiResponse<Void>> modifyComment(HttpServletRequest servletRequest, @PathVariable("id") Long id, @Valid @RequestBody CommentModifyRequest request) {
+    public ResponseEntity<APIResponse<Void>> modifyComment(HttpServletRequest servletRequest, @PathVariable("id") Long id, @Valid @RequestBody CommentModifyRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         commentService.updateComment(userId, id, request.content());
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.COMMENT_UPDATED, null));
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.COMMENT_UPDATED, null));
     }
 
     @DeleteMapping("/comments/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteComment(HttpServletRequest servletRequest, @PathVariable("id") Long id) {
+    public ResponseEntity<APIResponse<Void>> deleteComment(HttpServletRequest servletRequest, @PathVariable("id") Long id) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         commentService.deleteComment(userId, id);
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.COMMENT_DELETED, null));
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.COMMENT_DELETED, null));
     }
 }
