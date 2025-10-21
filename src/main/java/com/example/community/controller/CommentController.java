@@ -81,7 +81,7 @@ public class CommentController {
                                                            @Valid @RequestBody CommentModifyRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         commentService.updateComment(userId, id, request.content());
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.COMMENT_UPDATED, null));
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "댓글 삭제", description = "입력받은 ID에 해당하는 댓글을 삭제합니다.")
@@ -97,6 +97,6 @@ public class CommentController {
                                                             @PathVariable("id") Long id) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         commentService.deleteComment(userId, id);
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.COMMENT_DELETED, null));
+        return ResponseEntity.noContent().build();
     }
 }

@@ -97,7 +97,7 @@ public class BoardController {
                                                          @Valid @RequestBody BoardUpdateRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         boardCommandFacade.updateBoard(userId, id, request.title(), request.content(), request.boardImageIds());
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_UPDATED, null));
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "게시글 삭제", description = "게시글 삭제를 진행합니다.")
@@ -113,6 +113,6 @@ public class BoardController {
                                                          @PathVariable("id") Long id) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         boardCommandFacade.deleteBoard(userId, id);
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_DELETED, null));
+        return ResponseEntity.noContent().build();
     }
 }

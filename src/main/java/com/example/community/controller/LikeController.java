@@ -60,6 +60,6 @@ public class LikeController {
                                                         @PathVariable("boardId") Long boardId) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         likeService.deleteLike(userId, boardId);
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_LIKE_CANCELLED, null));
+        return ResponseEntity.noContent().build();
     }
 }

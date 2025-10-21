@@ -53,7 +53,7 @@ public class AuthController {
         String token = (String) servletRequest.getAttribute("accessToken");
         Long userId = jwtUtil.extractUserId(token);
         authService.logout(userId, token);
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.USER_LOGOUT, null));
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "토큰 재발급", description = "토큰을 재발급 해 인증 정보를 갱신합니다.")

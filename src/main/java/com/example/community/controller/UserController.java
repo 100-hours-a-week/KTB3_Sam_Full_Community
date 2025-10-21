@@ -85,7 +85,7 @@ public class UserController {
     public ResponseEntity<APIResponse<Void>> updatePassword(HttpServletRequest servletRequest, @Valid @RequestBody PasswordModifyRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         userService.changePassword(userId, request.password(), request.checkPassword());
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.PASSWORD_UPDATED, null));
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "회원 탈퇴", description = "로그인된 유저의 회원 탈퇴를 진행합니다.")
@@ -99,6 +99,6 @@ public class UserController {
     public ResponseEntity<APIResponse<Void>> deleteUser(HttpServletRequest servletRequest) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         userService.deleteUser(userId);
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.USER_DELETED, null));
+        return ResponseEntity.noContent().build();
     }
 }
