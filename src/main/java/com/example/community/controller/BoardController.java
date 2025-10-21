@@ -14,6 +14,7 @@ import com.example.community.facade.BoardCommandFacade;
 import com.example.community.facade.BoardQueryFacade;
 import com.example.community.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -68,8 +69,17 @@ public class BoardController {
         return ResponseEntity.ok(PageApiResponse.success(SuccessCode.ALL_BOARDS_FOUND, pagedBoards));
     }
 
+    @Operation(summary = "게시글 상세 조회", description = "특정 게시글의 상세 정보를 조회합니다.")
     @GetMapping("/boards/{id}")
-    public ResponseEntity<APIResponse<BoardInfoResponse>> getBoardDetail(@PathVariable("id") Long id) {
+    @SecurityRequirement(name = "JWT")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "board_detail_find_success"),
+            @ApiResponse(responseCode = "400", description = "invalid_request"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
+    public ResponseEntity<APIResponse<BoardInfoResponse>> getBoardDetail(
+            @Parameter(description = "게시글 ID", required = true, example = "1")
+            @PathVariable("id") Long id) {
         return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_DETAIL_FOUND, boardQueryFacade.getBoardDetail(id)));
     }
 
