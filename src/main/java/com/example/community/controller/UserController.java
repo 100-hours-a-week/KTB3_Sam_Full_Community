@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +61,7 @@ public class UserController {
     @PatchMapping("/users")
     @SecurityRequirement(name = "JWT")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "user_info_update_success"),
+            @ApiResponse(responseCode = "204", description = "no_content"),
             @ApiResponse(responseCode = "400", description = "invalid_request"),
             @ApiResponse(responseCode = "401", description = "not_login_user"),
             @ApiResponse(responseCode = "500", description = "internal_server_error")
@@ -77,7 +76,7 @@ public class UserController {
     @PatchMapping("/users/password")
     @SecurityRequirement(name = "JWT")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "password_update_success"),
+            @ApiResponse(responseCode = "204", description = "no_content"),
             @ApiResponse(responseCode = "400", description = "invalid_request"),
             @ApiResponse(responseCode = "401", description = "not_login_user"),
             @ApiResponse(responseCode = "500", description = "internal_server_error")
@@ -92,7 +91,7 @@ public class UserController {
     @DeleteMapping("/users")
     @SecurityRequirement(name = "JWT")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "user_delete_success"),
+            @ApiResponse(responseCode = "204", description = "no_content"),
             @ApiResponse(responseCode = "404", description = "already_deleted_user"),
             @ApiResponse(responseCode = "500", description = "internal_server_error")
     })

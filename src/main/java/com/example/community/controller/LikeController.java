@@ -51,7 +51,7 @@ public class LikeController {
     @DeleteMapping("/boards/{boardId}/like")
     @SecurityRequirement(name="JWT")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "like_delete_success"),
+            @ApiResponse(responseCode = "204", description = "no_content"),
             @ApiResponse(responseCode = "400", description = "invalid_request"),
             @ApiResponse(responseCode = "500", description = "internal_server_error")
     })

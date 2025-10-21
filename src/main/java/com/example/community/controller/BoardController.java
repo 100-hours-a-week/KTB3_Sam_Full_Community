@@ -87,7 +87,7 @@ public class BoardController {
     @PutMapping("/boards/{id}")
     @SecurityRequirement(name = "JWT")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "board_update_success"),
+            @ApiResponse(responseCode = "204", description = "no_content"),
             @ApiResponse(responseCode = "404", description = "not_found_board"),
             @ApiResponse(responseCode = "500", description = "internal_server_error")
     })
@@ -104,7 +104,7 @@ public class BoardController {
     @DeleteMapping("/boards/{id}")
     @SecurityRequirement(name = "JWT")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "board_delete_success"),
+            @ApiResponse(responseCode = "204", description = "no_content"),
             @ApiResponse(responseCode = "404", description = "already_deleted_board"),
             @ApiResponse(responseCode = "500", description = "internal_server_error")
     })

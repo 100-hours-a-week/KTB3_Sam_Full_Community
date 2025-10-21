@@ -45,7 +45,7 @@ public class AuthController {
     @DeleteMapping("/auth")
     @SecurityRequirement(name = "JWT")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "user_logout_success"),
+            @ApiResponse(responseCode = "204", description = "no_content"),
             @ApiResponse(responseCode = "401", description = "not_login_user"),
             @ApiResponse(responseCode = "500", description = "internal_server_error")
     })

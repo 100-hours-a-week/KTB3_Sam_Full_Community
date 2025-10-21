@@ -70,7 +70,7 @@ public class CommentController {
     @PutMapping("/comments/{id}")
     @SecurityRequirement(name = "JWT")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "comment_update_success"),
+            @ApiResponse(responseCode = "204", description = "no_content"),
             @ApiResponse(responseCode = "400", description = "invalid_request"),
             @ApiResponse(responseCode = "404", description = "not_found_comment"),
             @ApiResponse(responseCode = "500", description = "internal_server_error")
@@ -88,7 +88,7 @@ public class CommentController {
     @DeleteMapping("/comments/{id}")
     @SecurityRequirement(name = "JWT")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "comment_delete_success"),
+            @ApiResponse(responseCode = "204", description = "no_content"),
             @ApiResponse(responseCode = "404", description = "already_deleted_comment"),
             @ApiResponse(responseCode = "500", description = "internal_server_error")
     })
