@@ -19,16 +19,6 @@ public class GlobalExceptionHandler {
                 ));
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
-        return ResponseEntity
-                .badRequest()
-                .body(Map.of(
-                        "message", "invalid_request",
-                        "data", null
-                ));
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleException(Exception ex) {
         return ResponseEntity
