@@ -47,8 +47,17 @@ public class LikeController {
         return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_LIKED, LikePostResponse.from(like)));
     }
 
+    @Operation(summary = "좋아요 삭제", description = "입력받은 유저 ID와 게시글 ID에 해당하는 좋아요를 삭제합니다.")
     @DeleteMapping("/boards/{boardId}/like")
-    public ResponseEntity<APIResponse<Void>> deleteLike(HttpServletRequest servletRequest, @PathVariable("boardId") Long boardId) {
+    @SecurityRequirement(name="JWT")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "like_delete_success"),
+            @ApiResponse(responseCode = "400", description = "invalid_request"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
+    public ResponseEntity<APIResponse<Void>> deleteLike(HttpServletRequest servletRequest,
+                                                        @Parameter(description = "좋아요 삭제할 게시글 ID", required = true, example = "3")
+                                                        @PathVariable("boardId") Long boardId) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         likeService.deleteLike(userId, boardId);
         return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_LIKE_CANCELLED, null));
