@@ -85,7 +85,14 @@ public class UserController {
         return ResponseEntity.ok(APIResponse.success(SuccessCode.PASSWORD_UPDATED, null));
     }
 
+    @Operation(summary = "회원 탈퇴", description = "로그인된 유저의 회원 탈퇴를 진행합니다.")
     @DeleteMapping("/users")
+    @SecurityRequirement(name = "JWT")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "user_delete_success"),
+            @ApiResponse(responseCode = "404", description = "already_deleted_user"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
     public ResponseEntity<APIResponse<Void>> deleteUser(HttpServletRequest servletRequest) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         userService.deleteUser(userId);
