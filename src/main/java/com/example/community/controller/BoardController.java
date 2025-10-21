@@ -100,8 +100,17 @@ public class BoardController {
         return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_UPDATED, null));
     }
 
+    @Operation(summary = "게시글 삭제", description = "게시글 삭제를 진행합니다.")
     @DeleteMapping("/boards/{id}")
-    public ResponseEntity<APIResponse<Void>> deleteBoard(HttpServletRequest servletRequest, @PathVariable("id") Long id) {
+    @SecurityRequirement(name = "JWT")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "board_delete_success"),
+            @ApiResponse(responseCode = "404", description = "already_deleted_board"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
+    public ResponseEntity<APIResponse<Void>> deleteBoard(HttpServletRequest servletRequest,
+                                                         @Parameter(description = "게시글 ID", required = true, example = "1")
+                                                         @PathVariable("id") Long id) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         boardCommandFacade.deleteBoard(userId, id);
         return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_DELETED, null));
