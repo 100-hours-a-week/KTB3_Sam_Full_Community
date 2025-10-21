@@ -39,7 +39,8 @@ public class CommentController {
     @PostMapping("/boards/{boardId}/comments")
     @SecurityRequirement(name = "JWT")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "find_all_comments_on_board_success"),
+            @ApiResponse(responseCode = "201", description = "comment_upload_success"),
+            @ApiResponse(responseCode = "400", description = "invalid_request"),
             @ApiResponse(responseCode = "500", description = "internal_server_error")
     })
     public ResponseEntity<APIResponse<CommentPostResponse>> postComment(HttpServletRequest servletRequest,
@@ -51,8 +52,15 @@ public class CommentController {
         return ResponseEntity.ok(APIResponse.success(SuccessCode.COMMENT_CREATED, CommentPostResponse.from(comment)));
     }
 
+    @Operation(summary = "댓글 조회", description = "원하는 페이지 위치와 한 페이지당 크기와 함께 댓글 조회를 원하는 게시글 ID를 함께 받아 해당하는 댓글 내용을 반환합니다.")
     @GetMapping("/boards/{boardId}/comments")
-    public ResponseEntity<PageApiResponse<CommentInfoResponse>> getComments(@PathVariable("boardId") Long boardId,
+    @SecurityRequirement(name="JWT")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "find_all_comments_on_board_success"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
+    public ResponseEntity<PageApiResponse<CommentInfoResponse>> getComments(@Parameter(description = "댓글 조회 진행할 게시글 ID", required = true, example = "2")
+                                                                            @PathVariable("boardId") Long boardId,
                                                                             @RequestParam(defaultValue = "1") int page,
                                                                             @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(PageApiResponse.success(SuccessCode.ALL_COMMENTS_ON_BOARD_FOUND, commentQueryFacade.getCommentsPageByBoardId(boardId, page, size)));
