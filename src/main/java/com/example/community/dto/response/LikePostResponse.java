@@ -8,6 +8,6 @@ public record LikePostResponse(
         Long userId
 ) {
     public static LikePostResponse from(Like like) {
-        return new LikePostResponse(like.getId(), like.getId(), like.getUserId());
+        return new LikePostResponse(like.getId(), like.getBoardId(), like.getUserId());
     }
 }
