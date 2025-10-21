@@ -13,6 +13,11 @@ import com.example.community.entity.Board;
 import com.example.community.facade.BoardCommandFacade;
 import com.example.community.facade.BoardQueryFacade;
 import com.example.community.service.BoardService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "게시글 API", description = "게시글 관련 API")
 @RestController
 public class BoardController {
     private final BoardCommandFacade boardCommandFacade;
@@ -34,7 +40,14 @@ public class BoardController {
         this.boardQueryFacade = boardQueryFacade;
     }
 
+    @Operation(summary = "게시글 추가", description = "입력받은 내용을 바탕으로 새로운 게시글을 추가합니다.")
     @PostMapping("/boards")
+    @SecurityRequirement(name = "JWT")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "board_create_success"),
+            @ApiResponse(responseCode = "400", description = "invalid_request"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
     public ResponseEntity<APIResponse<BoardPostResponse>> postBoard(HttpServletRequest servletRequest, @Valid @RequestBody BoardPostRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         Board board = boardService.post(userId, request.title(), request.content(), request.boardImageIds());
