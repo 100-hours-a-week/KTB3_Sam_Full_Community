@@ -83,8 +83,18 @@ public class BoardController {
         return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_DETAIL_FOUND, boardQueryFacade.getBoardDetail(id)));
     }
 
+    @Operation(summary = "게시글 수정", description = "게시글 정보를 수정합니다.")
     @PutMapping("/boards/{id}")
-    public ResponseEntity<APIResponse<Void>> updateBoard(HttpServletRequest servletRequest, @PathVariable("id") Long id, @Valid @RequestBody BoardUpdateRequest request) {
+    @SecurityRequirement(name = "JWT")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "board_update_success"),
+            @ApiResponse(responseCode = "404", description = "not_found_board"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
+    public ResponseEntity<APIResponse<Void>> updateBoard(HttpServletRequest servletRequest,
+                                                         @Parameter(description = "게시글 ID", required = true, example = "1")
+                                                         @PathVariable("id") Long id,
+                                                         @Valid @RequestBody BoardUpdateRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         boardCommandFacade.updateBoard(userId, id, request.title(), request.content(), request.boardImageIds());
         return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_UPDATED, null));

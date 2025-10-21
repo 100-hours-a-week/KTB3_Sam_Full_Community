@@ -12,7 +12,7 @@ public record BoardPostRequest(
         @Schema(description = "게시글 내용", example = "게시글 내용 예시1")
         @NotNull
         String content,
-        @Schema(description = "게시글 이미지 ID 모음", example = "[1,2]")
+        @Schema(description = "게시글 이미지 ID", example = "[1,2]")
         @NotNull
         List<Long> boardImageIds
 ) {
