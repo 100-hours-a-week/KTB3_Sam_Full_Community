@@ -10,7 +10,10 @@ import java.util.List;
 public class ExcludePathMatcher {
     private final List<Rule> excludeRules = List.of(
             Rule.of("POST", "/auth"),
-            Rule.of("POST", "/users")
+            Rule.of("POST", "/users"),
+            Rule.of("GET", "/swagger-ui.html"),
+            Rule.of("GET", "/swagger-ui/**"),
+            Rule.of("GET", "/v3/api-docs/**")
     );
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();

@@ -26,3 +26,16 @@ jwt:
   secret: ${JWT_SECRET:test-secret-key-test-secret-key-test-secret-key-test-secret-key}
   access-expiration-ms: ${ACCESS_EXPIRATION_MS:3600000}
   refresh-expiration-ms: ${REFRESH_EXPIRATION_MS:86400000}
+
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+    groups.enabled: true
+
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    display-request-duration: true
+    persistAuthorization: true

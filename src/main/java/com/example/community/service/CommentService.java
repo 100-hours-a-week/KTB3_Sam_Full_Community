@@ -2,7 +2,6 @@ package com.example.community.service;
 
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
-import com.example.community.dto.PagedData;
 import com.example.community.entity.Comment;
 import com.example.community.repository.CommentRepository;
 import org.springframework.stereotype.Service;
@@ -40,7 +39,7 @@ public class CommentService {
     }
 
     public void deleteByBoardId(Long boardId) {
-        commentRepository.deleteByBoardId(boardId);
+        commentRepository.deleteByBoardIdWithIndex(boardId);
     }
 
     @Transactional

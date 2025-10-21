@@ -41,7 +41,7 @@ public class AuthService {
 
     @Transactional
     public AuthToken reissue(Long userId, String accessToken, String refreshToken) {
-        validateExpired(accessToken, refreshToken);
+        validateExpired(refreshToken);
         validateBlacked(accessToken);
         return new AuthToken(jwtUtil.generateAccessToken(userId), jwtUtil.generateRefreshToken(userId));
     }
@@ -52,8 +52,8 @@ public class AuthService {
         }
     }
 
-    private void validateExpired(String accessToken, String refreshToken) {
-        if(jwtUtil.isExpired(refreshToken) || (!jwtUtil.isExpired(accessToken))) {
+    private void validateExpired(String refreshToken) {
+        if(jwtUtil.isExpired(refreshToken)) {
             throw new BaseException(ErrorCode.INVALID_REQUEST);
         }
     }

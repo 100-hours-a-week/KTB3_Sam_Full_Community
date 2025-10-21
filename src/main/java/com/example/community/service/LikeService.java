@@ -25,7 +25,7 @@ public class LikeService {
     }
 
     public void deleteByBoardId(Long boardId) {
-        likeRepository.deleteByBoardId(boardId);
+        likeRepository.deleteByBoardIdWithIndex(boardId);
     }
 
     public Like postLike(Long userId, Long boardId) {

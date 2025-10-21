@@ -1,14 +1,12 @@
 package com.example.community.entity;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
-@Setter
 public class Board extends BaseEntity{
     private final AtomicInteger visitors = new AtomicInteger(0);
     private Long id;
@@ -36,5 +34,9 @@ public class Board extends BaseEntity{
         this.title = title;
         this.content = content;
         this.boardImageIds = boardImageIds;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
