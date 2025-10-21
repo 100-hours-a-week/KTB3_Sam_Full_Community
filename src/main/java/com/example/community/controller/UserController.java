@@ -10,6 +10,9 @@ import com.example.community.dto.response.UserInfoResponse;
 import com.example.community.dto.response.UserRegisterResponse;
 import com.example.community.entity.User;
 import com.example.community.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +28,13 @@ public class UserController {
         this.jwtUtil = jwtUtil;
     }
 
+    @Operation(summary = "회원가입", description = "사용자의 정보를 받아 회원가입을 진행합니다.")
     @PostMapping("/users")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "register_success"),
+            @ApiResponse(responseCode = "400", description = "invalid_request"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
     public ResponseEntity<APIResponse<UserRegisterResponse>> registerUser(@Valid @RequestBody UserRegisterRequest request) {
         User user = userService.registerUser(request.email(), request.password(), request.nickname(), request.profileImageId());
         return ResponseEntity.ok(APIResponse.success(SuccessCode.USER_REGISTERED, UserRegisterResponse.from(user)));
