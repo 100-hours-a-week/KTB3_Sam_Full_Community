@@ -70,7 +70,15 @@ public class UserController {
         return ResponseEntity.ok(APIResponse.success(SuccessCode.USER_INFO_UPDATED,null ));
     }
 
+    @Operation(summary = "비밀번호 변경", description = "사용자의 비밀번호를 변경합니다.")
     @PatchMapping("/users/password")
+    @SecurityRequirement(name = "JWT")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "password_update_success"),
+            @ApiResponse(responseCode = "400", description = "invalid_request"),
+            @ApiResponse(responseCode = "401", description = "not_login_user"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
     public ResponseEntity<APIResponse<Void>> updatePassword(HttpServletRequest servletRequest, @Valid @RequestBody PasswordModifyRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         userService.changePassword(userId, request.password(), request.checkPassword());
