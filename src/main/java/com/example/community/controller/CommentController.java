@@ -66,8 +66,19 @@ public class CommentController {
         return ResponseEntity.ok(PageApiResponse.success(SuccessCode.ALL_COMMENTS_ON_BOARD_FOUND, commentQueryFacade.getCommentsPageByBoardId(boardId, page, size)));
     }
 
+    @Operation(summary = "댓글 수정", description = "댓글 수정을 진행합니다.")
     @PutMapping("/comments/{id}")
-    public ResponseEntity<APIResponse<Void>> modifyComment(HttpServletRequest servletRequest, @PathVariable("id") Long id, @Valid @RequestBody CommentModifyRequest request) {
+    @SecurityRequirement(name = "JWT")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "comment_update_success"),
+            @ApiResponse(responseCode = "400", description = "invalid_request"),
+            @ApiResponse(responseCode = "404", description = "not_found_comment"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
+    public ResponseEntity<APIResponse<Void>> modifyComment(HttpServletRequest servletRequest,
+                                                           @Parameter(description = "수정할 댓글 ID", required = true, example = "3")
+                                                           @PathVariable("id") Long id,
+                                                           @Valid @RequestBody CommentModifyRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         commentService.updateComment(userId, id, request.content());
         return ResponseEntity.ok(APIResponse.success(SuccessCode.COMMENT_UPDATED, null));
