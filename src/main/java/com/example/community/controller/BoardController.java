@@ -54,7 +54,13 @@ public class BoardController {
         return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_CREATED, BoardPostResponse.from(board)));
     }
 
+    @Operation(summary = "게시글 전체 조회", description = "원하는 페이지 위치와 한 페이지 당 개수를 입력받아 해당하는 게시글 내용을 조회합니다.")
     @GetMapping("/boards")
+    @SecurityRequirement(name = "JWT")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "board_find_all_success"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
     public ResponseEntity<PageApiResponse<List<BoardInfoResponse>>> getBoards (HttpServletRequest servletRequest,
                                                                               @RequestParam(defaultValue = "1") int page,
                                                                               @RequestParam(defaultValue = "10") int size) {
