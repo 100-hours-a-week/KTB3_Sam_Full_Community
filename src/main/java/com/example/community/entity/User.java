@@ -1,10 +1,8 @@
 package com.example.community.entity;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class User extends BaseEntity{
     private Long id;
     private String password;
@@ -26,5 +24,9 @@ public class User extends BaseEntity{
 
     public void updatePassword(String password) {
         this.password = password;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
