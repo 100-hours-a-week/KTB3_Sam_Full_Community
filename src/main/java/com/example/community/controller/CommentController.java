@@ -84,8 +84,17 @@ public class CommentController {
         return ResponseEntity.ok(APIResponse.success(SuccessCode.COMMENT_UPDATED, null));
     }
 
+    @Operation(summary = "댓글 삭제", description = "입력받은 ID에 해당하는 댓글을 삭제합니다.")
     @DeleteMapping("/comments/{id}")
-    public ResponseEntity<APIResponse<Void>> deleteComment(HttpServletRequest servletRequest, @PathVariable("id") Long id) {
+    @SecurityRequirement(name = "JWT")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "comment_delete_success"),
+            @ApiResponse(responseCode = "404", description = "already_deleted_comment"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
+    public ResponseEntity<APIResponse<Void>> deleteComment(HttpServletRequest servletRequest,
+                                                            @Parameter(description = "삭제할 댓글 ID", required = true, example = "3")
+                                                            @PathVariable("id") Long id) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         commentService.deleteComment(userId, id);
         return ResponseEntity.ok(APIResponse.success(SuccessCode.COMMENT_DELETED, null));
