@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class User extends BaseEntity{
-    private Long id;
     private String password;
     private String email;
     private String nickname;
@@ -24,9 +23,5 @@ public class User extends BaseEntity{
 
     public void updatePassword(String password) {
         this.password = password;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }
