@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class BaseEntity {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    protected Long id;
+    private Long id;
 
     BaseEntity() {
         this.createdAt = java.time.LocalDateTime.now();
