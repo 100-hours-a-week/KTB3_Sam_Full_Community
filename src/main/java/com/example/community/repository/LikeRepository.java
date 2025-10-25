@@ -11,7 +11,6 @@ public class LikeRepository extends BoardLinkedRepository<Like>{
         List<Long> likeIds = indexMap.get(boardId);
         return likeIds.stream()
                 .map(db::get)
-                .filter(Objects::nonNull)
                 .filter(like -> like.getUserId().equals(userId))
                 .findFirst();
     }

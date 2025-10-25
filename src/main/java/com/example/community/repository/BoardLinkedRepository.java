@@ -21,8 +21,10 @@ public class BoardLinkedRepository<T extends BaseEntity & BoardLinked> extends B
                 List<Long> ids = new ArrayList<>();
                 ids.add(entity.getId());
                 indexMap.put(entity.getBoardId(), ids);
+                System.out.println(indexMap);
             } else {
                 indexMap.get(entity.getBoardId()).add(entity.getId());
+                System.out.println(indexMap);
             }
         }
         db.put(entity.getId(), entity);

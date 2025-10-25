@@ -35,8 +35,6 @@ public class BoardCommandFacade {
         Board board = boardService.findById(boardId);
         validateUser(board, userId);
         boardService.deleteBoard(boardId);
-        commentService.deleteByBoardId(boardId);
-        likeService.deleteByBoardId(boardId);
     }
 
     private void validateUser(Board board, Long userId) {
