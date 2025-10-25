@@ -22,7 +22,7 @@ public class BaseRepository<T extends BaseEntity> {
     }
 
     public Optional<T> findById(Long id) {
-        return Optional.of(db.get(id));
+        return Optional.ofNullable(db.get(id));
     }
 
     public List<T> findByIds(List<Long> ids) {
