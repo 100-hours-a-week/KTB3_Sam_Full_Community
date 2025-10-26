@@ -1,11 +1,12 @@
 package com.example.community.repository;
 
 import com.example.community.entity.BaseEntity;
+import com.example.community.repository.interfaces.CRUDRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BaseRepository<T extends BaseEntity> {
+public class BaseRepository<T extends BaseEntity> implements CRUDRepository<T> {
     protected Map<Long, T> db = new LinkedHashMap<>();
     protected long sequence = 0L;
 
@@ -15,10 +16,6 @@ public class BaseRepository<T extends BaseEntity> {
         }
         db.put(entity.getId(), entity);
         return entity;
-    }
-
-    public List<T> findAll() {
-        return new ArrayList<>(db.values());
     }
 
     public Optional<T> findById(Long id) {
@@ -34,7 +31,7 @@ public class BaseRepository<T extends BaseEntity> {
 
     public void deleteById(Long id){
         db.remove(id);
-    };
+    }
 
     public int count() {
         return db.size();

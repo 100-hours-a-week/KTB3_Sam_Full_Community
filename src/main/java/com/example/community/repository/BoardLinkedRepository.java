@@ -2,18 +2,18 @@ package com.example.community.repository;
 
 import com.example.community.entity.BaseEntity;
 import com.example.community.entity.BoardLinked;
+import com.example.community.repository.interfaces.BoardAggregateRepository;
+import com.example.community.repository.interfaces.CRUDRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class BoardLinkedRepository<T extends BaseEntity & BoardLinked> extends BaseRepository<T>{
+public class BoardLinkedRepository<T extends BaseEntity & BoardLinked> implements CRUDRepository<T>, BoardAggregateRepository<T> {
+    protected Map<Long, T> db = new LinkedHashMap<>();
+    protected long sequence = 0L;
     protected Map<Long, List<Long>> indexMap = new ConcurrentHashMap<>();
 
-    @Override
     public T save(T entity) {
         if(entity.getId() == null) {
             entity.setId(++sequence);
@@ -21,17 +21,18 @@ public class BoardLinkedRepository<T extends BaseEntity & BoardLinked> extends B
                 List<Long> ids = new ArrayList<>();
                 ids.add(entity.getId());
                 indexMap.put(entity.getBoardId(), ids);
-                System.out.println(indexMap);
             } else {
                 indexMap.get(entity.getBoardId()).add(entity.getId());
-                System.out.println(indexMap);
             }
         }
         db.put(entity.getId(), entity);
         return entity;
     }
 
-    @Override
+    public Optional<T> findById(Long id) {
+        return Optional.ofNullable(db.get(id));
+    }
+
     public void deleteById(Long id) {
         T entity = db.remove(id);
         indexMap.get(entity.getBoardId()).remove(id);
@@ -68,5 +69,9 @@ public class BoardLinkedRepository<T extends BaseEntity & BoardLinked> extends B
                 .map(db::get)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+    }
+
+    public int count() {
+        return db.size();
     }
 }

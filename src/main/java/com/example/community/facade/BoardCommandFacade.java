@@ -14,13 +14,9 @@ import java.util.List;
 @Service
 public class BoardCommandFacade {
     private final BoardService boardService;
-    private final CommentService commentService;
-    private final LikeService likeService;
 
-    BoardCommandFacade(BoardService boardService, CommentService commentService, LikeService likeService) {
+    BoardCommandFacade(BoardService boardService) {
         this.boardService = boardService;
-        this.commentService = commentService;
-        this.likeService = likeService;
     }
 
     @Transactional
