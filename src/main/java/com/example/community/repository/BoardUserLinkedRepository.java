@@ -2,6 +2,7 @@ package com.example.community.repository;
 
 import com.example.community.entity.BaseEntity;
 import com.example.community.entity.interfaces.BoardLinked;
+import com.example.community.entity.interfaces.UserLinked;
 import com.example.community.repository.interfaces.BoardAggregateRepository;
 import com.example.community.repository.interfaces.CRUDRepository;
 import lombok.Locked;
@@ -10,21 +11,20 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class BoardLinkedRepository<T extends BaseEntity & BoardLinked> implements CRUDRepository<T>, BoardAggregateRepository<T> {
+public class BoardUserLinkedRepository<T extends BaseEntity & BoardLinked & UserLinked> implements CRUDRepository<T>, BoardAggregateRepository<T> {
     protected Map<Long, T> db = new LinkedHashMap<>();
     protected long sequence = 0L;
-    protected Map<Long, List<Long>> indexMap = new ConcurrentHashMap<>();
+    protected Map<Long, Map<Long, Long>> indexMap = new ConcurrentHashMap<>();
 
     @Locked.Write
     public T save(T entity) {
         if(entity.getId() == null) {
             entity.setId(++sequence);
         }
-
         db.put(entity.getId(), entity);
 
-        List<Long> entityIdList = indexMap.computeIfAbsent(entity.getBoardId(), key -> new ArrayList<>());
-        entityIdList.add(entity.getId());
+        Map<Long, Long> userEntityMap = indexMap.computeIfAbsent(entity.getBoardId(), key -> new ConcurrentHashMap<>());
+        userEntityMap.put(entity.getUserId(), entity.getId());
 
         return entity;
     }
@@ -38,48 +38,35 @@ public class BoardLinkedRepository<T extends BaseEntity & BoardLinked> implement
     public void deleteById(Long id) {
         T entity = db.remove(id);
 
-        indexMap.computeIfPresent(entity.getBoardId(), (boardId, list) -> {
-            list.remove(entity.getId());
-            return list;
+        indexMap.computeIfPresent(entity.getBoardId(), (boardId, userEntityMap) -> {
+            userEntityMap.remove(entity.getUserId());
+            return userEntityMap;
         });
     }
 
     @Locked.Write
     public void deleteByBoardId(Long boardId) {
-        List<Long> ids = indexMap.remove(boardId);
-        ids.forEach(db::remove);
+        Map<Long, Long> deleteMap = indexMap.get(boardId);
+        deleteMap.values().forEach(db::remove);
     }
 
     @Locked.Read
     public List<T> findAllByBoardId(Long boardId) {
-        List<Long> ids = indexMap.get(boardId);
-
-        if ( ids == null ) return List.of();
-
-        return ids.stream()
-                .map(db::get)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        Map<Long, Long> foundMap = indexMap.get(boardId);
+        return foundMap.values().stream().map(db::get).filter(Objects::nonNull).toList();
     }
 
     @Locked.Read
     public List<T> findAllByBoardIds(List<Long> boardIds) {
-        List<Long> ids = boardIds.stream()
-                .map(boardId -> indexMap.getOrDefault(boardId, List.of()))
-                .flatMap(List::stream)
-                .filter(Objects::nonNull)
-                .toList();
-
-        if(ids.isEmpty()) return List.of();
-
-        return ids.stream().map(db::get).filter(Objects::nonNull).toList();
+        return boardIds.stream().flatMap(boardId -> {
+            Map<Long, Long> userLikeMap = indexMap.getOrDefault(boardId, Map.of());
+            return userLikeMap.values().stream().map(db::get).filter(Objects::nonNull);
+        }).toList();
     }
 
     @Locked.Read
     public List<T> findPageByBoardId(Long boardId, int page, int size) {
-        List<Long> ids = indexMap.get(boardId);
-
-        if(ids == null) return List.of();
+        List<Long> ids = indexMap.get(boardId).values().stream().filter(Objects::nonNull).toList();
 
         return ids.stream()
                 .skip((long) (page-1) * size)

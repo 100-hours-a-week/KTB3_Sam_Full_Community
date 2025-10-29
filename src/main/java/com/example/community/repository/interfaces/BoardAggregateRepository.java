@@ -1,6 +1,6 @@
 package com.example.community.repository.interfaces;
 
-import com.example.community.entity.BoardLinked;
+import com.example.community.entity.interfaces.BoardLinked;
 
 import java.util.List;
 

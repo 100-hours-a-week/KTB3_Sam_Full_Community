@@ -1,17 +1,15 @@
 package com.example.community.repository;
 
 import com.example.community.entity.Like;
+import lombok.Locked;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
-public class LikeRepository extends BoardLinkedRepository<Like>{
+public class LikeRepository extends BoardUserLinkedRepository<Like>{
+    @Locked.Read
     public Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId) {
-        List<Long> likeIds = indexMap.get(boardId);
-        return likeIds.stream()
-                .map(db::get)
-                .filter(like -> like.getUserId().equals(userId))
-                .findFirst();
+        return Optional.ofNullable(indexMap.get(boardId).get(userId)).map(db::get);
     }
 }

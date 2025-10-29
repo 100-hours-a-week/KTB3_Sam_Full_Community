@@ -1,10 +1,11 @@
 package com.example.community.entity;
 
+import com.example.community.entity.interfaces.BoardLinked;
+import com.example.community.entity.interfaces.UserLinked;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-public class Like extends BaseEntity implements BoardLinked{
+public class Like extends BaseEntity implements BoardLinked, UserLinked {
     private Long boardId;
     private Long userId;
 
@@ -16,5 +17,10 @@ public class Like extends BaseEntity implements BoardLinked{
     @Override
     public Long getBoardId() {
         return this.boardId;
+    }
+
+    @Override
+    public Long getUserId() {
+        return this.userId;
     }
 }

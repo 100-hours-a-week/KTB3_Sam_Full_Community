@@ -1,9 +1,10 @@
 package com.example.community.entity;
 
+import com.example.community.entity.interfaces.BoardLinked;
 import lombok.Getter;
 
 @Getter
-public class Comment extends BaseEntity implements BoardLinked{
+public class Comment extends BaseEntity implements BoardLinked {
     private String content;
     private Long boardId;
     private Long userId;
