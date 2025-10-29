@@ -1,12 +1,10 @@
 package com.example.community.entity;
 
+import com.example.community.entity.interfaces.BoardLinked;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
-public class Comment extends BaseEntity{
-    private Long id;
+public class Comment extends BaseEntity implements BoardLinked {
     private String content;
     private Long boardId;
     private Long userId;
@@ -19,5 +17,10 @@ public class Comment extends BaseEntity{
 
     public void updateComment(String content) {
         this.content = content;
+    }
+
+    @Override
+    public Long getBoardId() {
+        return this.boardId;
     }
 }

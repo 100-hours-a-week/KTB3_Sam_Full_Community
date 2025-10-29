@@ -3,7 +3,9 @@ package com.example.community.service;
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.Board;
+import com.example.community.event.BoardDeletedEvent;
 import com.example.community.repository.BoardRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,9 +14,11 @@ import java.util.List;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    BoardService(BoardRepository boardRepository) {
+    BoardService(BoardRepository boardRepository, ApplicationEventPublisher eventPublisher) {
         this.boardRepository = boardRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -36,6 +40,7 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_BOARD));
         boardRepository.deleteById(boardId);
+        eventPublisher.publishEvent(new BoardDeletedEvent(boardId));
     }
 
     public Board findById(Long boardId) {

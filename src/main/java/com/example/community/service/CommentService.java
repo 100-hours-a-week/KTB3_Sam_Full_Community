@@ -39,7 +39,7 @@ public class CommentService {
     }
 
     public void deleteByBoardId(Long boardId) {
-        commentRepository.deleteByBoardIdWithIndex(boardId);
+        commentRepository.deleteByBoardId(boardId);
     }
 
     @Transactional

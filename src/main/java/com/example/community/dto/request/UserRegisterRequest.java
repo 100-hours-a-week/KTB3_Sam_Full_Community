@@ -7,7 +7,7 @@ public record UserRegisterRequest(
         @Schema(description = "이메일", example = "test@test.co.kr")
         @NotNull
         String email,
-        @Schema(description = "비밀번호", example = "dsfh2343@@")
+        @Schema(description = "비밀번호", example = "test")
         @NotNull
         String password,
         @Schema(description = "닉네임", example = "닉네임1234")
