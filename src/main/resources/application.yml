@@ -12,15 +12,17 @@ spring:
         access-key: ${AWS_S3_ACCESS_KEY:test-access-key}
         secret-key: ${AWS_S3_SECRET_KEY:test-secret-key}
         bucket: ${AWS_S3_BUCKET:test-bucket}
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-    h2:
-      console:
-        enabled: true
-
+    url: jdbc:mysql://localhost:3306/spring_community
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: ${LOCAL_MYSQL_NAME}
+    password: ${LOCAL_MYSQL_PASSWORD}
 
 jwt:
   secret: ${JWT_SECRET:test-secret-key-test-secret-key-test-secret-key-test-secret-key}

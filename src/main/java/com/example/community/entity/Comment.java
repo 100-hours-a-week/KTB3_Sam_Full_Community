@@ -1,12 +1,13 @@
 package com.example.community.entity;
 
 import com.example.community.entity.interfaces.BoardLinked;
+import com.example.community.entity.interfaces.Identifiable;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
 @Entity
-public class Comment extends BaseEntity implements BoardLinked {
+public class Comment extends BaseEntity implements BoardLinked, Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "comment_id")
@@ -29,4 +30,7 @@ public class Comment extends BaseEntity implements BoardLinked {
     public Long getBoardId() {
         return this.boardId;
     }
+
+    @Override
+    public void setId(Long id) {this.id =id;}
 }

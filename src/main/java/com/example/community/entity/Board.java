@@ -1,5 +1,6 @@
 package com.example.community.entity;
 
+import com.example.community.entity.interfaces.Identifiable;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -9,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Entity
-public class Board extends BaseEntity{
+public class Board extends BaseEntity implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "board_id")
@@ -41,4 +42,7 @@ public class Board extends BaseEntity{
         this.content = content;
         this.boardImageIds = boardImageIds;
     }
+
+    @Override
+    public void setId(Long id) {this.id = id;}
 }

@@ -38,8 +38,6 @@ dependencies {
 
     // Transaction
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    implementation 'com.h2database:h2'
-    testImplementation 'com.h2database:h2'
 
     // Aws
     implementation 'io.awspring.cloud:spring-cloud-aws-starter:3.1.1'
@@ -51,6 +49,14 @@ dependencies {
 
     // Spring-Data-Jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Database
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    testRuntimeOnly 'com.h2database:h2'
+
+    // Database - p6spy
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 }
 
 tasks.named('test') {
