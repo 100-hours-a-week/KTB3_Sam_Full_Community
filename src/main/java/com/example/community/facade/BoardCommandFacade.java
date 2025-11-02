@@ -45,7 +45,7 @@ public class BoardCommandFacade {
     }
 
     private void validateUser(Board board, Long userId) {
-        if(!board.getUserId().equals(userId)) {
+        if(!board.getAuthor().getId().equals(userId)) {
             throw new BaseException(ErrorCode.INVALID_REQUEST);
         }
     }

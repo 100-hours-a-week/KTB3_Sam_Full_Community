@@ -40,10 +40,6 @@ public class BoardQueryFacade {
                 .map(Board::getId)
                 .toList();
 
-        List<Long> userIds = boards.stream()
-                .map(Board::getUserId)
-                .toList();
-
         Map<Long, List<Like>> likeMap = likeService.findAllByBoardIds(boardIds)
                 .stream()
                 .collect(Collectors.groupingBy(Like::getBoardId));
@@ -52,8 +48,6 @@ public class BoardQueryFacade {
                 .stream()
                 .collect(Collectors.groupingBy(Comment::getBoardId));
 
-        Map<Long, User> userMap = userService.getUserByIds(userIds).stream()
-                .collect(Collectors.toMap(User::getId, user -> user));
 
         List<BoardInfoResponse> responses = boards.stream()
                 .map(board -> BoardInfoResponse.of(
@@ -61,7 +55,7 @@ public class BoardQueryFacade {
                         likeMap.getOrDefault(board.getId(), List.of()).size(),
                         board.getVisitors(),
                         commentMap.getOrDefault(board.getId(), List.of()).size(),
-                        userMap.get(board.getUserId())
+                        board.getAuthor()
                 )).toList();
 
         int totalElements = boardService.count();
@@ -75,8 +69,7 @@ public class BoardQueryFacade {
         Board board = boardService.findById(boardId);
         List<Comment> comments = commentService.findAllByBoardId(boardId);
         List<Like> likes = likeService.findAllByBoardId(boardId);
-        User user = userService.getUser(board.getUserId());
 
-        return BoardInfoResponse.of(board, comments.size(),board.recordVisit(), likes.size(), user);
+        return BoardInfoResponse.of(board, comments.size(),board.recordVisit(), likes.size(), board.getAuthor());
     }
 }
