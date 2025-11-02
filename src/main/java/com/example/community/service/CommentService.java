@@ -2,7 +2,9 @@ package com.example.community.service;
 
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
+import com.example.community.entity.Board;
 import com.example.community.entity.Comment;
+import com.example.community.entity.User;
 import com.example.community.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +19,8 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    @Transactional
-    public Comment postComment(Long userId, Long boardId, String content) {
-        return commentRepository.save(new Comment(userId, boardId, content));
+    public Comment save(User user, Board board, String content) {
+        return commentRepository.save(new Comment(user,board, content));
     }
 
     public List<Comment> findAllByBoardIds(List<Long> boardIds) {
@@ -63,7 +64,7 @@ public class CommentService {
     }
 
     private void validateUser(Comment comment, Long userId) {
-        if(!comment.getUserId().equals(userId)) {
+        if(!comment.getUser().getId().equals(userId)) {
             throw new BaseException(ErrorCode.INVALID_REQUEST);
         }
     }
