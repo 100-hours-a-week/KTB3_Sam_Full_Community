@@ -27,7 +27,6 @@ public class BoardCommandFacade {
     public Board post(Long userId, String title, String content, List<Long> boardImageIds) {
         boardService.validateTitle(title);
         User user = userService.getUser(userId);
-        //user 를 찾아서 매핑해주고, user쪽에 board 저장
         return boardService.save(title, content, boardImageIds, user);
     }
 

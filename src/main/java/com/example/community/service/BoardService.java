@@ -23,7 +23,9 @@ public class BoardService {
     }
 
     public Board save(String title, String content, List<Long> boardImageIds, User user) {
-        return boardRepository.save(new Board(title, content, boardImageIds, user));
+        Board board = new Board(title, content, boardImageIds, user);
+        user.addPost(board);
+        return boardRepository.save(board);
     }
 
     public void updateBoard(Long boardId, String title, String content, List<Long> boardImageIds) {
