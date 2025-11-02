@@ -1,5 +1,9 @@
 package com.example.community.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -7,12 +11,17 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
+@Entity
 public class Board extends BaseEntity{
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
     private final AtomicInteger visitors = new AtomicInteger(0);
     private String title;
     private String content;
     private List<Long> boardImageIds = new ArrayList<>();
     private Long userId;
+
 
     public Board(String title, String content, List<Long> boardImageIds, Long userId) {
         this.title = title;

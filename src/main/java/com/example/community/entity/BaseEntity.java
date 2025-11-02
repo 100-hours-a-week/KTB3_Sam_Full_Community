@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class BaseEntity {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Long id;
+    private LocalDateTime deletedAt;
 
     BaseEntity() {
         this.createdAt = java.time.LocalDateTime.now();
@@ -19,7 +19,5 @@ public class BaseEntity {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void deleted() {this.deletedAt = LocalDateTime.now();}
 }

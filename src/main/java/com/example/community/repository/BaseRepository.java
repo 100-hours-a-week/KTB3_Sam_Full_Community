@@ -1,13 +1,14 @@
 package com.example.community.repository;
 
 import com.example.community.entity.BaseEntity;
+import com.example.community.entity.interfaces.Identifiable;
 import com.example.community.repository.interfaces.CRUDRepository;
 import lombok.Locked;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BaseRepository<T extends BaseEntity> implements CRUDRepository<T> {
+public class BaseRepository<T extends BaseEntity & Identifiable> implements CRUDRepository<T> {
     protected Map<Long, T> db = new LinkedHashMap<>();
     protected long sequence = 0L;
 
