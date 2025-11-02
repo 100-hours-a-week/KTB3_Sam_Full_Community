@@ -1,10 +1,7 @@
 package com.example.community.entity;
 
 import com.example.community.entity.interfaces.BoardLinked;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
@@ -12,6 +9,7 @@ import lombok.Getter;
 public class Comment extends BaseEntity implements BoardLinked {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "comment_id")
     private Long id;
     private String content;
     private Long boardId;

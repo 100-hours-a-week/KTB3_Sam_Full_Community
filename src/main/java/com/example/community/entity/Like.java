@@ -2,10 +2,7 @@ package com.example.community.entity;
 
 import com.example.community.entity.interfaces.BoardLinked;
 import com.example.community.entity.interfaces.UserLinked;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
@@ -13,6 +10,7 @@ import lombok.Getter;
 public class Like extends BaseEntity implements BoardLinked, UserLinked {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "like_id")
     private Long id;
     private Long boardId;
     private Long userId;

@@ -1,9 +1,6 @@
 package com.example.community.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -15,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Board extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "board_id")
     private Long id;
     private final AtomicInteger visitors = new AtomicInteger(0);
     private String title;
