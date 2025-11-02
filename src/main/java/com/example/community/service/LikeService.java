@@ -2,11 +2,14 @@ package com.example.community.service;
 
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
+import com.example.community.entity.Board;
 import com.example.community.entity.Like;
+import com.example.community.entity.User;
 import com.example.community.repository.LikeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LikeService {
@@ -14,6 +17,10 @@ public class LikeService {
 
     LikeService(LikeRepository likeRepository) {
         this.likeRepository = likeRepository;
+    }
+
+    public Like save(User user, Board board) {
+        return new Like(user,board);
     }
 
     public List<Like> findAllByBoardIds(List<Long> boardIds) {
@@ -28,17 +35,15 @@ public class LikeService {
         likeRepository.deleteByBoardId(boardId);
     }
 
-    public Like postLike(Long userId, Long boardId) {
-        if(likeRepository.findByUserIdAndBoardId(userId, boardId).isPresent()) {
-            throw new BaseException(ErrorCode.ALREADY_LIKED_POST);
-        }
-        return likeRepository.save(new Like(userId, boardId));
-    }
 
     public void deleteLike(Long userId, Long boardId) {
         Like like = likeRepository.findByUserIdAndBoardId(userId, boardId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_LIKE));
 
         likeRepository.deleteById(like.getId());
+    }
+
+    public Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId) {
+        return likeRepository.findByUserIdAndBoardId(userId, boardId);
     }
 }
