@@ -1,19 +1,19 @@
 package com.example.community.service;
 
 import com.example.community.entity.Image;
-import com.example.community.repository.ImageRepository;
+import com.example.community.repository.inmemory.InMemoryImageRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ImageService {
-    private final ImageRepository imageRepository;
+    private final InMemoryImageRepository inMemoryImageRepository;
 
-    ImageService(ImageRepository imageRepository) {
-        this.imageRepository = imageRepository;
+    ImageService(InMemoryImageRepository inMemoryImageRepository) {
+        this.inMemoryImageRepository = inMemoryImageRepository;
     }
 
     public Long makeImage() {
-        Image image = imageRepository.save(new Image());
+        Image image = inMemoryImageRepository.save(new Image());
         return image.getId();
     }
 }

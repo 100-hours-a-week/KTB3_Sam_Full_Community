@@ -1,9 +1,8 @@
 package com.example.community.repository;
 
 import com.example.community.entity.Comment;
-import org.springframework.stereotype.Repository;
+import com.example.community.repository.interfaces.CommentCustomRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public class CommentRepository extends BoardLinkedRepository<Comment>{
-
+public interface CommentRepository extends JpaRepository<Comment, Long>, CommentCustomRepository {
 }

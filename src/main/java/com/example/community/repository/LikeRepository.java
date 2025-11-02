@@ -1,15 +1,8 @@
 package com.example.community.repository;
 
 import com.example.community.entity.Like;
-import lombok.Locked;
-import org.springframework.stereotype.Repository;
+import com.example.community.repository.interfaces.LikeCustomRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.*;
-
-@Repository
-public class LikeRepository extends BoardUserLinkedRepository<Like>{
-    @Locked.Read
-    public Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId) {
-        return Optional.ofNullable(indexMap.get(boardId).get(userId)).map(db::get);
-    }
+public interface LikeRepository extends JpaRepository<Like, Long>, LikeCustomRepository {
 }
