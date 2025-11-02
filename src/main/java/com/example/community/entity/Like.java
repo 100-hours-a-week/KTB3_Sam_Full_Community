@@ -13,22 +13,28 @@ public class Like extends BaseEntity implements BoardLinked, UserLinked, Identif
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "like_id")
     private Long id;
-    private Long boardId;
-    private Long userId;
 
-    public Like(Long userId, Long boardId) {
-        this.userId = userId;
-        this.boardId = boardId;
+    @ManyToOne
+    @JoinColumn(name = "board_id")
+    private Board post;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Like(User user, Board post) {
+        this.user = user;
+        this.post = post;
     }
 
     @Override
     public Long getBoardId() {
-        return this.boardId;
+        return this.post.getId();
     }
 
     @Override
     public Long getUserId() {
-        return this.userId;
+        return this.user.getId();
     }
 
     @Override

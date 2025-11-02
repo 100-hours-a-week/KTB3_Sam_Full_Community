@@ -19,14 +19,23 @@ public class Board extends BaseEntity implements Identifiable {
     private String title;
     private String content;
     private List<Long> boardImageIds = new ArrayList<>();
-    private Long userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User author;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<Like> likes = new ArrayList<>();
 
 
-    public Board(String title, String content, List<Long> boardImageIds, Long userId) {
+    public Board(String title, String content, List<Long> boardImageIds, User user) {
         this.title = title;
         this.content = content;
         this.boardImageIds = boardImageIds;
-        this.userId = userId;
+        this.author = user;
     }
 
     public int recordVisit() {
@@ -45,4 +54,8 @@ public class Board extends BaseEntity implements Identifiable {
 
     @Override
     public void setId(Long id) {this.id = id;}
+
+    public void setAuthor(User user) {
+        this.author = user;
+    }
 }

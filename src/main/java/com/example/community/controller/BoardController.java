@@ -31,11 +31,9 @@ import java.util.List;
 public class BoardController {
     private final BoardCommandFacade boardCommandFacade;
     private final BoardQueryFacade boardQueryFacade;
-    private final BoardService boardService;
     private final JwtUtil jwtUtil;
 
-    BoardController(BoardService boardService, JwtUtil jwtUtil, BoardCommandFacade boardCommandFacade, BoardQueryFacade boardQueryFacade) {
-        this.boardService = boardService;
+    BoardController(JwtUtil jwtUtil, BoardCommandFacade boardCommandFacade, BoardQueryFacade boardQueryFacade) {
         this.jwtUtil = jwtUtil;
         this.boardCommandFacade = boardCommandFacade;
         this.boardQueryFacade = boardQueryFacade;
@@ -51,7 +49,7 @@ public class BoardController {
     })
     public ResponseEntity<APIResponse<BoardPostResponse>> postBoard(HttpServletRequest servletRequest, @Valid @RequestBody BoardPostRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        Board board = boardService.post(userId, request.title(), request.content(), request.boardImageIds());
+        Board board = boardCommandFacade.post(userId, request.title(), request.content(), request.boardImageIds());
         return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_CREATED, BoardPostResponse.from(board)));
     }
 

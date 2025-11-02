@@ -3,6 +3,7 @@ package com.example.community.service;
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.Board;
+import com.example.community.entity.User;
 import com.example.community.event.BoardDeletedEvent;
 import com.example.community.repository.BoardRepository;
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,10 +22,8 @@ public class BoardService {
         this.eventPublisher = eventPublisher;
     }
 
-    @Transactional
-    public Board post(Long userId, String title, String content, List<Long> boardImageIds) {
-        validateTitle(title);
-        return boardRepository.save(new Board(title, content, boardImageIds, userId));
+    public Board save(String title, String content, List<Long> boardImageIds, User user) {
+        return boardRepository.save(new Board(title, content, boardImageIds, user));
     }
 
     public void updateBoard(Long boardId, String title, String content, List<Long> boardImageIds) {
@@ -57,7 +56,7 @@ public class BoardService {
         return boardRepository.count();
     }
 
-    private void validateTitle(String title) {
+    public void validateTitle(String title) {
         if(boardRepository.findByTitle(title).isPresent()) {
             throw new BaseException(ErrorCode.DUPLICATE_TITLE);
         }

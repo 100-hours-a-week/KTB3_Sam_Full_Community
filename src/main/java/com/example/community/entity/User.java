@@ -4,6 +4,9 @@ import com.example.community.entity.interfaces.Identifiable;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 public class User extends BaseEntity implements Identifiable {
@@ -15,6 +18,9 @@ public class User extends BaseEntity implements Identifiable {
     private String email;
     private String nickname;
     private Long profileImageId;
+
+    @OneToMany(mappedBy = "author")
+    private List<Board> posts = new ArrayList<>();
 
     public User(String email, String password, String nickname, Long profileImageId) {
         this.email = email;
@@ -34,4 +40,14 @@ public class User extends BaseEntity implements Identifiable {
 
     @Override
     public void setId(Long id) {this.id = id;}
+
+    public void addPost(Board post) {
+        this.posts.add(post);
+        post.setAuthor(this);
+    }
+
+    public void removePost(Board post) {
+        this.posts.remove(post);
+        post.setAuthor(null);
+    }
 }
