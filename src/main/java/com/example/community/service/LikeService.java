@@ -37,7 +37,7 @@ public class LikeService {
     }
 
 
-    public void deleteLike(User user, Board post) {
+    public void deleteLikeByUserAndPost(User user, Board post) {
         Like like = likeRepository.findByUserAndPost(user, post)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_LIKE));
 

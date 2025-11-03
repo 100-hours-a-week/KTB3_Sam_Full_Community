@@ -26,10 +26,9 @@ public class LikeController {
     private final LikeCommandFacade likeCommandFacade;
     private final JwtUtil jwtUtil;
 
-    LikeController(LikeService likeService, JwtUtil jwtUtil, LikeCommandFacade likeCommandFacade) {
-        this.likeService = likeService;
-        this.jwtUtil = jwtUtil;
+    LikeController(LikeCommandFacade likeCommandFacade, JwtUtil jwtUtil) {
         this.likeCommandFacade = likeCommandFacade;
+        this.jwtUtil = jwtUtil;
     }
 
     @Operation(summary = "좋아요 추가", description = "입력받은 유저 ID와 게시글 ID에 해당하는 좋아요를 생성합니다.")
@@ -61,7 +60,7 @@ public class LikeController {
                                                         @Parameter(description = "좋아요 삭제할 게시글 ID", required = true, example = "3")
                                                         @PathVariable("boardId") Long boardId) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        likeCommandFacade.deleteLike(userId, boardId);
+        likeCommandFacade.deleteLikeByUserIdAndBoardId(userId, boardId);
         return ResponseEntity.noContent().build();
     }
 }

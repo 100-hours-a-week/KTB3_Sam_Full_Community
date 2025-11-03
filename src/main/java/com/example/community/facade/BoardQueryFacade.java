@@ -23,7 +23,6 @@ public class BoardQueryFacade {
     private final BoardService boardService;
     private final CommentService commentService;
     private final LikeService likeService;
-    private final UserService userService;
 
     BoardQueryFacade(BoardService boardService, CommentService commentService, LikeService likeService, UserService userService) {
         this.boardService = boardService;

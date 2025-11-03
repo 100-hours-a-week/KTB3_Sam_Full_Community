@@ -34,10 +34,17 @@ public class LikeCommandFacade {
     }
 
     @Transactional
-    public void deleteLike(Long userId, Long boardId) {
+    public void deleteLikeByUserIdAndBoardId(Long userId, Long boardId) {
         User user = userService.getUser(userId);
         Board board = boardService.findById(boardId);
 
-        likeService.deleteLike(user,board);
+        likeService.deleteLikeByUserAndPost(user,board);
+    }
+
+    @Transactional
+    public void deleteLikeByBoardId(Long boardId) {
+        Board board = boardService.findById(boardId);
+
+        likeService.deleteByBoardId(board);
     }
 }
