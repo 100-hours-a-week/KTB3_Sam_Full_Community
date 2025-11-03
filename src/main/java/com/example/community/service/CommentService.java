@@ -26,7 +26,7 @@ public class CommentService {
         return commentRepository.save(new Comment(user,board, content));
     }
 
-    public List<Comment> findAllByBoards(List<Board> boards) {
+    public List<Comment> findAllByPagedBoards(Page<Board> boards) {
         return commentRepository.findAllByPost(boards);
     }
 

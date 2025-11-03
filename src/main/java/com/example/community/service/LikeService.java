@@ -7,6 +7,7 @@ import com.example.community.entity.Like;
 import com.example.community.entity.User;
 import com.example.community.repository.LikeRepository;
 import com.example.community.repository.inmemory.InMemoryLikeRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class LikeService {
         return likeRepository.save(new Like(user,board));
     }
 
-    public List<Like> findAllByBoardIds(List<Board> posts) {
+    public List<Like> findAllByPagedBoards(Page<Board> posts) {
         return likeRepository.findAllByPost(posts);
     }
 

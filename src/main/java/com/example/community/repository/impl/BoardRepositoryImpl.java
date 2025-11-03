@@ -9,13 +9,5 @@ import java.util.Optional;
 
 @Repository
 public class BoardRepositoryImpl implements BoardCustomRepository {
-    @Override
-    public Optional<Board> findByTitle(String title) {
-        return Optional.empty();
-    }
 
-    @Override
-    public List<Board> findPage(int page, int size) {
-        return List.of();
-    }
 }

@@ -11,6 +11,7 @@ import com.example.community.service.BoardService;
 import com.example.community.service.CommentService;
 import com.example.community.service.LikeService;
 import com.example.community.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,17 +33,17 @@ public class BoardQueryFacade {
 
     @Transactional(readOnly = true)
     public PagedData getAllBoards(int page, int size) {
-        List<Board> boards = boardService.findPage(page,size);
+        Page<Board> boards = boardService.findPage(page,size);
 
         List<Long> boardIds = boards.stream()
                 .map(Board::getId)
                 .toList();
 
-        Map<Long, List<Like>> likeMap = likeService.findAllByBoardIds(boards)
+        Map<Long, List<Like>> likeMap = likeService.findAllByPagedBoards(boards)
                 .stream()
                 .collect(Collectors.groupingBy(Like::getBoardId));
 
-        Map<Long, List<Comment>> commentMap = commentService.findAllByBoards(boards)
+        Map<Long, List<Comment>> commentMap = commentService.findAllByPagedBoards(boards)
                 .stream()
                 .collect(Collectors.groupingBy(Comment::getBoardId));
 

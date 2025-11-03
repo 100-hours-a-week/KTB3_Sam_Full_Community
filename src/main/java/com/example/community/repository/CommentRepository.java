@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long>, CommentCustomRepository {
-    public List<Comment> findAllByPost(List<Board> posts);
+    public List<Comment> findAllByPost(Page<Board> posts);
 
     public List<Comment> findAllByPost(Board post);
 

@@ -5,60 +5,63 @@ import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.Board;
 import com.example.community.entity.User;
 import com.example.community.event.BoardDeletedEvent;
+import com.example.community.repository.BoardRepository;
 import com.example.community.repository.inmemory.InMemoryBoardRepository;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class BoardService {
-    private final InMemoryBoardRepository inMemoryBoardRepository;
+    private final BoardRepository boardRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    BoardService(InMemoryBoardRepository inMemoryBoardRepository, ApplicationEventPublisher eventPublisher) {
-        this.inMemoryBoardRepository = inMemoryBoardRepository;
+    BoardService(BoardRepository boardRepository, ApplicationEventPublisher eventPublisher) {
+        this.boardRepository = boardRepository;
         this.eventPublisher = eventPublisher;
     }
 
     public Board save(String title, String content, List<Long> boardImageIds, User user) {
         Board board = new Board(title, content, boardImageIds, user);
         user.addPost(board);
-        return inMemoryBoardRepository.save(board);
+        return boardRepository.save(board);
     }
 
     public void updateBoard(Long boardId, String title, String content, List<Long> boardImageIds) {
-        Board board = inMemoryBoardRepository.findById(boardId)
+        Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_BOARD));
 
         board.updateBoard(title, content, boardImageIds);
         board.recordModificationTime();
-        inMemoryBoardRepository.save(board);
+        boardRepository.save(board);
     }
 
     public void deleteBoard(Long boardId) {
-        Board board = inMemoryBoardRepository.findById(boardId)
+        Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_BOARD));
-        inMemoryBoardRepository.deleteById(boardId);
+        boardRepository.deleteById(boardId);
         eventPublisher.publishEvent(new BoardDeletedEvent(boardId));
     }
 
     public Board findById(Long boardId) {
-        return inMemoryBoardRepository.findById(boardId)
+        return boardRepository.findById(boardId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_BOARD));
     }
 
-    public List<Board> findPage(int page, int size) {
-        return inMemoryBoardRepository.findPage(page,size);
+    public Page<Board> findPage(int page, int size) {
+        return boardRepository.findAll(PageRequest.of(page,size));
     }
 
 
     public int count() {
-        return inMemoryBoardRepository.count();
+        return Long.valueOf(boardRepository.count()).intValue();
     }
 
     public void validateTitle(String title) {
-        if(inMemoryBoardRepository.findByTitle(title).isPresent()) {
+        if(boardRepository.findByTitle(title).isPresent()) {
             throw new BaseException(ErrorCode.DUPLICATE_TITLE);
         }
     }
