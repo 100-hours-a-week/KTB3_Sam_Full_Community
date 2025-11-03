@@ -15,11 +15,9 @@ import java.util.List;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
-    private final ApplicationEventPublisher eventPublisher;
 
-    BoardService(BoardRepository boardRepository, ApplicationEventPublisher eventPublisher) {
+    BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
-        this.eventPublisher = eventPublisher;
     }
 
     public Board save(String title, String content, List<Long> boardImageIds, User user) {
