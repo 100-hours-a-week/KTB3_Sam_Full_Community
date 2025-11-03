@@ -5,7 +5,10 @@ import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.Board;
 import com.example.community.entity.Comment;
 import com.example.community.entity.User;
+import com.example.community.repository.CommentRepository;
 import com.example.community.repository.inmemory.InMemoryCommentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,54 +16,54 @@ import java.util.List;
 
 @Service
 public class CommentService {
-    private final InMemoryCommentRepository inMemoryCommentRepository;
+    private final CommentRepository commentRepository;
 
-    CommentService(InMemoryCommentRepository inMemoryCommentRepository) {
-        this.inMemoryCommentRepository = inMemoryCommentRepository;
+    CommentService(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
     }
 
     public Comment save(User user, Board board, String content) {
-        return inMemoryCommentRepository.save(new Comment(user,board, content));
+        return commentRepository.save(new Comment(user,board, content));
     }
 
-    public List<Comment> findAllByBoardIds(List<Long> boardIds) {
-        return inMemoryCommentRepository.findAllByBoardIds(boardIds);
+    public List<Comment> findAllByBoards(List<Board> boards) {
+        return commentRepository.findAllByPost(boards);
     }
 
-    public List<Comment> findAllByBoardId(Long boardId) {
-        return inMemoryCommentRepository.findAllByBoardId(boardId);
+    public List<Comment> findAllByBoard(Board post) {
+        return commentRepository.findAllByPost(post);
     }
 
-    public List<Comment> findPageByBoardId(Long boardId, int page, int size) {
-        return inMemoryCommentRepository.findPageByBoardId(boardId, page,size);
+    public Page<Comment> findPageByBoard(Board board, int page, int size) {
+        return commentRepository.findAllByPost(board, PageRequest.of(page,size));
     }
 
     public int count() {
-        return inMemoryCommentRepository.count();
+        return Long.valueOf(commentRepository.count()).intValue();
     }
 
-    public void deleteByBoardId(Long boardId) {
-        inMemoryCommentRepository.deleteByBoardId(boardId);
+    public void deleteByBoard(Board board) {
+        commentRepository.deleteByPost(board);
     }
 
     @Transactional
     public void updateComment(Long userId, Long commentId, String content) {
-        Comment comment = inMemoryCommentRepository.findById(commentId)
+        Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_COMMENT));
         validateUser(comment, userId);
 
         comment.updateComment(content);
         comment.recordModificationTime();
-        inMemoryCommentRepository.save(comment);
+        commentRepository.save(comment);
     }
 
     @Transactional
     public void deleteComment(Long userId, Long commentId) {
-        Comment comment = inMemoryCommentRepository.findById(commentId)
+        Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_COMMENT));
         validateUser(comment, userId);
 
-        inMemoryCommentRepository.deleteById(commentId);
+        commentRepository.deleteById(commentId);
     }
 
     private void validateUser(Comment comment, Long userId) {

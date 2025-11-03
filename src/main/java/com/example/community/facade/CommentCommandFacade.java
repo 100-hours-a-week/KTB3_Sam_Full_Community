@@ -27,4 +27,10 @@ public class CommentCommandFacade {
         Board board = boardService.findById(boardId);
         return commentService.save(user,board, content);
     }
+
+    @Transactional
+    public void deleteByBoardId(Long boardId) {
+        Board board = boardService.findById(boardId);
+        commentService.deleteByBoard(board);
+    }
 }

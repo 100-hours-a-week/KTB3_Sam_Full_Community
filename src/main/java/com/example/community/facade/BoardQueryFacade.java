@@ -24,11 +24,10 @@ public class BoardQueryFacade {
     private final CommentService commentService;
     private final LikeService likeService;
 
-    BoardQueryFacade(BoardService boardService, CommentService commentService, LikeService likeService, UserService userService) {
+    BoardQueryFacade(BoardService boardService, CommentService commentService, LikeService likeService) {
         this.boardService = boardService;
         this.commentService = commentService;
         this.likeService = likeService;
-        this.userService = userService;
     }
 
     @Transactional(readOnly = true)
@@ -43,7 +42,7 @@ public class BoardQueryFacade {
                 .stream()
                 .collect(Collectors.groupingBy(Like::getBoardId));
 
-        Map<Long, List<Comment>> commentMap = commentService.findAllByBoardIds(boardIds)
+        Map<Long, List<Comment>> commentMap = commentService.findAllByBoards(boards)
                 .stream()
                 .collect(Collectors.groupingBy(Comment::getBoardId));
 
@@ -66,7 +65,7 @@ public class BoardQueryFacade {
     @Transactional(readOnly = true)
     public BoardInfoResponse getBoardDetail(Long boardId) {
         Board board = boardService.findById(boardId);
-        List<Comment> comments = commentService.findAllByBoardId(boardId);
+        List<Comment> comments = commentService.findAllByBoard(board);
         List<Like> likes = likeService.findAllByBoardId(board);
 
         return BoardInfoResponse.of(board, comments.size(),board.recordVisit(), likes.size(), board.getAuthor());
