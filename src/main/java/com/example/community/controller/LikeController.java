@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LikeController {
     private final LikeCommandFacade likeCommandFacade;
-    private final LikeService likeService;
     private final JwtUtil jwtUtil;
 
     LikeController(LikeService likeService, JwtUtil jwtUtil, LikeCommandFacade likeCommandFacade) {
@@ -62,7 +61,7 @@ public class LikeController {
                                                         @Parameter(description = "좋아요 삭제할 게시글 ID", required = true, example = "3")
                                                         @PathVariable("boardId") Long boardId) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        likeService.deleteLike(userId, boardId);
+        likeCommandFacade.deleteLike(userId, boardId);
         return ResponseEntity.noContent().build();
     }
 }

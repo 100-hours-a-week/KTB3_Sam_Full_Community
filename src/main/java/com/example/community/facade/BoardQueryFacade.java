@@ -40,7 +40,7 @@ public class BoardQueryFacade {
                 .map(Board::getId)
                 .toList();
 
-        Map<Long, List<Like>> likeMap = likeService.findAllByBoardIds(boardIds)
+        Map<Long, List<Like>> likeMap = likeService.findAllByBoardIds(boards)
                 .stream()
                 .collect(Collectors.groupingBy(Like::getBoardId));
 
@@ -68,7 +68,7 @@ public class BoardQueryFacade {
     public BoardInfoResponse getBoardDetail(Long boardId) {
         Board board = boardService.findById(boardId);
         List<Comment> comments = commentService.findAllByBoardId(boardId);
-        List<Like> likes = likeService.findAllByBoardId(boardId);
+        List<Like> likes = likeService.findAllByBoardId(board);
 
         return BoardInfoResponse.of(board, comments.size(),board.recordVisit(), likes.size(), board.getAuthor());
     }
