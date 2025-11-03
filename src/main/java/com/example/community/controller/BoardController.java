@@ -12,7 +12,6 @@ import com.example.community.dto.response.PageApiResponse;
 import com.example.community.entity.Board;
 import com.example.community.facade.BoardCommandFacade;
 import com.example.community.facade.BoardQueryFacade;
-import com.example.community.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -63,7 +62,7 @@ public class BoardController {
     public ResponseEntity<PageApiResponse<List<BoardInfoResponse>>> getBoards (HttpServletRequest servletRequest,
                                                                               @RequestParam(defaultValue = "1") int page,
                                                                               @RequestParam(defaultValue = "10") int size) {
-        PagedData pagedBoards = boardQueryFacade.getAllBoards(page,size);
+        PagedData pagedBoards = boardQueryFacade.getAllPagedBoards(page,size);
         return ResponseEntity.ok(PageApiResponse.success(SuccessCode.ALL_BOARDS_FOUND, pagedBoards));
     }
 
@@ -94,7 +93,7 @@ public class BoardController {
                                                          @PathVariable("id") Long id,
                                                          @Valid @RequestBody BoardUpdateRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        boardCommandFacade.updateBoard(userId, id, request.title(), request.content(), request.boardImageIds());
+        boardCommandFacade.update(userId, id, request.title(), request.content(), request.boardImageIds());
         return ResponseEntity.noContent().build();
     }
 
@@ -110,7 +109,7 @@ public class BoardController {
                                                          @Parameter(description = "게시글 ID", required = true, example = "1")
                                                          @PathVariable("id") Long id) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        boardCommandFacade.deleteBoard(userId, id);
+        boardCommandFacade.delete(userId, id);
         return ResponseEntity.noContent().build();
     }
 }

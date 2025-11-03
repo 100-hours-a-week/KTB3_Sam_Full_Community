@@ -6,11 +6,9 @@ import com.example.community.dto.response.BoardInfoResponse;
 import com.example.community.entity.Board;
 import com.example.community.entity.Comment;
 import com.example.community.entity.Like;
-import com.example.community.entity.User;
 import com.example.community.service.BoardService;
 import com.example.community.service.CommentService;
 import com.example.community.service.LikeService;
-import com.example.community.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,13 +30,8 @@ public class BoardQueryFacade {
     }
 
     @Transactional(readOnly = true)
-    public PagedData getAllBoards(int page, int size) {
+    public PagedData getAllPagedBoards(int page, int size) {
         Page<Board> boards = boardService.findPage(page,size);
-
-
-        List<Long> boardIds = boards.stream()
-                .map(Board::getId)
-                .toList();
 
         Map<Long, List<Like>> likeMap = likeService.findAllByPagedBoards(boards)
                 .stream()
@@ -65,7 +58,7 @@ public class BoardQueryFacade {
     public BoardInfoResponse getBoardDetail(Long boardId) {
         Board board = boardService.findById(boardId);
         List<Comment> comments = commentService.findAllByBoard(board);
-        List<Like> likes = likeService.findAllByBoardId(board);
+        List<Like> likes = likeService.findAllByBoard(board);
 
         return BoardInfoResponse.of(board, comments.size(),board.recordVisit(), likes.size(), board.getAuthor());
     }

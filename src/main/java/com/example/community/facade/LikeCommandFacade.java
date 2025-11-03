@@ -24,7 +24,7 @@ public class LikeCommandFacade {
     }
 
     @Transactional
-    public Like postLike(Long userId, Long boardId) {
+    public Like post(Long userId, Long boardId) {
         User user = userService.getUser(userId);
         Board board = boardService.findById(boardId);
         if(likeService.findByUserAndPost(user,board).isPresent()) {
@@ -34,7 +34,7 @@ public class LikeCommandFacade {
     }
 
     @Transactional
-    public void deleteLikeByUserIdAndBoardId(Long userId, Long boardId) {
+    public void deleteByUserIdAndBoardId(Long userId, Long boardId) {
         User user = userService.getUser(userId);
         Board board = boardService.findById(boardId);
 
@@ -42,9 +42,9 @@ public class LikeCommandFacade {
     }
 
     @Transactional
-    public void deleteLikeByBoardId(Long boardId) {
+    public void deleteByBoardId(Long boardId) {
         Board board = boardService.findById(boardId);
 
-        likeService.deleteByBoardId(board);
+        likeService.deleteByBoard(board);
     }
 }

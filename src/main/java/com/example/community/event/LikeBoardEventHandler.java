@@ -1,7 +1,6 @@
 package com.example.community.event;
 
 import com.example.community.facade.LikeCommandFacade;
-import com.example.community.service.LikeService;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +14,6 @@ public class LikeBoardEventHandler {
 
     @EventListener
     public void handle(BoardDeletedEvent event) {
-        likeCommandFacade.deleteLikeByBoardId(event.boardId());
+        likeCommandFacade.deleteByBoardId(event.boardId());
     }
 }

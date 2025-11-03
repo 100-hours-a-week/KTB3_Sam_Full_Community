@@ -39,16 +39,12 @@ public class CommentService {
         return commentRepository.findAllByPost(board, PageRequest.of(page,size));
     }
 
-    public int count() {
-        return Long.valueOf(commentRepository.count()).intValue();
-    }
-
     public void deleteByBoard(Board board) {
         commentRepository.deleteByPost(board);
     }
 
     @Transactional
-    public void updateComment(Long userId, Long commentId, String content) {
+    public void updateById(Long userId, Long commentId, String content) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_COMMENT));
         validateUser(comment, userId);
@@ -59,7 +55,7 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Long userId, Long commentId) {
+    public void deleteById(Long userId, Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_COMMENT));
         validateUser(comment, userId);

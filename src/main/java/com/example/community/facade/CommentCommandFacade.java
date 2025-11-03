@@ -22,7 +22,7 @@ public class CommentCommandFacade {
     }
 
     @Transactional
-    public Comment postComment(Long userId, Long boardId, String content) {
+    public Comment post(Long userId, Long boardId, String content) {
         User user = userService.getUser(userId);
         Board board = boardService.findById(boardId);
         return commentService.save(user,board, content);

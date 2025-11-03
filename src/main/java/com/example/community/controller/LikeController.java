@@ -6,7 +6,6 @@ import com.example.community.dto.response.APIResponse;
 import com.example.community.dto.response.LikePostResponse;
 import com.example.community.entity.Like;
 import com.example.community.facade.LikeCommandFacade;
-import com.example.community.service.LikeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -44,7 +43,7 @@ public class LikeController {
                                                                   @Parameter(description = "좋아요 추가할 게시글 ID", required = true, example = "3")
                                                                   @PathVariable("boardId") Long boardId) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        Like like = likeCommandFacade.postLike(userId, boardId);
+        Like like = likeCommandFacade.post(userId, boardId);
         return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_LIKED, LikePostResponse.from(like)));
     }
 
@@ -60,7 +59,7 @@ public class LikeController {
                                                         @Parameter(description = "좋아요 삭제할 게시글 ID", required = true, example = "3")
                                                         @PathVariable("boardId") Long boardId) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        likeCommandFacade.deleteLikeByUserIdAndBoardId(userId, boardId);
+        likeCommandFacade.deleteByUserIdAndBoardId(userId, boardId);
         return ResponseEntity.noContent().build();
     }
 }

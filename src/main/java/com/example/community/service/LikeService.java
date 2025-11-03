@@ -6,7 +6,6 @@ import com.example.community.entity.Board;
 import com.example.community.entity.Like;
 import com.example.community.entity.User;
 import com.example.community.repository.LikeRepository;
-import com.example.community.repository.inmemory.InMemoryLikeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +30,11 @@ public class LikeService {
         return likeRepository.findAllByPost(posts);
     }
 
-    public List<Like> findAllByBoardId(Board post) {
+    public List<Like> findAllByBoard(Board post) {
         return likeRepository.findAllByPost(post);
     }
 
-    public void deleteByBoardId(Board post) {
+    public void deleteByBoard(Board post) {
         likeRepository.deleteByPost(post);
     }
 

@@ -5,8 +5,6 @@ import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.Board;
 import com.example.community.entity.User;
 import com.example.community.service.BoardService;
-import com.example.community.service.CommentService;
-import com.example.community.service.LikeService;
 import com.example.community.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,17 +29,17 @@ public class BoardCommandFacade {
     }
 
     @Transactional
-    public void updateBoard(Long userId,Long boardId, String title, String content, List<Long> boardImageIds) {
+    public void update(Long userId, Long boardId, String title, String content, List<Long> boardImageIds) {
         Board board = boardService.findById(boardId);
         validateUser(board, userId);
-        boardService.updateBoard(boardId,title,content, boardImageIds);
+        boardService.updateById(boardId,title,content, boardImageIds);
     }
 
     @Transactional
-    public void deleteBoard(Long userId, Long boardId) {
+    public void delete(Long userId, Long boardId) {
         Board board = boardService.findById(boardId);
         validateUser(board, userId);
-        boardService.deleteBoard(boardId);
+        boardService.deleteById(boardId);
     }
 
     @Transactional
