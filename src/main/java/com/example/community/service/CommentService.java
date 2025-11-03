@@ -6,7 +6,6 @@ import com.example.community.entity.Board;
 import com.example.community.entity.Comment;
 import com.example.community.entity.User;
 import com.example.community.repository.CommentRepository;
-import com.example.community.repository.inmemory.InMemoryCommentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -64,12 +63,12 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_COMMENT));
         validateUser(comment, userId);
-
+        comment.getPost().removeComment(comment);
         commentRepository.deleteById(commentId);
     }
 
     private void validateUser(Comment comment, Long userId) {
-        if(!comment.getUser().getId().equals(userId)) {
+        if(!comment.getAuthor().getId().equals(userId)) {
             throw new BaseException(ErrorCode.INVALID_REQUEST);
         }
     }

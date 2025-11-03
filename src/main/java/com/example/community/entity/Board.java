@@ -66,7 +66,7 @@ public class Board extends BaseEntity implements Identifiable {
 
     public void removeComment(Comment comment) {
         this.comments.remove(comment);
-        comment.setPost(this);
+        comment.setPost(null);
     }
 
     public void addLike(Like like) {
@@ -76,6 +76,6 @@ public class Board extends BaseEntity implements Identifiable {
 
     public void removeLike(Like like) {
         this.likes.remove(like);
-        like.setPost(this);
+        like.setPost(null);
     }
 }

@@ -4,9 +4,6 @@ import com.example.community.entity.interfaces.Identifiable;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Entity
 public class User extends BaseEntity implements Identifiable {

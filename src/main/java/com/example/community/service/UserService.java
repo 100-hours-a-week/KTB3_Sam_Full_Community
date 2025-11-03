@@ -4,6 +4,7 @@ import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.User;
 import com.example.community.event.BoardDeletedEvent;
+import com.example.community.event.UserDeletedEvent;
 import com.example.community.repository.UserRepository;
 import com.example.community.repository.inmemory.InMemoryUserRepository;
 import org.springframework.stereotype.Service;
