@@ -35,6 +35,7 @@ public class BoardQueryFacade {
     public PagedData getAllBoards(int page, int size) {
         Page<Board> boards = boardService.findPage(page,size);
 
+
         List<Long> boardIds = boards.stream()
                 .map(Board::getId)
                 .toList();
@@ -57,10 +58,7 @@ public class BoardQueryFacade {
                         board.getAuthor()
                 )).toList();
 
-        int totalElements = boardService.count();
-        PageInfo pageInfo = PageInfo.from(responses, totalElements,page,size);
-
-        return new PagedData(responses, pageInfo);
+        return new PagedData(responses,PageInfo.from(boards));
     }
 
     @Transactional(readOnly = true)
