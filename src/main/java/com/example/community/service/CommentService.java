@@ -23,7 +23,9 @@ public class CommentService {
     }
 
     public Comment save(User user, Board board, String content) {
-        return commentRepository.save(new Comment(user,board, content));
+        Comment comment = new Comment(user,board, content);
+        board.addComment(comment);
+        return commentRepository.save(comment);
     }
 
     public List<Comment> findAllByPagedBoards(Page<Board> boards) {

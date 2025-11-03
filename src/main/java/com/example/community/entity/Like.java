@@ -39,4 +39,8 @@ public class Like extends BaseEntity implements BoardLinked, UserLinked, Identif
 
     @Override
     public void setId(Long id) {this.id = id;}
+
+    public void setUser(User user) {this.user = user;}
+
+    public void setPost(Board post) {this.post = post;}
 }

@@ -44,6 +44,12 @@ public class BoardCommandFacade {
         boardService.deleteBoard(boardId);
     }
 
+    @Transactional
+    public void deleteByUserId(Long userId) {
+        User user = userService.getUser(userId);
+        boardService.deleteByUser(user);
+    }
+
     private void validateUser(Board board, Long userId) {
         if(!board.getAuthor().getId().equals(userId)) {
             throw new BaseException(ErrorCode.INVALID_REQUEST);

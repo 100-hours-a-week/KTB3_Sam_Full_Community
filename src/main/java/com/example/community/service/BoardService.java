@@ -26,7 +26,6 @@ public class BoardService {
 
     public Board save(String title, String content, List<Long> boardImageIds, User user) {
         Board board = new Board(title, content, boardImageIds, user);
-        user.addPost(board);
         return boardRepository.save(board);
     }
 
@@ -43,7 +42,10 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_BOARD));
         boardRepository.deleteById(boardId);
-        eventPublisher.publishEvent(new BoardDeletedEvent(boardId));
+    }
+
+    public void deleteByUser(User user) {
+        boardRepository.deleteByUser(user);
     }
 
     public Board findById(Long boardId) {

@@ -3,19 +3,23 @@ package com.example.community.service;
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.User;
+import com.example.community.event.BoardDeletedEvent;
 import com.example.community.repository.UserRepository;
 import com.example.community.repository.inmemory.InMemoryUserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.reactive.TransactionalEventPublisher;
 
 import java.util.List;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final TransactionalEventPublisher eventPublisher;
 
-    UserService(UserRepository userRepository) {
+    UserService(UserRepository userRepository, TransactionalEventPublisher eventPublisher) {
         this.userRepository = userRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -60,8 +64,8 @@ public class UserService {
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
-
         userRepository.deleteById(userId);
+        eventPublisher.publishEvent(new UserDeletedEvent(userId));
     }
 
 

@@ -22,6 +22,8 @@ public class LikeService {
     }
 
     public Like save(User user, Board board) {
+        Like like = new Like(user,board);
+        board.addLike(like);
         return likeRepository.save(new Like(user,board));
     }
 
