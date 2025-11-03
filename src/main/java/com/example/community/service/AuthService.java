@@ -6,25 +6,26 @@ import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.dto.AuthToken;
 import com.example.community.entity.User;
+import com.example.community.repository.UserRepository;
 import com.example.community.repository.inmemory.InMemoryUserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService {
-    private final InMemoryUserRepository inMemoryUserRepository;
+    private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final TokenBlackList tokenBlackList;
 
-    AuthService(InMemoryUserRepository inMemoryUserRepository, JwtUtil jwtUtil, TokenBlackList tokenBlackList) {
-        this.inMemoryUserRepository = inMemoryUserRepository;
+    AuthService(UserRepository userRepository, JwtUtil jwtUtil, TokenBlackList tokenBlackList) {
+        this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
         this.tokenBlackList = tokenBlackList;
     }
 
     @Transactional
     public AuthToken login(String email, String password) {
-        User user = inMemoryUserRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
         validatePassword(user, password);
 
@@ -33,7 +34,7 @@ public class AuthService {
 
     @Transactional
     public void logout(Long userId, String token) {
-        User user = inMemoryUserRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
 
         tokenBlackList.add(userId, token);
