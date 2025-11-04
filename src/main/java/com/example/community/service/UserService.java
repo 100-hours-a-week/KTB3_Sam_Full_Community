@@ -45,7 +45,6 @@ public class UserService {
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
 
         user.updateUser(nickname,profileImageId);
-        user.recordModificationTime();
         userRepository.save(user);
     }
 

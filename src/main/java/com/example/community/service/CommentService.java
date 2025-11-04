@@ -50,7 +50,6 @@ public class CommentService {
         validateUser(comment, userId);
 
         comment.updateComment(content);
-        comment.recordModificationTime();
         commentRepository.save(comment);
     }
 
