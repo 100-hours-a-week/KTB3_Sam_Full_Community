@@ -30,8 +30,8 @@ public class BoardQueryFacade {
     }
 
     @Transactional(readOnly = true)
-    public PagedData getAllPagedBoards(int page, int size) {
-        Page<Board> boards = boardService.findPage(page,size);
+    public PagedData getAllPagedBoards(String title, String content, int page, int size) {
+        Page<Board> boards = boardService.findPage(title, content, page,size);
 
         List<Long> boardIds = boards.stream().map(Board::getId).toList();
 

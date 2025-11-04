@@ -63,9 +63,11 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "internal_server_error")
     })
     public ResponseEntity<PageApiResponse<List<BoardInfoResponse>>> getBoards (HttpServletRequest servletRequest,
+                                                                              @RequestParam(required = false) String title,
+                                                                              @RequestParam(required = false) String content,
                                                                               @RequestParam(defaultValue = "1") int page,
                                                                               @RequestParam(defaultValue = "10") int size) {
-        PagedData pagedBoards = boardQueryFacade.getAllPagedBoards(page,size);
+        PagedData pagedBoards = boardQueryFacade.getAllPagedBoards(title, content, page, size);
         return ResponseEntity.ok(PageApiResponse.success(SuccessCode.ALL_BOARDS_FOUND, pagedBoards));
     }
 

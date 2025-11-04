@@ -57,8 +57,8 @@ public class BoardService {
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_BOARD));
     }
 
-    public Page<Board> findPage(int page, int size) {
-        return boardRepository.findAll(PageRequest.of(page,size));
+    public Page<Board> findPage(String title, String content, int page, int size) {
+        return boardRepository.findAll(title,content, PageRequest.of(page,size));
     }
 
     public void validateTitle(String title) {
