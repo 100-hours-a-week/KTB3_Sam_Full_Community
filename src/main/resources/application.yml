@@ -18,6 +18,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        use_sql_comments: true
   datasource:
     url: jdbc:mysql://localhost:3306/spring_community
     driverClassName: com.mysql.cj.jdbc.Driver
