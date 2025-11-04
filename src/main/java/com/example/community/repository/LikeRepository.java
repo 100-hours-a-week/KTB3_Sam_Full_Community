@@ -1,8 +1,6 @@
 package com.example.community.repository;
 
-import com.example.community.entity.Board;
 import com.example.community.entity.Like;
-import com.example.community.entity.User;
 import com.example.community.repository.interfaces.LikeCustomRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,12 +16,12 @@ public interface LikeRepository extends JpaRepository<Like, Long>, LikeCustomRep
     public Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId);
 
     @Query("select l from Like l join fetch l.board where l.board.id in :boardIds")
-    public List<Like> findAllByBoardId(@Param("boardIds") List<Long> boardIds);
+    public List<Like> findAllByBoardIds(@Param("boardIds") List<Long> boardIds);
 
     @Query("select l from Like l join fetch l.board where l.board.id = :boardId")
     public List<Like> findAllByBoardId(Long boardId);
 
     @Modifying
-    @Query("delete l from Like l join l.board b where b.id = :boardId")
+    @Query("delete from Like l where l.board.id = :boardId")
     public void deleteByBoardId(@Param("boardId") Long boardId);
 }

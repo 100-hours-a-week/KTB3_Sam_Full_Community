@@ -6,6 +6,7 @@ import com.example.community.entity.User;
 import com.example.community.event.UserDeletedEvent;
 import com.example.community.repository.UserRepository;
 import com.example.community.repository.inmemory.InMemoryUserRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.reactive.TransactionalEventPublisher;
@@ -15,9 +16,9 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final TransactionalEventPublisher eventPublisher;
+    private final ApplicationEventPublisher eventPublisher;
 
-    UserService(UserRepository userRepository, TransactionalEventPublisher eventPublisher) {
+    UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.eventPublisher = eventPublisher;
     }

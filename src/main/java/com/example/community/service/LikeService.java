@@ -27,7 +27,7 @@ public class LikeService {
     }
 
     public List<Like> findAllByPagedBoardIds(List<Long> boardIds) {
-        return likeRepository.findAllByBoardId(boardIds);
+        return likeRepository.findAllByBoardIds(boardIds);
     }
 
     public List<Like> findAllByBoard(Long boardId) {

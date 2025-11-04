@@ -13,14 +13,14 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long>, CommentCustomRepository {
-    @Query("select c from comment c join fetch c.user join fetch c.board where c.board.id in :boardIds ")
+    @Query("select c from Comment c join fetch c.user join fetch c.board where c.board.id in :boardIds ")
     public List<Comment> findAllByBoardId(List<Long> boardIds);
 
     @Query("select c from Comment c join fetch c.user join fetch c.board where c.board.id= :boardId")
     public List<Comment> findAllByBoardId(Long boardId);
 
     @Modifying
-    @Query("delete c from Comment c join c.board b where b.id = :boardId")
+    @Query("delete from Comment c where c.board.id = :boardId")
     public void deleteByBoardId(Long boardId);
 
     @Query("select c from Comment c join fetch c.user join fetch c.board where c.board.id= :boardId")

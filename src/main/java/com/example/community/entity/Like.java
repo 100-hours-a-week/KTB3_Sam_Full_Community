@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "users")
+@Table(name = "likes")
 public class Like extends BaseEntity implements BoardLinked, UserLinked, Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
