@@ -22,7 +22,7 @@ public class Board extends BaseEntity implements Identifiable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User author;
+    private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
@@ -35,7 +35,7 @@ public class Board extends BaseEntity implements Identifiable {
         this.title = title;
         this.content = content;
         this.boardImageIds = boardImageIds;
-        this.author = user;
+        this.user = user;
     }
 
     public int recordVisit() {
@@ -55,27 +55,7 @@ public class Board extends BaseEntity implements Identifiable {
     @Override
     public void setId(Long id) {this.id = id;}
 
-    public void setAuthor(User user) {
-        this.author = user;
-    }
-
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
-        comment.setPost(this);
-    }
-
-    public void removeComment(Comment comment) {
-        this.comments.remove(comment);
-        comment.setPost(null);
-    }
-
-    public void addLike(Like like) {
-        this.likes.add(like);
-        like.setPost(this);
-    }
-
-    public void removeLike(Like like) {
-        this.likes.remove(like);
-        like.setPost(null);
+    public void setUser(User user) {
+        this.user = user;
     }
 }

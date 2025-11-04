@@ -16,15 +16,15 @@ public class Comment extends BaseEntity implements BoardLinked, Identifiable {
 
     @ManyToOne
     @JoinColumn(name = "board_id")
-    private Board post;
+    private Board board;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User author;
+    private User user;
 
-    public Comment(User author, Board post, String content) {
-        this.author = author;
-        this.post = post;
+    public Comment(User user, Board board, String content) {
+        this.user = user;
+        this.board = board;
         this.content = content;
     }
 
@@ -34,13 +34,13 @@ public class Comment extends BaseEntity implements BoardLinked, Identifiable {
 
     @Override
     public Long getBoardId() {
-        return this.post.getId();
+        return this.board.getId();
     }
 
     @Override
     public void setId(Long id) {this.id =id;}
 
-    public void setAuthor(User author) {this.author = author;}
+    public void setUser(User user) {this.user = user;}
 
-    public void setPost(Board post) {this.post = post;}
+    public void setBoard(Board board) {this.board = board;}
 }

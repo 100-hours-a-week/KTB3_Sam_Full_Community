@@ -8,7 +8,6 @@ import com.example.community.service.BoardService;
 import com.example.community.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -26,31 +25,5 @@ public class BoardCommandFacade {
         boardService.validateTitle(title);
         User user = userService.getUser(userId);
         return boardService.save(title, content, boardImageIds, user);
-    }
-
-    @Transactional
-    public void update(Long userId, Long boardId, String title, String content, List<Long> boardImageIds) {
-        Board board = boardService.findById(boardId);
-        validateUser(board, userId);
-        boardService.updateById(boardId,title,content, boardImageIds);
-    }
-
-    @Transactional
-    public void delete(Long userId, Long boardId) {
-        Board board = boardService.findById(boardId);
-        validateUser(board, userId);
-        boardService.deleteById(boardId);
-    }
-
-    @Transactional
-    public void deleteByUserId(Long userId) {
-        User user = userService.getUser(userId);
-        boardService.deleteByUser(user);
-    }
-
-    private void validateUser(Board board, Long userId) {
-        if(!board.getAuthor().getId().equals(userId)) {
-            throw new BaseException(ErrorCode.INVALID_REQUEST);
-        }
     }
 }

@@ -16,31 +16,31 @@ public class Like extends BaseEntity implements BoardLinked, UserLinked, Identif
 
     @ManyToOne
     @JoinColumn(name = "board_id")
-    private Board post;
+    private Board board;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User author;
+    private User user;
 
-    public Like(User author, Board post) {
-        this.author = author;
-        this.post = post;
+    public Like(User user, Board board) {
+        this.user = user;
+        this.board = board;
     }
 
     @Override
     public Long getBoardId() {
-        return this.post.getId();
+        return this.board.getId();
     }
 
     @Override
     public Long getUserId() {
-        return this.author.getId();
+        return this.user.getId();
     }
 
     @Override
     public void setId(Long id) {this.id = id;}
 
-    public void setAuthor(User author) {this.author = author;}
+    public void setUser(User user) {this.user = user;}
 
-    public void setPost(Board post) {this.post = post;}
+    public void setBoard(Board board) {this.board = board;}
 }

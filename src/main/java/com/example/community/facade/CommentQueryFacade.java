@@ -16,17 +16,14 @@ import java.util.List;
 @Service
 public class CommentQueryFacade {
     private final CommentService commentService;
-    private final BoardService boardService;
 
-    CommentQueryFacade(CommentService commentService, BoardService boardService) {
+    CommentQueryFacade(CommentService commentService) {
         this.commentService = commentService;
-        this.boardService = boardService;
     }
 
     @Transactional(readOnly = true)
     public PagedData getAllPagedCommentsByBoardId(Long boardId, int page, int size) {
-        Board board = boardService.findById(boardId);
-        Page<Comment> comments = commentService.findPageByBoard(board, page,size);
+        Page<Comment> comments = commentService.findPageByBoardId(boardId, page,size);
         List<CommentInfoResponse> commentInfoResponses = comments.stream()
                 .map(CommentInfoResponse::from)
                 .toList();

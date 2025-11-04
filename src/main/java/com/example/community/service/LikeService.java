@@ -8,6 +8,7 @@ import com.example.community.entity.User;
 import com.example.community.repository.LikeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,31 +23,30 @@ public class LikeService {
 
     public Like save(User user, Board board) {
         Like like = new Like(user,board);
-        board.addLike(like);
         return likeRepository.save(new Like(user,board));
     }
 
-    public List<Like> findAllByPagedBoards(Page<Board> posts) {
-        return likeRepository.findAllByPost(posts);
+    public List<Like> findAllByPagedBoardIds(List<Long> boardIds) {
+        return likeRepository.findAllByBoardId(boardIds);
     }
 
-    public List<Like> findAllByBoard(Board post) {
-        return likeRepository.findAllByPost(post);
+    public List<Like> findAllByBoard(Long boardId) {
+        return likeRepository.findAllByBoardId(boardId);
     }
 
-    public void deleteByBoard(Board post) {
-        likeRepository.deleteByPost(post);
+    @Transactional
+    public void deleteByBoardId(Long boardId) {
+        likeRepository.deleteByBoardId(boardId);
     }
 
-
-    public void deleteLikeByUserAndPost(User user, Board post) {
-        Like like = likeRepository.findByUserAndPost(user, post)
+    @Transactional
+    public void deleteByUserIdAndBoardId(Long userId, Long boardId) {
+        Like like = likeRepository.findByUserIdAndBoardId(userId, boardId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_LIKE));
-        post.removeLike(like);
         likeRepository.deleteById(like.getId());
     }
 
-    public Optional<Like> findByUserAndPost(User user, Board post) {
-        return likeRepository.findByUserAndPost(user,post);
+    public Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId) {
+        return likeRepository.findByUserIdAndBoardId(userId, boardId);
     }
 }

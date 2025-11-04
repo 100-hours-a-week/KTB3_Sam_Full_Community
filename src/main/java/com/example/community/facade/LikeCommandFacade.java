@@ -27,24 +27,9 @@ public class LikeCommandFacade {
     public Like post(Long userId, Long boardId) {
         User user = userService.getUser(userId);
         Board board = boardService.findById(boardId);
-        if(likeService.findByUserAndPost(user,board).isPresent()) {
+        if(likeService.findByUserIdAndBoardId(userId,boardId).isPresent()) {
             throw new BaseException(ErrorCode.ALREADY_LIKED_POST);
         }
         return likeService.save(user, board);
-    }
-
-    @Transactional
-    public void deleteByUserIdAndBoardId(Long userId, Long boardId) {
-        User user = userService.getUser(userId);
-        Board board = boardService.findById(boardId);
-
-        likeService.deleteLikeByUserAndPost(user,board);
-    }
-
-    @Transactional
-    public void deleteByBoardId(Long boardId) {
-        Board board = boardService.findById(boardId);
-
-        likeService.deleteByBoard(board);
     }
 }

@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CommentBoardEventHandler {
-    private final CommentCommandFacade commentCommandFacade;
+    private final CommentService commentService;
 
-    CommentBoardEventHandler(CommentCommandFacade commentCommandFacade) {
-        this.commentCommandFacade = commentCommandFacade;
+    CommentBoardEventHandler(CommentService commentService) {
+        this.commentService = commentService;
     }
 
     @EventListener
     public void handle(BoardDeletedEvent event) {
-        commentCommandFacade.deleteByBoardId(event.boardId());
+        commentService.deleteByBoardId(event.boardId());
     }
 }

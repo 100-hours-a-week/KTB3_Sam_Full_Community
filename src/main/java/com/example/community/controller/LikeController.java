@@ -6,6 +6,7 @@ import com.example.community.dto.response.APIResponse;
 import com.example.community.dto.response.LikePostResponse;
 import com.example.community.entity.Like;
 import com.example.community.facade.LikeCommandFacade;
+import com.example.community.service.LikeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,10 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LikeController {
     private final LikeCommandFacade likeCommandFacade;
+    private final LikeService likeService;
     private final JwtUtil jwtUtil;
 
-    LikeController(LikeCommandFacade likeCommandFacade, JwtUtil jwtUtil) {
+    LikeController(LikeCommandFacade likeCommandFacade,LikeService likeService, JwtUtil jwtUtil) {
         this.likeCommandFacade = likeCommandFacade;
+        this.likeService = likeService;
         this.jwtUtil = jwtUtil;
     }
 
@@ -44,7 +47,7 @@ public class LikeController {
                                                                   @PathVariable("boardId") Long boardId) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         Like like = likeCommandFacade.post(userId, boardId);
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_LIKED, LikePostResponse.from(like)));
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_LIKED, LikePostResponse.of(like,boardId,userId)));
     }
 
     @Operation(summary = "좋아요 삭제", description = "입력받은 유저 ID와 게시글 ID에 해당하는 좋아요를 삭제합니다.")
@@ -59,7 +62,7 @@ public class LikeController {
                                                         @Parameter(description = "좋아요 삭제할 게시글 ID", required = true, example = "3")
                                                         @PathVariable("boardId") Long boardId) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        likeCommandFacade.deleteByUserIdAndBoardId(userId, boardId);
+        likeService.deleteByUserIdAndBoardId(userId, boardId);
         return ResponseEntity.noContent().build();
     }
 }

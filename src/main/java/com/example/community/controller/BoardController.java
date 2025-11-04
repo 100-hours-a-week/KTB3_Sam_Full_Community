@@ -12,6 +12,7 @@ import com.example.community.dto.response.PageApiResponse;
 import com.example.community.entity.Board;
 import com.example.community.facade.BoardCommandFacade;
 import com.example.community.facade.BoardQueryFacade;
+import com.example.community.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,12 +31,14 @@ import java.util.List;
 public class BoardController {
     private final BoardCommandFacade boardCommandFacade;
     private final BoardQueryFacade boardQueryFacade;
+    private final BoardService boardService;
     private final JwtUtil jwtUtil;
 
-    BoardController(JwtUtil jwtUtil, BoardCommandFacade boardCommandFacade, BoardQueryFacade boardQueryFacade) {
+    BoardController(JwtUtil jwtUtil, BoardCommandFacade boardCommandFacade, BoardQueryFacade boardQueryFacade, BoardService boardService) {
         this.jwtUtil = jwtUtil;
         this.boardCommandFacade = boardCommandFacade;
         this.boardQueryFacade = boardQueryFacade;
+        this.boardService = boardService;
     }
 
     @Operation(summary = "게시글 추가", description = "입력받은 내용을 바탕으로 새로운 게시글을 추가합니다.")
@@ -93,7 +96,7 @@ public class BoardController {
                                                          @PathVariable("id") Long id,
                                                          @Valid @RequestBody BoardUpdateRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        boardCommandFacade.update(userId, id, request.title(), request.content(), request.boardImageIds());
+        boardService.update(userId, id, request.title(), request.content(), request.boardImageIds());
         return ResponseEntity.noContent().build();
     }
 
@@ -109,7 +112,7 @@ public class BoardController {
                                                          @Parameter(description = "게시글 ID", required = true, example = "1")
                                                          @PathVariable("id") Long id) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        boardCommandFacade.delete(userId, id);
+        boardService.delete(userId, id);
         return ResponseEntity.noContent().build();
     }
 }

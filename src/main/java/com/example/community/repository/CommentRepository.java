@@ -6,15 +6,18 @@ import com.example.community.repository.interfaces.CommentCustomRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long>, CommentCustomRepository {
-    public List<Comment> findAllByPost(Page<Board> posts);
+    public List<Comment> findAllByBoardId(List<Long> boardIds);
 
-    public List<Comment> findAllByPost(Board post);
+    public List<Comment> findAllByBoardId(Long boardId);
 
-    public void deleteByPost(Board post);
+    public void deleteByBoardId(Long boardId);
 
-    public Page<Comment> findAllByPost(Board post, Pageable pageable);
+    @Query("select c from Comment c join fetch c.user join fetch c.board where c.board.id= :boardId")
+    public Page<Comment> findAllByBoardId(@Param("boardId") Long boardId, Pageable pageable);
 }

@@ -33,11 +33,13 @@ public class BoardQueryFacade {
     public PagedData getAllPagedBoards(int page, int size) {
         Page<Board> boards = boardService.findPage(page,size);
 
-        Map<Long, List<Like>> likeMap = likeService.findAllByPagedBoards(boards)
+        List<Long> boardIds = boards.stream().map(Board::getId).toList();
+
+        Map<Long, List<Like>> likeMap = likeService.findAllByPagedBoardIds(boardIds)
                 .stream()
                 .collect(Collectors.groupingBy(Like::getBoardId));
 
-        Map<Long, List<Comment>> commentMap = commentService.findAllByPagedBoards(boards)
+        Map<Long, List<Comment>> commentMap = commentService.findAllByPagedBoardIds(boardIds)
                 .stream()
                 .collect(Collectors.groupingBy(Comment::getBoardId));
 
@@ -48,7 +50,7 @@ public class BoardQueryFacade {
                         likeMap.getOrDefault(board.getId(), List.of()).size(),
                         board.getVisitors(),
                         commentMap.getOrDefault(board.getId(), List.of()).size(),
-                        board.getAuthor()
+                        board.getUser()
                 )).toList();
 
         return new PagedData(responses,PageInfo.from(boards));
@@ -57,9 +59,9 @@ public class BoardQueryFacade {
     @Transactional(readOnly = true)
     public BoardInfoResponse getBoardDetail(Long boardId) {
         Board board = boardService.findById(boardId);
-        List<Comment> comments = commentService.findAllByBoard(board);
-        List<Like> likes = likeService.findAllByBoard(board);
+        List<Comment> comments = commentService.findAllByBoardId(boardId);
+        List<Like> likes = likeService.findAllByBoard(boardId);
 
-        return BoardInfoResponse.of(board, comments.size(),board.recordVisit(), likes.size(), board.getAuthor());
+        return BoardInfoResponse.of(board, comments.size(),board.recordVisit(), likes.size(), board.getUser());
     }
 }

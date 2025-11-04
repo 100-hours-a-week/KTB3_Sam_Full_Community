@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,22 +26,30 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    public void updateById(Long boardId, String title, String content, List<Long> boardImageIds) {
+    @Transactional
+    public void update(Long userId, Long boardId, String title, String content, List<Long> boardImageIds) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_BOARD));
+
+        validateUser(board, userId);
 
         board.updateBoard(title, content, boardImageIds);
         boardRepository.save(board);
     }
 
-    public void deleteById(Long boardId) {
+    @Transactional
+    public void delete(Long userId, Long boardId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_BOARD));
+
+        validateUser(board,userId);
+
         boardRepository.deleteById(boardId);
     }
 
-    public void deleteByUser(User user) {
-        boardRepository.deleteByUser(user);
+    @Transactional
+    public void deleteByUserId(Long userId) {
+        boardRepository.deleteByUserId(userId);
     }
 
     public Board findById(Long boardId) {
@@ -55,6 +64,12 @@ public class BoardService {
     public void validateTitle(String title) {
         if(boardRepository.findByTitle(title).isPresent()) {
             throw new BaseException(ErrorCode.DUPLICATE_TITLE);
+        }
+    }
+
+    private void validateUser(Board board, Long userId) {
+        if(!board.getUser().getId().equals(userId)) {
+            throw new BaseException(ErrorCode.INVALID_REQUEST);
         }
     }
 }

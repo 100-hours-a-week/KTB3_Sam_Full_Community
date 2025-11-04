@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<Like, Long>, LikeCustomRepository {
-    public Optional<Like> findByUserAndPost(User user, Board post);
+    public Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId);
 
-    public List<Like> findAllByPost(Page<Board> posts);
+    public List<Like> findAllByBoardId(List<Long> boardIds);
 
-    public List<Like> findAllByPost(Board post);
+    public List<Like> findAllByBoardId(Long boardId);
 
-    public void deleteByPost(Board post);
+    public void deleteByBoardId(Long boardId);
 }

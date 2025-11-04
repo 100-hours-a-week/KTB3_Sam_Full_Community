@@ -1,19 +1,20 @@
 package com.example.community.event;
 
 import com.example.community.facade.BoardCommandFacade;
+import com.example.community.service.BoardService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 public class UserBoardEventHandler {
-    private final BoardCommandFacade boardCommandFacade;
+    private final BoardService boardService;
 
-    UserBoardEventHandler(BoardCommandFacade boardCommandFacade) {
-        this.boardCommandFacade = boardCommandFacade;
+    UserBoardEventHandler(BoardService boardService) {
+        this.boardService = boardService;
     }
 
     @TransactionalEventListener
     public void handle(UserDeletedEvent event) {
-        boardCommandFacade.deleteByUserId(event.userId());
+        boardService.deleteByUserId(event.userId());
     }
 }
