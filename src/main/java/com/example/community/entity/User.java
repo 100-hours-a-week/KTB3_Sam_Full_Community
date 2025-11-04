@@ -6,6 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
+@Table(name = "users")
 public class User extends BaseEntity implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
