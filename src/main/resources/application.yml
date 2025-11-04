@@ -22,8 +22,8 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/spring_community
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: ${LOCAL_MYSQL_NAME}
-    password: ${LOCAL_MYSQL_PASSWORD}
+    username: root
+    password: "00000000"
 
 jwt:
   secret: ${JWT_SECRET:test-secret-key-test-secret-key-test-secret-key-test-secret-key}
