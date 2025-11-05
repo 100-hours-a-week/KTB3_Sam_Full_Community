@@ -6,11 +6,10 @@ import com.example.community.dto.response.BoardInfoResponse;
 import com.example.community.entity.Board;
 import com.example.community.entity.Comment;
 import com.example.community.entity.Like;
-import com.example.community.entity.User;
 import com.example.community.service.BoardService;
 import com.example.community.service.CommentService;
 import com.example.community.service.LikeService;
-import com.example.community.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,37 +22,27 @@ public class BoardQueryFacade {
     private final BoardService boardService;
     private final CommentService commentService;
     private final LikeService likeService;
-    private final UserService userService;
 
-    BoardQueryFacade(BoardService boardService, CommentService commentService, LikeService likeService, UserService userService) {
+    BoardQueryFacade(BoardService boardService, CommentService commentService, LikeService likeService) {
         this.boardService = boardService;
         this.commentService = commentService;
         this.likeService = likeService;
-        this.userService = userService;
     }
 
     @Transactional(readOnly = true)
-    public PagedData getAllBoards(int page, int size) {
-        List<Board> boards = boardService.findPage(page,size);
+    public PagedData getAllPagedBoards(String title, String content, int page, int size) {
+        Page<Board> boards = boardService.findPage(title, content, page,size);
 
-        List<Long> boardIds = boards.stream()
-                .map(Board::getId)
-                .toList();
+        List<Long> boardIds = boards.stream().map(Board::getId).toList();
 
-        List<Long> userIds = boards.stream()
-                .map(Board::getUserId)
-                .toList();
-
-        Map<Long, List<Like>> likeMap = likeService.findAllByBoardIds(boardIds)
+        Map<Long, List<Like>> likeMap = likeService.findAllByPagedBoardIds(boardIds)
                 .stream()
                 .collect(Collectors.groupingBy(Like::getBoardId));
 
-        Map<Long, List<Comment>> commentMap = commentService.findAllByBoardIds(boardIds)
+        Map<Long, List<Comment>> commentMap = commentService.findAllByPagedBoardIds(boardIds)
                 .stream()
                 .collect(Collectors.groupingBy(Comment::getBoardId));
 
-        Map<Long, User> userMap = userService.getUserByIds(userIds).stream()
-                .collect(Collectors.toMap(User::getId, user -> user));
 
         List<BoardInfoResponse> responses = boards.stream()
                 .map(board -> BoardInfoResponse.of(
@@ -61,22 +50,18 @@ public class BoardQueryFacade {
                         likeMap.getOrDefault(board.getId(), List.of()).size(),
                         board.getVisitors(),
                         commentMap.getOrDefault(board.getId(), List.of()).size(),
-                        userMap.get(board.getUserId())
+                        board.getUser()
                 )).toList();
 
-        int totalElements = boardService.count();
-        PageInfo pageInfo = PageInfo.from(responses, totalElements,page,size);
-
-        return new PagedData(responses, pageInfo);
+        return new PagedData(responses,PageInfo.from(boards));
     }
 
     @Transactional(readOnly = true)
     public BoardInfoResponse getBoardDetail(Long boardId) {
         Board board = boardService.findById(boardId);
         List<Comment> comments = commentService.findAllByBoardId(boardId);
-        List<Like> likes = likeService.findAllByBoardId(boardId);
-        User user = userService.getUser(board.getUserId());
+        List<Like> likes = likeService.findAllByBoard(boardId);
 
-        return BoardInfoResponse.of(board, comments.size(),board.recordVisit(), likes.size(), user);
+        return BoardInfoResponse.of(board, comments.size(),board.recordVisit(), likes.size(), board.getUser());
     }
 }

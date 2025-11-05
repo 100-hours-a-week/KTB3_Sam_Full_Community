@@ -1,25 +1,23 @@
 package com.example.community.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+@EntityListeners(AuditingEntityListener.class)
+@MappedSuperclass
 @Getter
 public class BaseEntity {
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    @LastModifiedDate
     private LocalDateTime updatedAt;
-    private Long id;
-
-    BaseEntity() {
-        this.createdAt = java.time.LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public void recordModificationTime() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

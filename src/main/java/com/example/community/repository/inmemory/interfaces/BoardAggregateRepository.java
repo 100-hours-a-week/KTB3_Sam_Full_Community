@@ -1,4 +1,4 @@
-package com.example.community.repository.interfaces;
+package com.example.community.repository.inmemory.interfaces;
 
 import com.example.community.entity.interfaces.BoardLinked;
 

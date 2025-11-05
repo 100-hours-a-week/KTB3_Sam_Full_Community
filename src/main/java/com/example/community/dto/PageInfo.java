@@ -1,6 +1,6 @@
 package com.example.community.dto;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public record PageInfo(
         int pageNumber,
@@ -11,13 +11,15 @@ public record PageInfo(
         int totalPages,
         boolean empty
 ) {
-    public static <T> PageInfo from(List<T> data, int totalElements, int page, int size) {
-        int totalPages = (int) Math.ceil((double) totalElements / size);
-        boolean first = page == 1;
-        boolean last = page == totalPages;
-        boolean empty = data.isEmpty();
-
-        return new PageInfo(page,size,first,last,totalElements,totalPages,empty);
-
+    public static <T> PageInfo from(Page<T> data) {
+        return new PageInfo(
+                data.getPageable().getPageNumber(),
+                data.getPageable().getPageSize(),
+                data.isFirst(),
+                data.isLast(),
+                Long.valueOf(data.getTotalElements()).intValue(),
+                data.getTotalPages(),
+                data.isEmpty()
+        );
     }
 }

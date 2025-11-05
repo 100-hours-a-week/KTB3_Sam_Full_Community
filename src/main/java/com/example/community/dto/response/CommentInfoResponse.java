@@ -14,6 +14,6 @@ public record CommentInfoResponse(
         Long userId
 ) {
     public static CommentInfoResponse from(Comment comment) {
-        return new CommentInfoResponse(comment.getId(), comment.getUpdatedAt(), comment.getContent(), comment.getBoardId(), comment.getUserId());
+        return new CommentInfoResponse(comment.getId(), comment.getUpdatedAt(), comment.getContent(), comment.getBoardId(), comment.getUser().getId());
     }
 }

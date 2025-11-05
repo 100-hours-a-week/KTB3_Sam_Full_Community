@@ -3,18 +3,24 @@ package com.example.community.service;
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.User;
+import com.example.community.event.UserDeletedEvent;
 import com.example.community.repository.UserRepository;
+import com.example.community.repository.inmemory.InMemoryUserRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.reactive.TransactionalEventPublisher;
 
 import java.util.List;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    UserService(UserRepository userRepository) {
+    UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -31,7 +37,7 @@ public class UserService {
     }
 
     public List<User> getUserByIds(List<Long> userIds) {
-        return userRepository.findByIds(userIds);
+        return userRepository.findAllById(userIds);
     }
 
     @Transactional
@@ -40,7 +46,6 @@ public class UserService {
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
 
         user.updateUser(nickname,profileImageId);
-        user.recordModificationTime();
         userRepository.save(user);
     }
 
@@ -59,8 +64,8 @@ public class UserService {
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
-
         userRepository.deleteById(userId);
+        eventPublisher.publishEvent(new UserDeletedEvent(userId));
     }
 
 

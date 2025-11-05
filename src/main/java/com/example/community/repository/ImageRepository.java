@@ -1,9 +1,8 @@
 package com.example.community.repository;
 
 import com.example.community.entity.Image;
-import org.springframework.stereotype.Repository;
+import com.example.community.repository.interfaces.ImageCustomRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public class ImageRepository extends BaseRepository<Image>{
-
+public interface ImageRepository extends JpaRepository<Image,Long>, ImageCustomRepository {
 }

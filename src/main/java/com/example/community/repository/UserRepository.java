@@ -1,24 +1,9 @@
 package com.example.community.repository;
 
 import com.example.community.entity.User;
-import lombok.Locked;
-import org.springframework.stereotype.Repository;
+import com.example.community.repository.interfaces.UserCustomRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.*;
+public interface UserRepository extends JpaRepository<User, Long>, UserCustomRepository {
 
-@Repository
-public class UserRepository extends BaseRepository<User>{
-    @Locked.Read
-    public Optional<User> findByEmail(String email) {
-        return db.values().stream()
-                .filter(user -> email.equals(user.getEmail()))
-                .findFirst();
-    }
-
-    @Locked.Read
-    public Optional<User> findByNickname(String nickname) {
-        return db.values().stream()
-                .filter(user -> nickname.equals(user.getNickname()))
-                .findFirst();
-    }
 }
