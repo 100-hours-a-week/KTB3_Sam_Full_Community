@@ -35,7 +35,7 @@ public class CommentService {
     }
 
     public Page<Comment> findPageByBoardId(Long boardId, int page, int size) {
-        return commentRepository.findAllByBoardId(boardId, PageRequest.of(page,size));
+        return commentRepository.findAllByBoardId(boardId, PageRequest.of(page-1,size));
     }
 
     @Transactional

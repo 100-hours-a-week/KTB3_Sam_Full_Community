@@ -30,6 +30,7 @@ public class Board extends BaseEntity implements Identifiable {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
 
+    Board() {}
 
     public Board(String title, String content, List<Long> boardImageIds, User user) {
         this.title = title;

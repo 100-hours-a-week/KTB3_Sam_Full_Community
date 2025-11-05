@@ -17,6 +17,8 @@ public class User extends BaseEntity implements Identifiable {
     private String nickname;
     private Long profileImageId;
 
+    User() {}
+
     public User(String email, String password, String nickname, Long profileImageId) {
         this.email = email;
         this.password = password;

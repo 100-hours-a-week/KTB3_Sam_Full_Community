@@ -23,6 +23,8 @@ public class Like extends BaseEntity implements BoardLinked, UserLinked, Identif
     @JoinColumn(name = "user_id")
     private User user;
 
+    Like() {}
+
     public Like(User user, Board board) {
         this.user = user;
         this.board = board;

@@ -22,6 +22,8 @@ public class Comment extends BaseEntity implements BoardLinked, Identifiable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    Comment() {}
+
     public Comment(User user, Board board, String content) {
         this.user = user;
         this.board = board;

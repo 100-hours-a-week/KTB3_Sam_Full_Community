@@ -58,7 +58,7 @@ public class BoardService {
     }
 
     public Page<Board> findPage(String title, String content, int page, int size) {
-        return boardRepository.findAll(title,content, PageRequest.of(page,size));
+        return boardRepository.findAll(title,content, PageRequest.of(page-1,size));
     }
 
     public void validateTitle(String title) {
