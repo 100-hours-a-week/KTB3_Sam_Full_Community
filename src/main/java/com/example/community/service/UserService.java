@@ -68,6 +68,11 @@ public class UserService {
         eventPublisher.publishEvent(new UserDeletedEvent(userId));
     }
 
+    @Transactional(readOnly = true)
+    public Boolean checkEmailDuplicated(String email) {
+        return userRepository.existByEmail(email);
+    }
+
 
     private void validateEmail(String email) {
         if(userRepository.findByEmail(email).isPresent()) {

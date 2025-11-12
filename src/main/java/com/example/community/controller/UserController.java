@@ -6,6 +6,7 @@ import com.example.community.dto.request.PasswordModifyRequest;
 import com.example.community.dto.request.UserModifyRequest;
 import com.example.community.dto.request.UserRegisterRequest;
 import com.example.community.dto.response.APIResponse;
+import com.example.community.dto.response.DuplicationCheckResponse;
 import com.example.community.dto.response.UserInfoResponse;
 import com.example.community.dto.response.UserRegisterResponse;
 import com.example.community.entity.User;
@@ -99,5 +100,16 @@ public class UserController {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "이메일 중복 확인", description = "이메일의 중복 여부를 확인합니다.")
+    @GetMapping("/users/email")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "email_duplication_checked"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
+    public ResponseEntity<APIResponse<DuplicationCheckResponse>> checkEmailDuplicated (@RequestParam("email") String email) {
+        Boolean isNicknameExists = userService.checkEmailDuplicated(email);
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.EMAIL_DUPLICATION_CHECKED, DuplicationCheckResponse.from(isNicknameExists)));
     }
 }
