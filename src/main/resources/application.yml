@@ -14,7 +14,7 @@ spring:
         bucket: ${AWS_S3_BUCKET:test-bucket}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true

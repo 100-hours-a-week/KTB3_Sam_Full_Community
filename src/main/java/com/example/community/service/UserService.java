@@ -73,6 +73,11 @@ public class UserService {
         return userRepository.existByEmail(email);
     }
 
+    @Transactional(readOnly = true)
+    public Boolean checkNicknameDuplicated(String nickname) {
+        return userRepository.existByNickname(nickname);
+    }
+
 
     private void validateEmail(String email) {
         if(userRepository.findByEmail(email).isPresent()) {

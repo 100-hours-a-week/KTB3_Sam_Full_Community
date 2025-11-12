@@ -48,4 +48,15 @@ public class UserRepositoryImpl implements UserCustomRepository {
                 .where(user.email.eq(email))
                 .fetchFirst() != null;
     }
+
+    @Override
+    public Boolean existByNickname(String nickname) {
+        QUser user = QUser.user;
+
+        return jpaQueryFactory
+                .selectOne()
+                .from(user)
+                .where(user.nickname.eq(nickname))
+                .fetchFirst() != null;
+    }
 }

@@ -13,6 +13,7 @@ public enum SuccessCode {
     USER_LOGOUT(HttpStatus.NO_CONTENT, "user_logout_success"),
     TOKEN_REISSUED(HttpStatus.OK, "token_reissued"),
     EMAIL_DUPLICATION_CHECKED(HttpStatus.OK, "email_duplication_checked"),
+    NICKNAME_DUPLICATION_CHECKED(HttpStatus.OK, "nickname_duplication_checked"),
 
     //게시글
     BOARD_CREATED(HttpStatus.CREATED, "board_create_success"),

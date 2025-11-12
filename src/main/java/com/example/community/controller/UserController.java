@@ -109,7 +109,18 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "internal_server_error")
     })
     public ResponseEntity<APIResponse<DuplicationCheckResponse>> checkEmailDuplicated (@RequestParam("email") String email) {
-        Boolean isNicknameExists = userService.checkEmailDuplicated(email);
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.EMAIL_DUPLICATION_CHECKED, DuplicationCheckResponse.from(isNicknameExists)));
+        Boolean isEmailExists = userService.checkEmailDuplicated(email);
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.EMAIL_DUPLICATION_CHECKED, DuplicationCheckResponse.from(isEmailExists)));
+    }
+
+    @Operation(summary = "닉네임 중복 확인", description = "닉네임의 중복 여부를 확인합니다.")
+    @GetMapping("/users/nickname")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "nickname_duplication_checked"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
+    public ResponseEntity<APIResponse<DuplicationCheckResponse>> checkNicknameDuplicated (@RequestParam("nickname") String nickname) {
+        Boolean isNicknameExists = userService.checkNicknameDuplicated(nickname);
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.NICKNAME_DUPLICATION_CHECKED, DuplicationCheckResponse.from(isNicknameExists)));
     }
 }

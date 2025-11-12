@@ -14,7 +14,8 @@ public class ExcludePathMatcher {
             Rule.of("GET", "/swagger-ui.html"),
             Rule.of("GET", "/swagger-ui/**"),
             Rule.of("GET", "/v3/api-docs/**"),
-            Rule.of("GET", "/users/email/**")
+            Rule.of("GET", "/users/email/**"),
+            Rule.of("GET", "/users/nickname/**")
     );
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();

@@ -10,4 +10,6 @@ public interface UserCustomRepository {
     Optional<User> findByNickname(String nickname);
 
     Boolean existByEmail(String email);
+
+    Boolean existByNickname(String nickname);
 }
