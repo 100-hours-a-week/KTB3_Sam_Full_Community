@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,20 +26,18 @@ public class ImageController {
 
     @Operation(summary = "이미지 업로드", description = "이미지를 업로드 할 수 있는 url을 반환합니다.")
     @PostMapping("/images")
-    @SecurityRequirement(name = "JWT")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "image_upload_success"),
             @ApiResponse(responseCode = "400", description = "invalid_request"),
             @ApiResponse(responseCode = "500", description = "internal_server_error")
     })
-    public ResponseEntity<APIResponse<ImageUrlResponse>> getUploadImageUrl() {
-        ImageUrlResponse imageUrlResponse = s3ImageFacade.getUploadImageUrl();
+    public ResponseEntity<APIResponse<ImageUrlResponse>> getImageUploadUrl() {
+        ImageUrlResponse imageUrlResponse = s3ImageFacade.getImageUploadUrl();
         return ResponseEntity.ok(APIResponse.success(SuccessCode.IMAGE_UPLOADED, imageUrlResponse));
     }
 
     @Operation(summary = "이미지 조회", description = "이미지 ID에 해당하는 이미지를 조회할 수 있는 url을 반환합니다.")
     @GetMapping("/images/{id}")
-    @SecurityRequirement(name = "JWT")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "image_find_success"),
             @ApiResponse(responseCode = "404", description = "not_found_image"),

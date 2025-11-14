@@ -22,8 +22,7 @@ public class UserBoardTest {
         User user = new User("test@test.co.kr", "testPassword", "testNickname", 3L);
         em.persist(user);
 
-        List<Long> boardIds = List.of(1L,2L,3L);
-        Board newUserBoard = new Board("testBoardTitle", "testBoardContent", boardIds, user);
+        Board newUserBoard = new Board("testBoardTitle", "testBoardContent",user);
         em.persist(newUserBoard);
 
         Board foundBoard = em.find(Board.class, 1L);

@@ -4,6 +4,7 @@ import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.Board;
 import com.example.community.entity.User;
+import com.example.community.event.BoardSavedEvent;
 import com.example.community.repository.BoardRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -16,14 +17,19 @@ import java.util.List;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    BoardService(BoardRepository boardRepository) {
+    BoardService(BoardRepository boardRepository, ApplicationEventPublisher eventPublisher) {
         this.boardRepository = boardRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     public Board save(String title, String content, List<Long> boardImageIds, User user) {
-        Board board = new Board(title, content, boardImageIds, user);
-        return boardRepository.save(board);
+        Board board = boardRepository.save(new Board(title,content,user));
+
+        eventPublisher.publishEvent(new BoardSavedEvent(board.getId(), boardImageIds));
+
+        return board;
     }
 
     @Transactional
@@ -33,8 +39,10 @@ public class BoardService {
 
         validateUser(board, userId);
 
-        board.updateBoard(title, content, boardImageIds);
+        board.updateBoard(title, content);
         boardRepository.save(board);
+
+        eventPublisher.publishEvent(new BoardSavedEvent(board.getId(), boardImageIds));
     }
 
     @Transactional

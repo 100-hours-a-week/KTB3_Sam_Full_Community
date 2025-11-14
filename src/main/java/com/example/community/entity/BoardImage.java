@@ -17,4 +17,9 @@ public class BoardImage {
     @OneToOne
     @JoinColumn(name = "image_id")
     Image image;
+
+    public BoardImage(Board board, Image image) {
+        this.board = board;
+        this.image = image;
+    }
 }
