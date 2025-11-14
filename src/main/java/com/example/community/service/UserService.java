@@ -4,6 +4,7 @@ import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.User;
 import com.example.community.event.UserDeletedEvent;
+import com.example.community.event.UserSavedEvent;
 import com.example.community.repository.UserRepository;
 import com.example.community.repository.inmemory.InMemoryUserRepository;
 import org.springframework.context.ApplicationEventPublisher;
@@ -27,7 +28,12 @@ public class UserService {
     public User registerUser(String email, String password, String nickname, Long profileImageId) {
         validateEmail(email);
         validateNickname(nickname);
-        return userRepository.save(new User(email,password, nickname, profileImageId));
+
+        User user = userRepository.save(new User(email,password, nickname));
+
+        eventPublisher.publishEvent(new UserSavedEvent(user.getId(), profileImageId));
+
+        return user;
     }
 
     @Transactional(readOnly = true)
@@ -45,8 +51,10 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
 
-        user.updateUser(nickname,profileImageId);
+        user.updateUser(nickname);
         userRepository.save(user);
+
+        eventPublisher.publishEvent(new UserSavedEvent(user.getId(), profileImageId));
     }
 
     @Transactional

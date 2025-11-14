@@ -1,7 +1,12 @@
 package com.example.community.service;
 
+import com.example.community.entity.Image;
+import com.example.community.entity.User;
+import com.example.community.entity.UserImage;
 import com.example.community.repository.UserImageRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserImageService {
@@ -9,5 +14,11 @@ public class UserImageService {
 
     UserImageService(UserImageRepository userImageRepository) {
         this.userImageRepository = userImageRepository;
+    }
+
+    public UserImage save(User user, Image image) {
+        Optional<UserImage> existingUserImage = userImageRepository.findByUserIdAndImageId(user.getId(), image.getId());
+
+        return existingUserImage.orElseGet(() -> userImageRepository.save(new UserImage(user,image)));
     }
 }

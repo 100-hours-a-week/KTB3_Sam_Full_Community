@@ -17,4 +17,9 @@ public class UserImage extends BaseEntity{
     @OneToOne
     @JoinColumn(name = "image_id")
     Image image;
+
+    public UserImage(User user, Image image) {
+        this.user = user;
+        this.image = image;
+    }
 }

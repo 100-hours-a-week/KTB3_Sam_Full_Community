@@ -15,20 +15,20 @@ public class User extends BaseEntity implements Identifiable {
     private String password;
     private String email;
     private String nickname;
-    private Long profileImageId;
+
+    @OneToOne(mappedBy = "user")
+    private UserImage userImage;
 
     User() {}
 
-    public User(String email, String password, String nickname, Long profileImageId) {
+    public User(String email, String password, String nickname) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.profileImageId = profileImageId;
     }
 
-    public void updateUser(String nickname, Long profileImageId) {
+    public void updateUser(String nickname) {
         this.nickname = nickname;
-        this.profileImageId = (profileImageId ==null) ? this.profileImageId : profileImageId;
     }
 
     public void updatePassword(String password) {

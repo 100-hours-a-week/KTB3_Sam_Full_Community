@@ -6,6 +6,7 @@ import com.example.community.repository.inmemory.InMemoryImageRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImageService {
@@ -22,5 +23,9 @@ public class ImageService {
 
     public List<Image> findByIds(List<Long> imageIds) {
         return imageRepository.findByIds(imageIds);
+    }
+
+    public Optional<Image> findById(Long imageId) {
+        return imageRepository.findById(imageId);
     }
 }

@@ -22,8 +22,8 @@ public class BoardImageCommandFacade {
     }
 
     public void mapsImagesToBoard(Long boardId, List<Long> imageIds) {
-        List<Image> images = imageService.findByIds(imageIds);
         Board board = boardService.findById(boardId);
+        List<Image> images = imageService.findByIds(imageIds);
 
         images.forEach(image -> boardImageService.save(board, image));
     }
