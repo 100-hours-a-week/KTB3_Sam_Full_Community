@@ -10,6 +10,7 @@ import com.example.community.dto.response.DuplicationCheckResponse;
 import com.example.community.dto.response.UserInfoResponse;
 import com.example.community.dto.response.UserRegisterResponse;
 import com.example.community.entity.User;
+import com.example.community.facade.UserImageQueryFacade;
 import com.example.community.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,10 +26,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final UserImageQueryFacade userImageQueryFacade;
     private final JwtUtil jwtUtil;
 
-    UserController(UserService userService, JwtUtil jwtUtil) {
+    UserController(UserService userService, UserImageQueryFacade userImageQueryFacade, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.userImageQueryFacade = userImageQueryFacade;
         this.jwtUtil = jwtUtil;
     }
 
@@ -54,8 +57,10 @@ public class UserController {
     })
     public ResponseEntity<APIResponse<UserInfoResponse>> getUser(HttpServletRequest servletRequest) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        User user = userService.getUser(userId);
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.USER_FOUND,UserInfoResponse.from(user)));
+        
+        UserInfoResponse userInfoResponse = userImageQueryFacade.getUser(userId);
+
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.USER_FOUND,userInfoResponse));
     }
 
     @Operation(summary = "회원 정보 수정", description = "로그인된 회원의 정보를 수정합니다.")

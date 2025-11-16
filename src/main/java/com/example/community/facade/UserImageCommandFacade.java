@@ -24,8 +24,8 @@ public class UserImageCommandFacade {
 
     public void mapsImagesToUser(Long userId, Long profileImageId) {
         User user = userService.getUser(userId);
-        Optional<Image> image = imageService.findById(profileImageId);
+        Image image = imageService.findById(profileImageId);
 
-        image.ifPresent(value -> userImageService.save(user, value));
+        userImageService.save(user,image);
     }
 }

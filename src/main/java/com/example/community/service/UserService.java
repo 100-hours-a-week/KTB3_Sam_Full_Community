@@ -10,7 +10,6 @@ import com.example.community.repository.inmemory.InMemoryUserRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.reactive.TransactionalEventPublisher;
 
 import java.util.List;
 
