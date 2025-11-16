@@ -1,8 +1,6 @@
 package com.example.community.repository.impl;
 
-import com.example.community.entity.Board;
-import com.example.community.entity.QBoard;
-import com.example.community.entity.QUser;
+import com.example.community.entity.*;
 import com.example.community.repository.interfaces.BoardCustomRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -25,6 +23,8 @@ public class BoardRepositoryImpl implements BoardCustomRepository {
     public Page<Board> findAll(String title, String content, Pageable pageable) {
         QBoard board = QBoard.board;
         QUser user = QUser.user;
+        QUserImage userImage = QUserImage.userImage;
+        QImage image = QImage.image;
 
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -40,6 +40,8 @@ public class BoardRepositoryImpl implements BoardCustomRepository {
                 .select(board)
                 .from(board)
                 .join(board.user, user).fetchJoin()
+                .join(user.userImage, userImage).fetchJoin()
+                .join(userImage.image, image).fetchJoin()
                 .where(builder)
                 .orderBy(board.createdAt.desc())
                 .offset(pageable.getOffset())

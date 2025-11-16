@@ -5,10 +5,7 @@ import com.example.community.common.SuccessCode;
 import com.example.community.dto.PagedData;
 import com.example.community.dto.request.BoardPostRequest;
 import com.example.community.dto.request.BoardUpdateRequest;
-import com.example.community.dto.response.APIResponse;
-import com.example.community.dto.response.BoardInfoResponse;
-import com.example.community.dto.response.BoardPostResponse;
-import com.example.community.dto.response.PageApiResponse;
+import com.example.community.dto.response.*;
 import com.example.community.entity.Board;
 import com.example.community.facade.BoardCommandFacade;
 import com.example.community.facade.BoardQueryFacade;
@@ -79,7 +76,7 @@ public class BoardController {
             @ApiResponse(responseCode = "400", description = "invalid_request"),
             @ApiResponse(responseCode = "500", description = "internal_server_error")
     })
-    public ResponseEntity<APIResponse<BoardInfoResponse>> getBoardDetail(
+    public ResponseEntity<APIResponse<BoardDetailResponse>> getBoardDetail(
             @Parameter(description = "게시글 ID", required = true, example = "1")
             @PathVariable("id") Long id) {
         return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_DETAIL_FOUND, boardQueryFacade.getBoardDetail(id)));

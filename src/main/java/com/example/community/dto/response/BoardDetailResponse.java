@@ -3,12 +3,12 @@ package com.example.community.dto.response;
 import com.example.community.entity.Board;
 import com.example.community.entity.Image;
 import com.example.community.entity.User;
-import com.example.community.entity.UserImage;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-public record BoardInfoResponse(
+public record BoardDetailResponse(
         Long boardId,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss")
         LocalDateTime updateAt,
@@ -16,11 +16,11 @@ public record BoardInfoResponse(
         Integer likes,
         Integer visitors,
         Integer commentsCount,
+        List<Long> boardImageIds,
         String nickname,
         Long profileImageId
 ) {
-    public static BoardInfoResponse of(Board board, Integer likes,Integer visitors, Integer commentsCount, User user, Image image) {
-        return new BoardInfoResponse(board.getId(),board.getUpdatedAt(),  board.getTitle(), likes, visitors, commentsCount,user.getNickname(), image.getId());
+    public static BoardDetailResponse of(Board board, Integer likes, Integer visitors, Integer commentsCount,List<Long> boardImageIds, User user, Image image) {
+        return new BoardDetailResponse(board.getId(),board.getUpdatedAt(),  board.getTitle(), likes, visitors, commentsCount, boardImageIds, user.getNickname(), image.getId());
     }
-
 }

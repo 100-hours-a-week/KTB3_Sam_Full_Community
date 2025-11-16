@@ -19,10 +19,10 @@ public class UserBoardTest {
 
     @Test
     void userPostingTest() {
-        User user = new User("test@test.co.kr", "testPassword", "testNickname", 3L);
+        User user = new User("test@test.co.kr", "testPassword", "testNickname");
         em.persist(user);
 
-        Board newUserBoard = new Board("testBoardTitle", "testBoardContent",user);
+        Board newUserBoard = new Board("testBoardTitle", "testBoardContent", user);
         em.persist(newUserBoard);
 
         Board foundBoard = em.find(Board.class, 1L);

@@ -23,4 +23,8 @@ public class BoardImageService {
 
         return existingBoardImage.orElseGet(() -> boardImageRepository.save(new BoardImage(board, image)));
     }
+
+    public List<BoardImage> findByBoardId(Long boardId) {
+        return boardImageRepository.findByBoardId(boardId);
+    }
 }

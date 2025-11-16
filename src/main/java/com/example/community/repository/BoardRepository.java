@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardCustomRepository {
-    @Query("select b from Board b join fetch b.user where b.id = :boardId")
+    @Query("select b from Board b join fetch b.user u join fetch u.userImage ui join fetch ui.image i where b.id = :boardId")
     public Optional<Board> findById(@Param("boardId") Long boardId);
 
     @Query("select b from Board b where b.title = :title")
