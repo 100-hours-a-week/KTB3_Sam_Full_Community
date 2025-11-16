@@ -10,12 +10,12 @@ import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardCustomRepository {
     @Query("select b from Board b join fetch b.user u join fetch u.userImage ui join fetch ui.image i where b.id = :boardId")
-    public Optional<Board> findById(@Param("boardId") Long boardId);
+    Optional<Board> findById(@Param("boardId") Long boardId);
 
     @Query("select b from Board b where b.title = :title")
-    public Optional<Board> findByTitle(@Param("title") String title);
+    Optional<Board> findByTitle(@Param("title") String title);
 
     @Modifying
     @Query("delete from Board b where b.user.id = :userId")
-    public void deleteByUserId(@Param("userId") Long userId);
+    void deleteByUserId(@Param("userId") Long userId);
 }

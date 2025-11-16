@@ -14,15 +14,15 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long>, CommentCustomRepository {
     @Query("select c from Comment c join fetch c.user join fetch c.board where c.board.id in :boardIds ")
-    public List<Comment> findAllByBoardId(List<Long> boardIds);
+    List<Comment> findAllByBoardId(List<Long> boardIds);
 
     @Query("select c from Comment c join fetch c.user join fetch c.board where c.board.id= :boardId")
-    public List<Comment> findAllByBoardId(Long boardId);
+    List<Comment> findAllByBoardId(Long boardId);
 
     @Modifying
     @Query("delete from Comment c where c.board.id = :boardId")
-    public void deleteByBoardId(Long boardId);
+    void deleteByBoardId(Long boardId);
 
     @Query("select c from Comment c join fetch c.user join fetch c.board where c.board.id= :boardId")
-    public Page<Comment> findAllByBoardId(@Param("boardId") Long boardId, Pageable pageable);
+    Page<Comment> findAllByBoardId(@Param("boardId") Long boardId, Pageable pageable);
 }

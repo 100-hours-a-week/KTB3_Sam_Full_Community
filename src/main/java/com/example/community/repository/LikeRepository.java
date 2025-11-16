@@ -13,15 +13,15 @@ import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<Like, Long>, LikeCustomRepository {
     @Query("select l from Like l join fetch l.user join fetch l.board where l.user.id = :userId and l.board.id = :boardId")
-    public Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId);
+    Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId);
 
     @Query("select l from Like l join fetch l.board where l.board.id in :boardIds")
-    public List<Like> findAllByBoardIds(@Param("boardIds") List<Long> boardIds);
+    List<Like> findAllByBoardIds(@Param("boardIds") List<Long> boardIds);
 
     @Query("select l from Like l join fetch l.board where l.board.id = :boardId")
-    public List<Like> findAllByBoardId(Long boardId);
+    List<Like> findAllByBoardId(Long boardId);
 
     @Modifying
     @Query("delete from Like l where l.board.id = :boardId")
-    public void deleteByBoardId(@Param("boardId") Long boardId);
+    void deleteByBoardId(@Param("boardId") Long boardId);
 }
