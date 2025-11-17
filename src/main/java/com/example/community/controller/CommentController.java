@@ -9,6 +9,7 @@ import com.example.community.dto.response.CommentInfoResponse;
 import com.example.community.dto.response.CommentPostResponse;
 import com.example.community.dto.response.PageApiResponse;
 import com.example.community.entity.Comment;
+import com.example.community.facade.CommentCommandFacade;
 import com.example.community.facade.CommentQueryFacade;
 import com.example.community.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,11 +26,13 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "댓글 API", description = "댓글 관련 API")
 @RestController
 public class CommentController {
+    private final CommentCommandFacade commentCommandFacade;
     private final CommentQueryFacade commentQueryFacade;
     private final CommentService commentService;
     private final JwtUtil jwtUtil;
 
-    CommentController(CommentQueryFacade commentQueryFacade, CommentService commentService, JwtUtil jwtUtil) {
+    CommentController(CommentCommandFacade commentCommandFacade,CommentQueryFacade commentQueryFacade, CommentService commentService, JwtUtil jwtUtil) {
+        this.commentCommandFacade = commentCommandFacade;
         this.commentQueryFacade = commentQueryFacade;
         this.commentService = commentService;
         this.jwtUtil = jwtUtil;
@@ -48,7 +51,7 @@ public class CommentController {
                                                                         @PathVariable("boardId") Long boardId,
                                                                         @Valid @RequestBody CommentPostRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        Comment comment = commentService.postComment(userId, boardId, request.content());
+        Comment comment = commentCommandFacade.post(userId, boardId, request.content());
         return ResponseEntity.ok(APIResponse.success(SuccessCode.COMMENT_CREATED, CommentPostResponse.from(comment)));
     }
 
@@ -63,7 +66,7 @@ public class CommentController {
                                                                             @PathVariable("boardId") Long boardId,
                                                                             @RequestParam(defaultValue = "1") int page,
                                                                             @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(PageApiResponse.success(SuccessCode.ALL_COMMENTS_ON_BOARD_FOUND, commentQueryFacade.getCommentsPageByBoardId(boardId, page, size)));
+        return ResponseEntity.ok(PageApiResponse.success(SuccessCode.ALL_COMMENTS_ON_BOARD_FOUND, commentQueryFacade.getAllPagedCommentsByBoardId(boardId, page, size)));
     }
 
     @Operation(summary = "댓글 수정", description = "댓글 수정을 진행합니다.")
@@ -80,7 +83,7 @@ public class CommentController {
                                                            @PathVariable("id") Long id,
                                                            @Valid @RequestBody CommentModifyRequest request) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        commentService.updateComment(userId, id, request.content());
+        commentService.updateById(userId, id, request.content());
         return ResponseEntity.noContent().build();
     }
 
@@ -96,7 +99,7 @@ public class CommentController {
                                                             @Parameter(description = "삭제할 댓글 ID", required = true, example = "3")
                                                             @PathVariable("id") Long id) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        commentService.deleteComment(userId, id);
+        commentService.deleteById(userId, id);
         return ResponseEntity.noContent().build();
     }
 }

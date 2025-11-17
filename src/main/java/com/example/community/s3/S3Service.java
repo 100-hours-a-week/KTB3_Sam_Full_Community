@@ -31,13 +31,10 @@ public class S3Service {
         if (filename == null || filename.isEmpty()) {
             return null;
         }
-        String url = preSigner
+        return preSigner
                 .presignGetObject(getObjectPresignRequest(folder, filename))
                 .url()
                 .toString();
-
-        preSigner.close();
-        return url;
     }
 
     private GetObjectPresignRequest getObjectPresignRequest(String folder, String filename) {
@@ -55,13 +52,10 @@ public class S3Service {
             return null;
         }
 
-        String url = preSigner
+        return preSigner
                 .presignPutObject(putObjectPresignRequest(folder, filename))
                 .url()
                 .toString();
-
-        preSigner.close();
-        return url;
     }
 
     private PutObjectPresignRequest putObjectPresignRequest(String folder, String filename) {

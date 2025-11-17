@@ -7,7 +7,7 @@ public record LikePostResponse(
         Long boardId,
         Long userId
 ) {
-    public static LikePostResponse from(Like like) {
-        return new LikePostResponse(like.getId(), like.getBoardId(), like.getUserId());
+    public static LikePostResponse of(Like like, Long boardId, Long userId) {
+        return new LikePostResponse(like.getId(), boardId,userId);
     }
 }

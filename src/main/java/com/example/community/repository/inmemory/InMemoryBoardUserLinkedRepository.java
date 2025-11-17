@@ -1,17 +1,18 @@
-package com.example.community.repository;
+package com.example.community.repository.inmemory;
 
 import com.example.community.entity.BaseEntity;
 import com.example.community.entity.interfaces.BoardLinked;
+import com.example.community.entity.interfaces.Identifiable;
 import com.example.community.entity.interfaces.UserLinked;
-import com.example.community.repository.interfaces.BoardAggregateRepository;
-import com.example.community.repository.interfaces.CRUDRepository;
+import com.example.community.repository.inmemory.interfaces.BoardAggregateRepository;
+import com.example.community.repository.inmemory.interfaces.CRUDRepository;
 import lombok.Locked;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class BoardUserLinkedRepository<T extends BaseEntity & BoardLinked & UserLinked> implements CRUDRepository<T>, BoardAggregateRepository<T> {
+public class InMemoryBoardUserLinkedRepository<T extends BaseEntity & BoardLinked & UserLinked & Identifiable> implements CRUDRepository<T>, BoardAggregateRepository<T> {
     protected Map<Long, T> db = new LinkedHashMap<>();
     protected long sequence = 0L;
     protected Map<Long, Map<Long, Long>> indexMap = new ConcurrentHashMap<>();

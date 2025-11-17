@@ -20,6 +20,7 @@ public enum ErrorCode {
     DUPLICATE_EMAIL(HttpStatus.CONFLICT, "duplicate_email"),
     ALREADY_REGISTERED_EMAIL(HttpStatus.BAD_REQUEST, "already_exist_email"),
     ALREADY_REGISTERED_NICKNAME(HttpStatus.BAD_REQUEST, "already_exist_nickname"),
+    NOT_FOUND_USER_IMAGE(HttpStatus.NOT_FOUND, "not_found_user_image"),
 
     //게시글
     NOT_FOUND_BOARD(HttpStatus.NOT_FOUND, "not_found_board"),

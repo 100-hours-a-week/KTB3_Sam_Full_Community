@@ -1,5 +1,6 @@
 package com.example.community.event;
 
+import com.example.community.facade.CommentCommandFacade;
 import com.example.community.service.CommentService;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

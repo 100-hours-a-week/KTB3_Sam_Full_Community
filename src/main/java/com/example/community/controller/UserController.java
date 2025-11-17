@@ -6,9 +6,11 @@ import com.example.community.dto.request.PasswordModifyRequest;
 import com.example.community.dto.request.UserModifyRequest;
 import com.example.community.dto.request.UserRegisterRequest;
 import com.example.community.dto.response.APIResponse;
+import com.example.community.dto.response.DuplicationCheckResponse;
 import com.example.community.dto.response.UserInfoResponse;
 import com.example.community.dto.response.UserRegisterResponse;
 import com.example.community.entity.User;
+import com.example.community.facade.UserImageQueryFacade;
 import com.example.community.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,10 +26,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final UserImageQueryFacade userImageQueryFacade;
     private final JwtUtil jwtUtil;
 
-    UserController(UserService userService, JwtUtil jwtUtil) {
+    UserController(UserService userService, UserImageQueryFacade userImageQueryFacade, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.userImageQueryFacade = userImageQueryFacade;
         this.jwtUtil = jwtUtil;
     }
 
@@ -53,8 +57,10 @@ public class UserController {
     })
     public ResponseEntity<APIResponse<UserInfoResponse>> getUser(HttpServletRequest servletRequest) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        User user = userService.getUser(userId);
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.USER_FOUND,UserInfoResponse.from(user)));
+        
+        UserInfoResponse userInfoResponse = userImageQueryFacade.getUser(userId);
+
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.USER_FOUND,userInfoResponse));
     }
 
     @Operation(summary = "회원 정보 수정", description = "로그인된 회원의 정보를 수정합니다.")
@@ -99,5 +105,27 @@ public class UserController {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "이메일 중복 확인", description = "이메일의 중복 여부를 확인합니다.")
+    @GetMapping("/users/email")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "email_duplication_checked"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
+    public ResponseEntity<APIResponse<DuplicationCheckResponse>> checkEmailDuplicated (@RequestParam("email") String email) {
+        Boolean isEmailExists = userService.checkEmailDuplicated(email);
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.EMAIL_DUPLICATION_CHECKED, DuplicationCheckResponse.from(isEmailExists)));
+    }
+
+    @Operation(summary = "닉네임 중복 확인", description = "닉네임의 중복 여부를 확인합니다.")
+    @GetMapping("/users/nickname")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "nickname_duplication_checked"),
+            @ApiResponse(responseCode = "500", description = "internal_server_error")
+    })
+    public ResponseEntity<APIResponse<DuplicationCheckResponse>> checkNicknameDuplicated (@RequestParam("nickname") String nickname) {
+        Boolean isNicknameExists = userService.checkNicknameDuplicated(nickname);
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.NICKNAME_DUPLICATION_CHECKED, DuplicationCheckResponse.from(isNicknameExists)));
     }
 }
