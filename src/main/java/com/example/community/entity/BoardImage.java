@@ -18,6 +18,8 @@ public class BoardImage {
     @JoinColumn(name = "image_id")
     Image image;
 
+    BoardImage() {}
+
     public BoardImage(Board board, Image image) {
         this.board = board;
         this.image = image;

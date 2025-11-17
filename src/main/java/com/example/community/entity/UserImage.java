@@ -18,6 +18,8 @@ public class UserImage extends BaseEntity{
     @JoinColumn(name = "image_id")
     Image image;
 
+    UserImage() {}
+
     public UserImage(User user, Image image) {
         this.user = user;
         this.image = image;
