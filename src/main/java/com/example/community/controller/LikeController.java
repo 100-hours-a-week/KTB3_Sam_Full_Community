@@ -3,6 +3,7 @@ package com.example.community.controller;
 import com.example.community.auth.JwtUtil;
 import com.example.community.common.SuccessCode;
 import com.example.community.dto.response.APIResponse;
+import com.example.community.dto.response.BoardLikedCheckResponse;
 import com.example.community.dto.response.LikePostResponse;
 import com.example.community.entity.Like;
 import com.example.community.facade.LikeCommandFacade;
@@ -15,10 +16,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "좋아요 API", description = "좋아요 추가,삭제 API")
 @RestController
@@ -64,5 +62,16 @@ public class LikeController {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
         likeService.deleteByUserIdAndBoardId(userId, boardId);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "좋아요 여부 조회", description = "입력받은 유저 ID가 게시글 ID에 해당하는 게시글에 좋아요를 눌렀는지 조회합니다.")
+    @GetMapping("/boards/{boardId}/like")
+    @SecurityRequirement(name = "JWT")
+    public ResponseEntity<APIResponse<BoardLikedCheckResponse>> checkBoardLiked (HttpServletRequest servletRequest,
+                                                                        @Parameter(description = "좋아요 조회할 게시글 ID", required = true)
+                                                        @PathVariable("boardId") Long boardId) {
+        Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
+        Boolean isLiked = likeService.checkBoardLiked(userId, boardId);
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_LIKED, BoardLikedCheckResponse.from(isLiked)));
     }
 }

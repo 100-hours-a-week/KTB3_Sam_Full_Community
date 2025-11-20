@@ -1,5 +1,6 @@
-package com.example.community.event;
+package com.example.community.event.handler;
 
+import com.example.community.event.BoardDeletedEvent;
 import com.example.community.service.CommentService;
 import com.example.community.service.LikeService;
 import org.springframework.context.event.EventListener;

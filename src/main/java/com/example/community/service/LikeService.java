@@ -49,4 +49,9 @@ public class LikeService {
     public Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId) {
         return likeRepository.findByUserIdAndBoardId(userId, boardId);
     }
+
+    @Transactional(readOnly = true)
+    public Boolean checkBoardLiked(Long userId, Long boardId) {
+        return likeRepository.findByUserIdAndBoardId(userId, boardId).isPresent();
+    }
 }

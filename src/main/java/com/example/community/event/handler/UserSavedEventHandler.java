@@ -1,5 +1,6 @@
-package com.example.community.event;
+package com.example.community.event.handler;
 
+import com.example.community.event.UserSavedEvent;
 import com.example.community.facade.UserImageCommandFacade;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
