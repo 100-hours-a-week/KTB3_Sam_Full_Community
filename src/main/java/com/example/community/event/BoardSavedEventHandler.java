@@ -5,10 +5,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BoardImageEventHandler {
+public class BoardSavedEventHandler {
     private final BoardImageCommandFacade boardImageCommandFacade;
 
-    BoardImageEventHandler(BoardImageCommandFacade boardImageCommandFacade) {
+    BoardSavedEventHandler(BoardImageCommandFacade boardImageCommandFacade) {
         this.boardImageCommandFacade = boardImageCommandFacade;
     }
 

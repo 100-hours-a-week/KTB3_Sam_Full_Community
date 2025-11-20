@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,8 +25,10 @@ public class CommentQueryFacade {
     @Transactional(readOnly = true)
     public PagedData getAllPagedCommentsByBoardId(Long boardId, int page, int size) {
         Page<Comment> comments = commentService.findPageByBoardId(boardId, page,size);
+
         List<CommentInfoResponse> commentInfoResponses = comments.stream()
-                .map(CommentInfoResponse::from)
+                .map(comment ->
+                        CommentInfoResponse.from(comment, comment.getUser().getNickname(), comment.getUser().getUserImage().getImage().getId()))
                 .toList();
 
         return new PagedData(commentInfoResponses, PageInfo.from(comments));

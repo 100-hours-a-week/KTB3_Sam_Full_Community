@@ -8,6 +8,7 @@ import com.example.community.entity.User;
 import com.example.community.repository.CommentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +36,7 @@ public class CommentService {
     }
 
     public Page<Comment> findPageByBoardId(Long boardId, int page, int size) {
-        return commentRepository.findAllByBoardId(boardId, PageRequest.of(page-1,size));
+        return commentRepository.findAllByBoardId(boardId, PageRequest.of(page-1,size, Sort.by(Sort.Direction.DESC, "updatedAt")));
     }
 
     @Transactional

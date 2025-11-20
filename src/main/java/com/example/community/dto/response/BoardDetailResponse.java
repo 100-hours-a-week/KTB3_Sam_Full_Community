@@ -13,6 +13,7 @@ public record BoardDetailResponse(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss")
         LocalDateTime updateAt,
         String title,
+        String content,
         Integer likes,
         Integer visitors,
         Integer commentsCount,
@@ -20,7 +21,18 @@ public record BoardDetailResponse(
         String nickname,
         Long profileImageId
 ) {
-    public static BoardDetailResponse of(Board board, Integer likes, Integer visitors, Integer commentsCount,List<Long> boardImageIds, User user, Image image) {
-        return new BoardDetailResponse(board.getId(),board.getUpdatedAt(),  board.getTitle(), likes, visitors, commentsCount, boardImageIds, user.getNickname(), image.getId());
+    public static BoardDetailResponse of(Board board, Integer likes, Integer visitors, Integer commentsCount,List<Long> boardImageIds, User user, Long profileImageId) {
+        return new BoardDetailResponse(
+                board.getId(),
+                board.getUpdatedAt(),
+                board.getTitle(),
+                board.getContent(),
+                likes,
+                visitors,
+                commentsCount,
+                boardImageIds,
+                user.getNickname(),
+                profileImageId
+        );
     }
 }

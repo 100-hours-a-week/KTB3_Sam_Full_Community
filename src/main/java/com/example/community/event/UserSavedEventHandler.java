@@ -5,10 +5,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserImageEventHandler {
+public class UserSavedEventHandler {
     private final UserImageCommandFacade userImageCommandFacade;
 
-    UserImageEventHandler(UserImageCommandFacade userImageCommandFacade) {
+    UserSavedEventHandler(UserImageCommandFacade userImageCommandFacade) {
         this.userImageCommandFacade = userImageCommandFacade;
     }
 

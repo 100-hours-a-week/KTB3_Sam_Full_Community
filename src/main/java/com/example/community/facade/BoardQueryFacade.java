@@ -40,6 +40,9 @@ public class BoardQueryFacade {
 
         List<Long> boardIds = boards.stream().map(Board::getId).toList();
 
+        System.out.println(boardIds);
+        System.out.println(boards.stream().map(Board::getUser));
+
         Map<Long, List<Like>> likeMap = likeService.findAllByPagedBoardIds(boardIds)
                 .stream()
                 .collect(Collectors.groupingBy(Like::getBoardId));
@@ -62,13 +65,13 @@ public class BoardQueryFacade {
         return new PagedData(responses,PageInfo.from(boards));
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public BoardDetailResponse getBoardDetail(Long boardId) {
         Board board = boardService.findById(boardId);
         List<Comment> comments = commentService.findAllByBoardId(boardId);
         List<Like> likes = likeService.findAllByBoard(boardId);
-        List<Long> boardImageIds = boardImageService.findByBoardId(boardId).stream().map(BoardImage::getId).toList();
+        List<Long> boardImageIds = boardImageService.findByBoardId(boardId).stream().map(boardImage -> boardImage.getImage().getId()).toList();
 
-        return BoardDetailResponse.of(board, comments.size(),board.recordVisit(), likes.size(), boardImageIds, board.getUser(), board.getUser().getUserImage().getImage());
+        return BoardDetailResponse.of(board, likes.size(),board.recordVisit(), comments.size(), boardImageIds, board.getUser(), board.getUser().getUserImage().getImage().getId());
     }
 }

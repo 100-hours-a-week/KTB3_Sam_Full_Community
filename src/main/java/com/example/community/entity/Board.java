@@ -17,6 +17,7 @@ public class Board extends BaseEntity implements Identifiable {
     private Long id;
     private final AtomicInteger visitors = new AtomicInteger(0);
     private String title;
+    @Column(columnDefinition = "LONGTEXT")
     private String content;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)

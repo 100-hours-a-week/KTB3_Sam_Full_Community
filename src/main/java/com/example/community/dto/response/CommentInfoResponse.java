@@ -11,9 +11,10 @@ public record CommentInfoResponse(
         LocalDateTime updateAt,
         String content,
         Long boardId,
-        Long userId
+        String nickname,
+        Long profileImageId
 ) {
-    public static CommentInfoResponse from(Comment comment) {
-        return new CommentInfoResponse(comment.getId(), comment.getUpdatedAt(), comment.getContent(), comment.getBoardId(), comment.getUser().getId());
+    public static CommentInfoResponse from(Comment comment, String nickname, Long profileImageId) {
+        return new CommentInfoResponse(comment.getId(), comment.getUpdatedAt(), comment.getContent(), comment.getBoardId(), nickname, profileImageId);
     }
 }

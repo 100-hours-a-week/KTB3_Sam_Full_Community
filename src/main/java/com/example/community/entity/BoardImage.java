@@ -8,6 +8,7 @@ import lombok.Getter;
 public class BoardImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "board_image_id")
     private Long id;
 
     @ManyToOne

@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS users(
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  user_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   password VARCHAR(65) NOT NULL,
@@ -10,20 +10,20 @@ CREATE TABLE IF NOT EXISTS users(
 );
 
 CREATE TABLE IF NOT EXISTS board(
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  board_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   user_id BIGINT NOT NULL,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   visitors INT NOT NULL DEFAULT 0,
   title VARCHAR(150) NOT NULL,
-  content VARCHAR(1000) NOT NULL,
+  content LONGTEXT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id),
   INDEX idx_board_user_id (user_id),
   INDEX idx_board_created_at (created_at)
 );
 
 CREATE TABLE IF NOT EXISTS comment(
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  comment_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   board_id BIGINT NOT NULL,
   user_id BIGINT NOT NULL,
   created_at DATETIME NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS comment(
 );
 
 CREATE TABLE IF NOT EXISTS  likes(
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  like_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   board_id BIGINT NOT NULL,
   user_id BIGINT NOT NULL,
   created_at DATETIME NOT NULL,
@@ -49,34 +49,34 @@ CREATE TABLE IF NOT EXISTS  likes(
   INDEX idx_like_created_at (created_at)
 );
 
-CREATE TABLE IF NOT EXISTS  image (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS  image(
+  image_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   created_at DATETIME NOT NULL,
-  updated_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS  board_image(
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  board_image_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   board_id BIGINT NOT NULL,
   image_id BIGINT NOT NULL,
   UNIQUE KEY uq_board_image (board_id, image_id),
   FOREIGN KEY (board_id) REFERENCES board(id),
-  FOREIGN KEY (image_id) REFERENCES image(id)
+  FOREIGN KEY (image_id) REFERENCES image(id),
   INDEX idx_board_image_board_id (board_id),
   INDEX idx_board_image_created_at (created_at)
 );
 
 CREATE TABLE IF NOT EXISTS  user_image(
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  user_image_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   user_id BIGINT NOT NULL,
   image_id BIGINT NOT NULL,
   UNIQUE KEY uq_user_image (user_id, image_id),
   FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (image_id) REFERENCES image(id)
+  FOREIGN KEY (image_id) REFERENCES image(id),
   INDEX idx_user_image_user_id (user_id),
   INDEX idx_user_image_created_at (created_at)
 );

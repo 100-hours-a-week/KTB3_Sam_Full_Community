@@ -71,8 +71,8 @@ public class UserService {
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
-        userRepository.deleteById(userId);
         eventPublisher.publishEvent(new UserDeletedEvent(userId));
+        userRepository.deleteById(userId);
     }
 
     @Transactional(readOnly = true)

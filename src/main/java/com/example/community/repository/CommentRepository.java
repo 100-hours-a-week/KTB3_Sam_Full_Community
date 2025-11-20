@@ -16,13 +16,13 @@ public interface CommentRepository extends JpaRepository<Comment, Long>, Comment
     @Query("select c from Comment c join fetch c.user join fetch c.board where c.board.id in :boardIds ")
     List<Comment> findAllByBoardId(List<Long> boardIds);
 
-    @Query("select c from Comment c join fetch c.user join fetch c.board where c.board.id= :boardId")
+    @Query("select c from Comment c join fetch c.user u join fetch u.userImage ui join fetch c.board b where b.id= :boardId")
     List<Comment> findAllByBoardId(Long boardId);
 
     @Modifying
     @Query("delete from Comment c where c.board.id = :boardId")
     void deleteByBoardId(Long boardId);
 
-    @Query("select c from Comment c join fetch c.user join fetch c.board where c.board.id= :boardId")
+    @Query("select c from Comment c join fetch c.user u join fetch u.userImage ui join fetch ui.image i join fetch c.board b where b.id= :boardId")
     Page<Comment> findAllByBoardId(@Param("boardId") Long boardId, Pageable pageable);
 }

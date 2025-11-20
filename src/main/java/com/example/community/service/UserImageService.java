@@ -27,4 +27,8 @@ public class UserImageService {
     public UserImage findByUserId(Long userId) {
         return userImageRepository.findByUserId(userId).orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER_IMAGE));
     }
+
+    public void deleteByUserId(Long userId) {
+        userImageRepository.deleteByUserId(userId);
+    }
 }

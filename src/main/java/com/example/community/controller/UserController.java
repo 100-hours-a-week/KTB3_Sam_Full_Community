@@ -57,14 +57,14 @@ public class UserController {
     })
     public ResponseEntity<APIResponse<UserInfoResponse>> getUser(HttpServletRequest servletRequest) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        
+
         UserInfoResponse userInfoResponse = userImageQueryFacade.getUser(userId);
 
         return ResponseEntity.ok(APIResponse.success(SuccessCode.USER_FOUND,userInfoResponse));
     }
 
     @Operation(summary = "회원 정보 수정", description = "로그인된 회원의 정보를 수정합니다.")
-    @PatchMapping("/users")
+    @PutMapping("/users")
     @SecurityRequirement(name = "JWT")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "no_content"),
