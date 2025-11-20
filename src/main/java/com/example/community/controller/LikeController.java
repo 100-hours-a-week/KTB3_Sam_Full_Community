@@ -71,7 +71,7 @@ public class LikeController {
                                                                         @Parameter(description = "좋아요 조회할 게시글 ID", required = true)
                                                         @PathVariable("boardId") Long boardId) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        Boolean isLiked = likeService.checkBoardLiked(userId, boardId);
+        boolean isLiked = likeService.checkBoardLiked(userId, boardId);
         return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_LIKED, BoardLikedCheckResponse.from(isLiked)));
     }
 }
