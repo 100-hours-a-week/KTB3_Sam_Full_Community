@@ -19,9 +19,19 @@ public class UserImageService {
     }
 
     public UserImage save(User user, Image image) {
-        Optional<UserImage> existingUserImage = userImageRepository.findByUserIdAndImageId(user.getId(), image.getId());
+        Optional<UserImage> existing = userImageRepository.findByUserId(user.getId());
 
-        return existingUserImage.orElseGet(() -> userImageRepository.save(new UserImage(user,image)));
+        if(existing.isPresent()) {
+            UserImage current = existing.get();
+
+            if(current.getImage().getId().equals(image.getId())) {
+                return current;
+            }
+
+            userImageRepository.deleteByUserId(user.getId());
+        }
+
+        return userImageRepository.save(new UserImage(user,image));
     }
 
     public UserImage findByUserId(Long userId) {
