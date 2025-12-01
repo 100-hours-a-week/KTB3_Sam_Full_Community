@@ -1,13 +1,12 @@
 package com.example.community.service;
 
-import com.example.community.auth.JwtUtil;
-import com.example.community.auth.TokenBlackList;
+import com.example.community.auth.jwt.JwtUtil;
+import com.example.community.auth.jwt.TokenBlackList;
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.dto.AuthToken;
 import com.example.community.entity.User;
 import com.example.community.repository.UserRepository;
-import com.example.community.repository.inmemory.InMemoryUserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

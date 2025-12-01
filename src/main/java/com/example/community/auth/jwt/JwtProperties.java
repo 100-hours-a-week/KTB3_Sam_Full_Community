@@ -1,4 +1,4 @@
-package com.example.community.auth.properties;
+package com.example.community.auth.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

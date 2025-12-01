@@ -1,4 +1,4 @@
-package com.example.community.auth;
+package com.example.community.auth.userdetails;
 
 import com.example.community.entity.User;
 import org.springframework.security.core.GrantedAuthority;

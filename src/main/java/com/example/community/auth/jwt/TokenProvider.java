@@ -1,4 +1,4 @@
-package com.example.community.auth;
+package com.example.community.auth.jwt;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

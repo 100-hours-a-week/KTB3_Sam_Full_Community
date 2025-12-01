@@ -1,4 +1,4 @@
-package com.example.community.auth;
+package com.example.community.auth.jwt;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;

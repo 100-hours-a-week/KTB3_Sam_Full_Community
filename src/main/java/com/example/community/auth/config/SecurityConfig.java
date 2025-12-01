@@ -1,6 +1,8 @@
 package com.example.community.auth.config;
 
-import com.example.community.auth.JwtCustomFilter;
+import com.example.community.auth.handler.CustomAccessDeniedHandler;
+import com.example.community.auth.handler.CustomAuthenticationEntryPoint;
+import com.example.community.auth.jwt.JwtCustomFilter;
 import com.example.community.auth.cors.CorsCustomFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +30,10 @@ public class SecurityConfig {
 
                 .sessionManagement(session
                         -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                        .accessDeniedHandler(new CustomAccessDeniedHandler()))
 
 
                 .addFilterBefore(jwtCustomFilter, UsernamePasswordAuthenticationFilter.class)
