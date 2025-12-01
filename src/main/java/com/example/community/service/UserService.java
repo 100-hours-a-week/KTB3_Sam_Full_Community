@@ -8,6 +8,7 @@ import com.example.community.event.UserSavedEvent;
 import com.example.community.repository.UserRepository;
 import com.example.community.repository.inmemory.InMemoryUserRepository;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +18,12 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final PasswordEncoder passwordEncoder;
 
-    UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher) {
+    UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.eventPublisher = eventPublisher;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -28,7 +31,8 @@ public class UserService {
         validateEmail(email);
         validateNickname(nickname);
 
-        User user = userRepository.save(new User(email,password, nickname));
+        String encodedPassword = passwordEncoder.encode(password);
+        User user = userRepository.save(new User(email,encodedPassword, nickname));
 
         eventPublisher.publishEvent(new UserSavedEvent(user.getId(), profileImageId));
 
@@ -63,7 +67,8 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
 
-        user.updatePassword(password);
+        String encodedPassword = passwordEncoder.encode(password);
+        user.updatePassword(encodedPassword);
         userRepository.save(user);
     }
 
