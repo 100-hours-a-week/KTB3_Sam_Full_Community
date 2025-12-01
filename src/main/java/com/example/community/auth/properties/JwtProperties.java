@@ -1,4 +1,4 @@
-package com.example.community.auth;
+package com.example.community.auth.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

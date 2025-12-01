@@ -1,4 +1,4 @@
-package com.example.community.cors;
+package com.example.community.auth.cors;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @Component
 @Order(0)
-public class CorsFilter implements Filter {
+public class CorsCustomFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {

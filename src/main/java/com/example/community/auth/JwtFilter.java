@@ -2,60 +2,43 @@ package com.example.community.auth;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @Component
-public class JwtFilter implements Filter {
-    private final JwtUtil jwtUtil;
-    private final ExcludePathMatcher excludePathMatcher;
+public class JwtFilter extends OncePerRequestFilter {
+    private final TokenProvider tokenProvider;
     private final TokenBlackList tokenBlackList;
 
-    public JwtFilter(JwtUtil jwtUtil, ExcludePathMatcher excludePathMatcher, TokenBlackList tokenBlackList) {
-        this.jwtUtil = jwtUtil;
-        this.excludePathMatcher = excludePathMatcher;
+    JwtFilter(TokenProvider tokenProvider, TokenBlackList tokenBlackList) {
+        this.tokenProvider = tokenProvider;
         this.tokenBlackList = tokenBlackList;
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String token = resolveToken(request);
 
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
+        if(validateToken(token)) {
 
-        if(excludePathMatcher.isExcluded(req)) {
-            chain.doFilter(request,response);
-            return;
         }
+    }
 
-        String header = req.getHeader("Authorization");
-        if (header == null || !header.startsWith("Bearer ")) {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+    private boolean validateToken(String token) {
+        return false;
+    }
+
+    private String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
         }
-
-        String token = header.substring(7);
-        Long userId = jwtUtil.extractUserId(token);
-
-        if (userId == null || jwtUtil.isExpired(token)) {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
-        if(tokenBlackList.contains(userId,token)) {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
-        req.setAttribute("accessToken", token);
-
-        chain.doFilter(request, response);
+        return null;
     }
 }
