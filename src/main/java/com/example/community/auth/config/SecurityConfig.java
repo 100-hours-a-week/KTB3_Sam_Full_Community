@@ -3,9 +3,11 @@ package com.example.community.auth.config;
 import com.example.community.auth.handler.CustomAccessDeniedHandler;
 import com.example.community.auth.handler.CustomAuthenticationEntryPoint;
 import com.example.community.auth.jwt.JwtFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -86,5 +88,10 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
 
         return source;
+    }
+
+    @Autowired
+    public void configure(AuthenticationManagerBuilder builder) {
+        builder.eraseCredentials(false);
     }
 }
