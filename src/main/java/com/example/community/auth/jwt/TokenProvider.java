@@ -1,5 +1,6 @@
 package com.example.community.auth.jwt;
 
+import com.example.community.auth.userdetails.CustomUserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,19 +10,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class TokenProvider {
     private final JwtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
     private final TokenBlackList tokenBlackList;
 
-    TokenProvider(JwtUtil jwtUtil, UserDetailsService userDetailsService, TokenBlackList tokenBlackList) {
+    TokenProvider(JwtUtil jwtUtil, CustomUserDetailsService customUserDetailsService, TokenBlackList tokenBlackList) {
         this.jwtUtil = jwtUtil;
-        this.userDetailsService = userDetailsService;
+        this.customUserDetailsService = customUserDetailsService;
         this.tokenBlackList = tokenBlackList;
     }
 
     public Authentication getAuthentication(String token) {
         Long userId = jwtUtil.extractUserId(token);
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userId.toString());
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId.toString());
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
