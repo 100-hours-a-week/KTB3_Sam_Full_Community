@@ -50,9 +50,7 @@ public class AuthService {
     }
 
     private void validatePassword(User user, String password) {
-        String encodedPassword = passwordEncoder.encode(password);
-
-        if(!user.getPassword().equals(encodedPassword)) {
+        if(!passwordEncoder.matches(password, user.getPassword())) {
             throw new BaseException(ErrorCode.INVALID_PASSWORD);
         }
     }
