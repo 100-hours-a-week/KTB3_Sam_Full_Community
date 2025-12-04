@@ -45,10 +45,6 @@ public class UserService {
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
     }
 
-    public List<User> getUserByIds(List<Long> userIds) {
-        return userRepository.findAllById(userIds);
-    }
-
     @Transactional
     public void modifyUser(Long userId,String nickname, Long profileImageId ) {
         User user = userRepository.findById(userId)
