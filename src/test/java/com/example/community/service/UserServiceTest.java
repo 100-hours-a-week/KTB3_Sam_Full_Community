@@ -3,6 +3,7 @@ package com.example.community.service;
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.User;
+import com.example.community.event.UserDeletedEvent;
 import com.example.community.event.UserSavedEvent;
 import com.example.community.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -197,14 +198,88 @@ class UserServiceTest {
     }
 
     @Test
-    void deleteUser() {
+    void 유저_아이디에_해당하는_유저가_존재하는_경우_삭제를_진행한다() {
+        //given
+        Long userId = 1L;
+        User alreadSavedUser = new User("email", "encodedPassword", "nickname");
+        given(userRepository.findById(userId)).willReturn(Optional.of(alreadSavedUser));
+
+        //when
+        userService.deleteUser(userId);
+
+
+        //then
+        then(userRepository).should(times(1)).deleteById(userId);
+        then(eventPublisher).should(times(1)).publishEvent(any(UserDeletedEvent.class));
     }
 
     @Test
-    void checkEmailDuplicated() {
+    void 유저_아이디에_해당하는_유저가_존재하지않는_경우_삭제를_진행하지_않는다() {
+        //given
+        Long userId = 1L;
+        User alreadSavedUser = new User("email", "encodedPassword", "nickname");
+        given(userRepository.findById(userId)).willReturn(Optional.empty());
+
+        //when
+        final BaseException result = assertThrows(BaseException.class, () -> userService.deleteUser(userId));
+
+
+        //then
+        assertThat(result.getErrorCode()).isEqualTo(ErrorCode.NOT_FOUND_USER);
+
     }
 
     @Test
-    void checkNicknameDuplicated() {
+    void 이메일이_중복될경우_True를_반환한다() {
+        //given
+        String alreadyExistUserEmail = "email";
+        given(userRepository.existByEmail(alreadyExistUserEmail)).willReturn(true);
+
+        //when
+        boolean checkEmail = userService.checkEmailDuplicated(alreadyExistUserEmail);
+
+
+        //then
+        assertThat(checkEmail).isEqualTo(Boolean.TRUE);
+    }
+
+    @Test
+    void 이메일이_중복이_아닐경우_False를_반환한다() {
+        //given
+        String email = "email";
+        given(userRepository.existByEmail(email)).willReturn(false);
+
+        //when
+        boolean checkEmail = userService.checkEmailDuplicated(email);
+
+        //then
+        assertThat(checkEmail).isEqualTo(Boolean.FALSE);
+    }
+
+    @Test
+    void 닉네임이_중복인경우_True를_반환한다() {
+        //given
+        String alreadyExistUserNickname = "nickname";
+        given(userRepository.existByNickname(alreadyExistUserNickname)).willReturn(true);
+
+        //when
+        boolean checkNickname = userService.checkNicknameDuplicated(alreadyExistUserNickname);
+
+        //then
+        assertThat(checkNickname).isEqualTo(Boolean.TRUE);
+    }
+
+    @Test
+    void 닉네임이_중복이_아닌경우_False를_반환한다() {
+        //given
+        String nickname = "nickname";
+        given(userRepository.existByNickname(nickname)).willReturn(false);
+
+        //when
+        boolean checkNickname = userService.checkNicknameDuplicated(nickname);
+
+        //then
+        assertThat(checkNickname).isEqualTo(Boolean.FALSE);
+
     }
 }
