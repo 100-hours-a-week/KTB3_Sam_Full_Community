@@ -1,4 +1,4 @@
-package com.example.community.auth.cors;
+package com.example.community.auth.customfilters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

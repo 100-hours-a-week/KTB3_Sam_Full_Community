@@ -72,7 +72,22 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
     finalizedBy jacocoTestReport
+    finalizedBy jacocoTestCoverageVerification
 }
+
+def jacocoExcludes = [
+        '**/config/**',
+        '**/dto/**',
+        '**/entity/**',
+        '**/common/**',
+        '**/auth/customfilters/**',
+        '**/repository/inmemory/**',
+        '**/springmvcpractice/**',
+        '**/generated/**',
+        '**/Q*',
+        '**/*Application*',
+
+]
 
 jacocoTestReport {
     dependsOn test
@@ -80,6 +95,35 @@ jacocoTestReport {
         xml.required = false
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect{
+                    fileTree(dir: it, exclude: jacocoExcludes)
+                })
+        )
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+            excludes = jacocoExcludes
+
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.90
+            }
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.80
+            }
+        }
     }
 }
 
