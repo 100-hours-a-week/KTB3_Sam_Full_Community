@@ -144,7 +144,7 @@ class UserServiceTest {
 
     @Test
     void 유저_아이디_닉네임_프로필이미지_아이디를_모두_입력받은경우_사용자_정보가_성공적으로_수정된다() {
-        //give
+        //given
         Long userId = 1L;
         String newNickname = "newnickname";
         Long newProfileImageId = 100L;
@@ -162,7 +162,38 @@ class UserServiceTest {
     }
 
     @Test
-    void changePassword() {
+    void 유저_아이디와_비밀번호_그리고_비밀번호확인이_올바른경우_성공적으로_비밀번호가_변경된다() {
+        //given
+        Long userId = 1L;
+        String password = "newPassword";
+        String checkPassword = "newPassword";
+
+        User alreadSavedUser = new User("email", "encodedPassword", "nickname");
+        given(userRepository.findById(userId)).willReturn(Optional.of(alreadSavedUser));
+
+
+        //when
+        userService.changePassword(userId, password, checkPassword);
+
+
+        //then
+        then(userRepository).should(times(1)).save(any(User.class));
+    }
+
+    @Test
+    void 비밀번호와_비밀번호확인이_일치하지않는경우_비밀번호가_변경되지_않는다() {
+        //given
+        Long userId = 1L;
+        String password = "newPassword";
+        String checkPassword = "notSamePassword";
+
+
+        //when
+        final BaseException result = assertThrows(BaseException.class, () -> userService.changePassword(userId, password, checkPassword));
+
+
+        //then
+        assertThat(result.getErrorCode()).isEqualTo(ErrorCode.INVALID_REQUEST);
     }
 
     @Test
