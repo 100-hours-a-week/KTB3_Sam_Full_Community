@@ -9,7 +9,6 @@ import com.example.community.dto.request.UserRegisterRequest;
 import com.example.community.dto.response.UserInfoResponse;
 import com.example.community.entity.User;
 import com.example.community.facade.UserImageQueryFacade;
-import com.example.community.repository.UserRepository;
 import com.example.community.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,18 +49,14 @@ class UserControllerTest {
 
     private MockMvc mvc;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private JacksonTester<UserRegisterRequest> userRegisterRequest;
-    private JacksonTester<UserModifyRequest> userModifyRequest;
 
     @BeforeEach
     void setUp() {
         mvc = MockMvcBuilders.standaloneSetup(userController)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        JacksonTester.initFields(this, objectMapper);
     }
 
 
@@ -80,7 +75,7 @@ class UserControllerTest {
         //when, then
         mvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(userRegisterRequest.write(validRequest).getJson()))
+                .content(toJson(validRequest)))
 
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.userId").value(1L));
@@ -99,7 +94,7 @@ class UserControllerTest {
         //when, then
         mvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(userRegisterRequest.write(conflictRequest).getJson()))
+                        .content(toJson(conflictRequest)))
 
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value(ErrorCode.ALREADY_REGISTERED_EMAIL.getMessage()));
@@ -118,7 +113,7 @@ class UserControllerTest {
         //when, then
         mvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(userRegisterRequest.write(conflictRequest).getJson()))
+                        .content(toJson(conflictRequest)))
 
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value(ErrorCode.ALREADY_REGISTERED_NICKNAME.getMessage()));
@@ -162,7 +157,7 @@ class UserControllerTest {
         //when,then
         mvc.perform(put("/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(userModifyRequest.write(modifyRequest).getJson())
+                .content(toJson(modifyRequest))
                 .requestAttr("accessToken", accessToken))
 
                 .andExpect(status().isOk())
@@ -171,7 +166,11 @@ class UserControllerTest {
     }
 
     @Test
-    void updatePassword() {
+    void updatePassword() throws Exception{
+        //given
+        String accessToken = "accessToken";
+        Long userId = 6L;
+        UserModifyRequest modifyRequest = new UserModifyRequest("changeNickname", 100L);
     }
 
     @Test
@@ -184,6 +183,14 @@ class UserControllerTest {
 
     @Test
     void checkNicknameDuplicated() {
+    }
+
+    private String toJson(Object obj) {
+        try {
+            return objectMapper.writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException("JSON 변환 실패", e);
+        }
     }
 
 }
