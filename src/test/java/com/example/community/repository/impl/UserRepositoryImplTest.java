@@ -65,6 +65,15 @@ class UserRepositoryImplTest {
     }
 
     @Test
+    void existByEmail_false() {
+        //when
+        boolean result = userRepository.existByEmail("not-exist-email");
+
+        //then
+        assertThat(result).isEqualTo(Boolean.FALSE);
+    }
+
+    @Test
     void existByNickname() {
         //when
         boolean result = userRepository.existByNickname("nickname");
