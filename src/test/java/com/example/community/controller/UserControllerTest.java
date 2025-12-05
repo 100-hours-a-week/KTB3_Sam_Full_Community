@@ -4,6 +4,7 @@ import com.example.community.auth.jwt.JwtUtil;
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.common.exception.GlobalExceptionHandler;
+import com.example.community.dto.request.PasswordModifyRequest;
 import com.example.community.dto.request.UserModifyRequest;
 import com.example.community.dto.request.UserRegisterRequest;
 import com.example.community.dto.response.UserInfoResponse;
@@ -17,7 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,9 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -166,11 +164,22 @@ class UserControllerTest {
     }
 
     @Test
-    void updatePassword() throws Exception{
+    void 토큰과_일치하는_유저가_존재하는경우_성공적으로_비밀번호를_수정한다() throws Exception{
         //given
         String accessToken = "accessToken";
         Long userId = 6L;
-        UserModifyRequest modifyRequest = new UserModifyRequest("changeNickname", 100L);
+        PasswordModifyRequest request = new PasswordModifyRequest("newPassword", "newPassword");
+
+        given(jwtUtil.extractUserId(accessToken)).willReturn(userId);
+
+
+        //when,then
+        mvc.perform(patch("/users/password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(request))
+                        .requestAttr("accessToken", accessToken))
+
+                .andExpect(status().isNoContent());
     }
 
     @Test
