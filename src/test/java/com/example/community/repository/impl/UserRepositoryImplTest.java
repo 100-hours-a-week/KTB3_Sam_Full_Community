@@ -81,4 +81,13 @@ class UserRepositoryImplTest {
         //then
         assertThat(result).isEqualTo(Boolean.TRUE);
     }
+
+    @Test
+    void existByNickname_false() {
+        //when
+        boolean result = userRepository.existByNickname("not-exist-nickname");
+
+        //then
+        assertThat(result).isEqualTo(Boolean.FALSE);
+    }
 }
