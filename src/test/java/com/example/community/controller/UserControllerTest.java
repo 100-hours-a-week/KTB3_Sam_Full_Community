@@ -183,15 +183,52 @@ class UserControllerTest {
     }
 
     @Test
-    void deleteUser() {
+    void 토큰과_일치하는_유저가_존재하는경우_성공적으로_해당_유저를_삭제한다() throws Exception {
+        //given
+        String accessToken = "accessToken";
+        Long userId = 6L;
+
+        given(jwtUtil.extractUserId(accessToken)).willReturn(userId);
+
+
+        //when,then
+        mvc.perform(delete("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .requestAttr("accessToken", accessToken))
+
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    void checkEmailDuplicated() {
+    void 이메일_중복여부를_성공적으로_반환한다() throws Exception{
+        //given
+        String email = "email";
+        given(userService.checkEmailDuplicated(email)).willReturn(Boolean.TRUE);
+
+
+        //when, then
+        mvc.perform(get("/users/email")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("email", email))
+
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.isDuplicated").value(Boolean.TRUE));
     }
 
     @Test
-    void checkNicknameDuplicated() {
+    void 닉네임_중복여부를_성공적으로_반환한다() throws Exception{
+        //given
+        String nickname = "nickname";
+        given(userService.checkNicknameDuplicated(nickname)).willReturn(Boolean.TRUE);
+
+
+        //when, then
+        mvc.perform(get("/users/nickname")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("nickname", nickname))
+
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.isDuplicated").value(Boolean.TRUE));
     }
 
     private String toJson(Object obj) {

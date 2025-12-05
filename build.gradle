@@ -86,7 +86,6 @@ def jacocoExcludes = [
         '**/generated/**',
         '**/Q*',
         '**/*Application*',
-
 ]
 
 jacocoTestReport {
