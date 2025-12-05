@@ -4,10 +4,10 @@ import org.springframework.http.HttpStatus;
 
 public enum SuccessCode {
     //유저
-    USER_REGISTERED(HttpStatus.CREATED, "register_sucess"),
-    USER_FOUND(HttpStatus.OK, "user_find_sucess"),
-    USER_INFO_UPDATED(HttpStatus.NO_CONTENT, "user_info_update_sucess"),
-    PASSWORD_UPDATED(HttpStatus.NO_CONTENT, "password_update_sucess"),
+    USER_REGISTERED(HttpStatus.CREATED, "register_success"),
+    USER_FOUND(HttpStatus.OK, "user_find_success"),
+    USER_INFO_UPDATED(HttpStatus.NO_CONTENT, "user_info_update_success"),
+    PASSWORD_UPDATED(HttpStatus.NO_CONTENT, "password_update_success"),
     USER_DELETED(HttpStatus.NO_CONTENT, "user_delete_success"),
     USER_LOGIN(HttpStatus.OK, "login_success"),
     USER_LOGOUT(HttpStatus.NO_CONTENT, "user_logout_success"),
@@ -30,7 +30,7 @@ public enum SuccessCode {
     COMMENT_CREATED(HttpStatus.CREATED, "comment_upload_success"),
     ALL_COMMENTS_ON_BOARD_FOUND(HttpStatus.OK, "find_all_comments_on_board_success"),
     COMMENT_UPDATED(HttpStatus.NO_CONTENT, "comment_update_success"),
-    COMMENT_DELETED(HttpStatus.NO_CONTENT, "comment_delete_sucess"),
+    COMMENT_DELETED(HttpStatus.NO_CONTENT, "comment_delete_success"),
 
     //좋아요
     BOARD_LIKED(HttpStatus.OK, "board_like_success"),
