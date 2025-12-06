@@ -22,7 +22,4 @@ public interface CommentRepository extends JpaRepository<Comment, Long>, Comment
     @Modifying
     @Query("delete from Comment c where c.board.id = :boardId")
     void deleteByBoardId(Long boardId);
-
-    @Query("select c from Comment c join fetch c.user u join fetch u.userImage ui join fetch ui.image i join fetch c.board b where b.id= :boardId")
-    Page<Comment> findAllByBoardId(@Param("boardId") Long boardId, Pageable pageable);
 }

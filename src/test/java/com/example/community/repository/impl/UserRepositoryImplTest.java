@@ -56,7 +56,7 @@ class UserRepositoryImplTest {
     }
 
     @Test
-    void existByEmail() {
+    void existByEmailTrue() {
         //when
         boolean result = userRepository.existByEmail("email");
 
@@ -65,7 +65,7 @@ class UserRepositoryImplTest {
     }
 
     @Test
-    void existByEmail_false() {
+    void existByEmailFalse() {
         //when
         boolean result = userRepository.existByEmail("not-exist-email");
 
@@ -74,7 +74,7 @@ class UserRepositoryImplTest {
     }
 
     @Test
-    void existByNickname() {
+    void existByNicknameTrue() {
         //when
         boolean result = userRepository.existByNickname("nickname");
 
@@ -83,7 +83,7 @@ class UserRepositoryImplTest {
     }
 
     @Test
-    void existByNickname_false() {
+    void existByNicknameFalse() {
         //when
         boolean result = userRepository.existByNickname("not-exist-nickname");
 
