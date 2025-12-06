@@ -1,5 +1,7 @@
 package com.example.community.service;
 
+import com.example.community.common.exception.BaseException;
+import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.Image;
 import com.example.community.entity.User;
 import com.example.community.entity.UserImage;
@@ -105,7 +107,45 @@ class UserImageServiceTest {
     }
 
     @Test
-    void findByUserId() {
+    void 유저_아이디에_해당하는_유저_이미지가_있는경우_해당_유저_이미지를_반환한다() {
+        //given
+        Long userId = 1L;
+
+        User user = new User("email", "password", "nickname");
+        ReflectionTestUtils.setField(user, "id", userId);
+
+        Image image = new Image();
+        ReflectionTestUtils.setField(image, "id", 10L);
+
+        UserImage userImage = new UserImage(user, image);
+
+        given(userImageRepository.findByUserId(userId))
+                .willReturn(Optional.of(userImage));
+
+
+        //when
+        UserImage result = userImageService.findByUserId(userId);
+
+
+        //then
+        assertThat(result).isSameAs(userImage);
+    }
+
+    @Test
+    void 유저_아이디에_해당하는_유저_이미지가_없는경우_지정해둔_에러를_반환한다() {
+        //given
+        Long userId = 1L;
+
+        given(userImageRepository.findByUserId(userId))
+                .willReturn(Optional.empty());
+
+        //when
+        final BaseException result = assertThrows(BaseException.class,
+                () -> userImageService.findByUserId(userId));
+
+
+        //then
+        assertThat(result.getErrorCode()).isEqualTo(ErrorCode.NOT_FOUND_USER_IMAGE);
     }
 
     @Test
