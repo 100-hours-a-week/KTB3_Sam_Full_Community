@@ -149,6 +149,16 @@ class UserImageServiceTest {
     }
 
     @Test
-    void deleteByUserId() {
+    void 유저_아이디에_해당하는_유저_이미지가_있는경우_삭제를_진행한다() {
+        //given
+        Long userId = 1L;
+
+
+        //when
+        userImageService.deleteByUserId(userId);
+
+
+        //then
+        then(userImageRepository).should(times(1)).deleteByUserId(userId);
     }
 }
