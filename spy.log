@@ -1,0 +1,24 @@
+1765019186218|0|statement|connection 38|url jdbc:h2:mem:0873ac62-4815-47f4-9fa1-a6c0843b7cc9|     drop table if exists board cascade |     drop table if exists board cascade 
+1765019186218|0|statement|connection 38|url jdbc:h2:mem:0873ac62-4815-47f4-9fa1-a6c0843b7cc9|     drop table if exists board_image cascade |     drop table if exists board_image cascade 
+1765019186219|0|statement|connection 38|url jdbc:h2:mem:0873ac62-4815-47f4-9fa1-a6c0843b7cc9|     drop table if exists comment cascade |     drop table if exists comment cascade 
+1765019186219|0|statement|connection 38|url jdbc:h2:mem:0873ac62-4815-47f4-9fa1-a6c0843b7cc9|     drop table if exists image cascade |     drop table if exists image cascade 
+1765019186219|0|statement|connection 38|url jdbc:h2:mem:0873ac62-4815-47f4-9fa1-a6c0843b7cc9|     drop table if exists likes cascade |     drop table if exists likes cascade 
+1765019186219|0|statement|connection 38|url jdbc:h2:mem:0873ac62-4815-47f4-9fa1-a6c0843b7cc9|     drop table if exists user_image cascade |     drop table if exists user_image cascade 
+1765019186219|0|statement|connection 38|url jdbc:h2:mem:0873ac62-4815-47f4-9fa1-a6c0843b7cc9|     drop table if exists users cascade |     drop table if exists users cascade 
+1765019186219|0|statement|connection 38|url jdbc:h2:mem:0873ac62-4815-47f4-9fa1-a6c0843b7cc9|     drop sequence if exists board_seq|     drop sequence if exists board_seq
+1765019186219|0|statement|connection 38|url jdbc:h2:mem:0873ac62-4815-47f4-9fa1-a6c0843b7cc9|     drop sequence if exists comment_seq|     drop sequence if exists comment_seq
+1765019186220|0|statement|connection 38|url jdbc:h2:mem:0873ac62-4815-47f4-9fa1-a6c0843b7cc9|     drop sequence if exists image_seq|     drop sequence if exists image_seq
+1765019186220|0|statement|connection 38|url jdbc:h2:mem:0873ac62-4815-47f4-9fa1-a6c0843b7cc9|     drop sequence if exists likes_seq|     drop sequence if exists likes_seq
+1765019186220|0|statement|connection 38|url jdbc:h2:mem:0873ac62-4815-47f4-9fa1-a6c0843b7cc9|     drop sequence if exists users_seq|     drop sequence if exists users_seq
+1765019214619|0|statement|connection 38|url jdbc:h2:mem:c734c07f-44a4-4497-8879-130263d5fb94|     drop table if exists board cascade |     drop table if exists board cascade 
+1765019214620|0|statement|connection 38|url jdbc:h2:mem:c734c07f-44a4-4497-8879-130263d5fb94|     drop table if exists board_image cascade |     drop table if exists board_image cascade 
+1765019214620|0|statement|connection 38|url jdbc:h2:mem:c734c07f-44a4-4497-8879-130263d5fb94|     drop table if exists comment cascade |     drop table if exists comment cascade 
+1765019214620|0|statement|connection 38|url jdbc:h2:mem:c734c07f-44a4-4497-8879-130263d5fb94|     drop table if exists image cascade |     drop table if exists image cascade 
+1765019214620|0|statement|connection 38|url jdbc:h2:mem:c734c07f-44a4-4497-8879-130263d5fb94|     drop table if exists likes cascade |     drop table if exists likes cascade 
+1765019214621|0|statement|connection 38|url jdbc:h2:mem:c734c07f-44a4-4497-8879-130263d5fb94|     drop table if exists user_image cascade |     drop table if exists user_image cascade 
+1765019214621|0|statement|connection 38|url jdbc:h2:mem:c734c07f-44a4-4497-8879-130263d5fb94|     drop table if exists users cascade |     drop table if exists users cascade 
+1765019214621|0|statement|connection 38|url jdbc:h2:mem:c734c07f-44a4-4497-8879-130263d5fb94|     drop sequence if exists board_seq|     drop sequence if exists board_seq
+1765019214621|0|statement|connection 38|url jdbc:h2:mem:c734c07f-44a4-4497-8879-130263d5fb94|     drop sequence if exists comment_seq|     drop sequence if exists comment_seq
+1765019214621|0|statement|connection 38|url jdbc:h2:mem:c734c07f-44a4-4497-8879-130263d5fb94|     drop sequence if exists image_seq|     drop sequence if exists image_seq
+1765019214621|0|statement|connection 38|url jdbc:h2:mem:c734c07f-44a4-4497-8879-130263d5fb94|     drop sequence if exists likes_seq|     drop sequence if exists likes_seq
+1765019214621|0|statement|connection 38|url jdbc:h2:mem:c734c07f-44a4-4497-8879-130263d5fb94|     drop sequence if exists users_seq|     drop sequence if exists users_seq
