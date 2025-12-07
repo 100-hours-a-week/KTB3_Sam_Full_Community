@@ -17,7 +17,7 @@ public enum SuccessCode {
 
     //게시글
     BOARD_CREATED(HttpStatus.CREATED, "board_create_success"),
-    ALL_BOARDS_FOUND(HttpStatus.OK, "board_find_all_sucess"),
+    ALL_BOARDS_FOUND(HttpStatus.OK, "board_find_all_success"),
     BOARD_DETAIL_FOUND(HttpStatus.OK, "boards_detail_find_success"),
     BOARD_UPDATED(HttpStatus.NO_CONTENT, "board_update_success"),
     BOARD_DELETED(HttpStatus.NO_CONTENT, "board_delete_sucess"),
