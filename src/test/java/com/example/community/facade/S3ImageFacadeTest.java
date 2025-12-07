@@ -18,13 +18,13 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class S3ImageFacadeTest {
     @Mock
-    ImageService imageService;
+    private ImageService imageService;
 
     @Mock
-    S3Service s3Service;
+    private S3Service s3Service;
 
     @InjectMocks
-    S3ImageFacade s3ImageFacade;
+    private S3ImageFacade s3ImageFacade;
 
     @Test
     void 이미지를_업로드할수있는_url을_반환받는다() {

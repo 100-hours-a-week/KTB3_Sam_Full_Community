@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class CommentRepositoryTest {
 
     @Autowired
-    CommentRepository commentRepository;
+    private CommentRepository commentRepository;
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     void findAllByBoardId() {

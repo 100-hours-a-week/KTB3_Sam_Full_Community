@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(QueryDslTestConfig.class)
 class BoardRepositoryTest {
     @Autowired
-    BoardRepository boardRepository;
+    private BoardRepository boardRepository;
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     void findById() {

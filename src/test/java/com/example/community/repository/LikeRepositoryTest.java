@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(QueryDslTestConfig.class)
 class LikeRepositoryTest {
     @Autowired
-    LikeRepository likeRepository;
+    private LikeRepository likeRepository;
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     void findByUserIdAndBoardId() {

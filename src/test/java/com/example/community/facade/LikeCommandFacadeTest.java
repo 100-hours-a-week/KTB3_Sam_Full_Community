@@ -27,16 +27,16 @@ import static org.mockito.Mockito.never;
 @ExtendWith(MockitoExtension.class)
 class LikeCommandFacadeTest {
     @Mock
-    UserService userService;
+    private UserService userService;
 
     @Mock
-    BoardService boardService;
+    private BoardService boardService;
 
     @Mock
-    LikeService likeService;
+    private LikeService likeService;
 
     @InjectMocks
-    LikeCommandFacade likeCommandFacade;
+    private LikeCommandFacade likeCommandFacade;
 
     @Test
     void 좋아요가_안되어있다면_정상적으로_좋아요가_저장된다() {

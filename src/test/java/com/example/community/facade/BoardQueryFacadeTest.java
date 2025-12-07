@@ -29,19 +29,19 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class BoardQueryFacadeTest {
     @Mock
-    BoardService boardService;
+    private BoardService boardService;
 
     @Mock
-    BoardImageService boardImageService;
+    private BoardImageService boardImageService;
 
     @Mock
-    CommentService commentService;
+    private CommentService commentService;
 
     @Mock
-    LikeService likeService;
+    private LikeService likeService;
 
     @InjectMocks
-    BoardQueryFacade boardQueryFacade;
+    private BoardQueryFacade boardQueryFacade;
 
     @Test
     void 페이징된_게시글_전체가_반환된다() {

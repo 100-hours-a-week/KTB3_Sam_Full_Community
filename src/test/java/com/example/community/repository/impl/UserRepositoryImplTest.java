@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserRepositoryImplTest {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     @BeforeEach
     void setUpUser() {

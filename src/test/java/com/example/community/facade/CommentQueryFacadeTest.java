@@ -26,10 +26,10 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class CommentQueryFacadeTest {
     @Mock
-    CommentService commentService;
+    private CommentService commentService;
 
     @InjectMocks
-    CommentQueryFacade commentQueryFacade;
+    private CommentQueryFacade commentQueryFacade;
 
     @Test
     void 입력받은_게시글_아이디에_해당하는_댓글이_페이징되어_반환된다() {

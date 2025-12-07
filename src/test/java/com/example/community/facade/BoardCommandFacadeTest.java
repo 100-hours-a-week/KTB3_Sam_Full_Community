@@ -19,13 +19,13 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class BoardCommandFacadeTest {
     @Mock
-    BoardService boardService;
+    private BoardService boardService;
 
     @Mock
-    UserService userService;
+    private UserService userService;
 
     @InjectMocks
-    BoardCommandFacade boardCommandFacade;
+    private BoardCommandFacade boardCommandFacade;
 
     @Test
     void 게시글작성자_정보와함께_게시글_저장이_성공적으로_이루어진다() {

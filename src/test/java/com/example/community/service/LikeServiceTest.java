@@ -26,10 +26,10 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class LikeServiceTest {
     @Mock
-    LikeRepository likeRepository;
+    private LikeRepository likeRepository;
 
     @InjectMocks
-    LikeService likeService;
+    private LikeService likeService;
 
     @Test
     void 기존에_존재하던_게시글에_좋아요가_성공적으로_저장된다() {

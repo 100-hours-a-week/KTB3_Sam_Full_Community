@@ -18,10 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserImageRepositoryTest {
 
     @Autowired
-    UserImageRepository userImageRepository;
+    private UserImageRepository userImageRepository;
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     void findByUserId() {

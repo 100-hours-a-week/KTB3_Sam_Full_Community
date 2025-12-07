@@ -24,16 +24,16 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class BoardImageCommandFacadeTest {
     @Mock
-    BoardImageService boardImageService;
+    private BoardImageService boardImageService;
 
     @Mock
-    BoardService boardService;
+    private BoardService boardService;
 
     @Mock
-    ImageService imageService;
+    private ImageService imageService;
 
     @InjectMocks
-    BoardImageCommandFacade boardImageCommandFacade;
+    private BoardImageCommandFacade boardImageCommandFacade;
 
     @Test
     void 입력받은_게시글_이미지_개수만큼_boardImage가_생성된다() {

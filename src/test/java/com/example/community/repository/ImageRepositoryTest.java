@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(QueryDslTestConfig.class)
 class ImageRepositoryTest {
     @Autowired
-    ImageRepository imageRepository;
+    private ImageRepository imageRepository;
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     void findByIds() {

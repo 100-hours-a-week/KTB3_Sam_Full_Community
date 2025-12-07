@@ -28,10 +28,10 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @EnableJpaAuditing
 class BoardRepositoryImplTest {
     @Autowired
-    BoardRepository boardRepository;
+    private BoardRepository boardRepository;
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     void findAllByTitleAndContent() {

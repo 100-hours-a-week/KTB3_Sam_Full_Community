@@ -33,13 +33,13 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class BoardServiceTest {
     @Mock
-    BoardRepository boardRepository;
+    private BoardRepository boardRepository;
 
     @Mock
-    ApplicationEventPublisher eventPublisher;
+    private ApplicationEventPublisher eventPublisher;
 
     @InjectMocks
-    BoardService boardService;
+    private BoardService boardService;
 
     @Test
     void 게시글이_성공적으로_저장되고_이벤트가_발행된다() {

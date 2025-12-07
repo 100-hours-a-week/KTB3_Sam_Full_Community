@@ -24,10 +24,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class BoardImageServiceTest {
     @Mock
-    BoardImageRepository boardImageRepository;
+    private BoardImageRepository boardImageRepository;
 
     @InjectMocks
-    BoardImageService boardImageService;
+    private BoardImageService boardImageService;
 
 
     @Test

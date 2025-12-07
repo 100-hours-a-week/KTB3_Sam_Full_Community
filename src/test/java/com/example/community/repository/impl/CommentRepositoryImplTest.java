@@ -22,11 +22,11 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @Import(QueryDslTestConfig.class)
 @EnableJpaAuditing
 class CommentRepositoryImplTest {
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
-    CommentRepository commentRepository;
-    @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     void findAllByBoardIdPageable() {

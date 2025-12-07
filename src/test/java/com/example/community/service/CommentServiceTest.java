@@ -30,10 +30,10 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
     @Mock
-    CommentRepository commentRepository;
+    private CommentRepository commentRepository;
 
     @InjectMocks
-    CommentService commentService;
+    private CommentService commentService;
 
     @Test
     void 게시글에_댓글이_성공적으로_저장된다() {

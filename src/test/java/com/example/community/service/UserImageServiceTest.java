@@ -28,10 +28,10 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class UserImageServiceTest {
     @Mock
-    UserImageRepository userImageRepository;
+    private UserImageRepository userImageRepository;
 
     @InjectMocks
-    UserImageService userImageService;
+    private UserImageService userImageService;
 
     @Test
     void 기존_유저_이미지_존재시_기존_이미지와_다른_이미지를_등록할경우_기존_이미지를_삭제_후_재등록한다() {

@@ -20,16 +20,16 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class UserImageCommandFacadeTest {
     @Mock
-    UserService userService;
+    private UserService userService;
 
     @Mock
-    ImageService imageService;
+    private ImageService imageService;
 
     @Mock
-    UserImageService userImageService;
+    private UserImageService userImageService;
 
     @InjectMocks
-    UserImageCommandFacade userImageCommandFacade;
+    private UserImageCommandFacade userImageCommandFacade;
 
     @Test
     void mapsImagesToUser() {

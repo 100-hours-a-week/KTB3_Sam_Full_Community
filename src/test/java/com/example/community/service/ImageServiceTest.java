@@ -23,10 +23,10 @@ import static org.mockito.BDDMockito.given;
 class ImageServiceTest {
 
     @Mock
-    ImageRepository imageRepository;
+    private ImageRepository imageRepository;
 
     @InjectMocks
-    ImageService imageService;
+    private ImageService imageService;
 
     @Test
     void 이미지가_성공적으로_생성된다() {

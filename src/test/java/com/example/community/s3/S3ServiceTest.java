@@ -27,13 +27,13 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class S3ServiceTest {
     @Mock
-    S3Presigner preSigner;
+    private S3Presigner preSigner;
 
     @Mock
-    S3Properties s3Properties;
+    private S3Properties s3Properties;
 
     @InjectMocks
-    S3Service s3Service;
+    private S3Service s3Service;
 
     @Test
     void 성공적으로_이미지_GET_url을_반환한다() throws Exception {

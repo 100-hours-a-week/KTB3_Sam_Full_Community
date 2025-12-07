@@ -19,16 +19,16 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 class CommentCommandFacadeTest {
     @Mock
-    CommentService commentService;
+    private CommentService commentService;
 
     @Mock
-    UserService userService;
+    private UserService userService;
 
     @Mock
-    BoardService boardService;
+    private BoardService boardService;
 
     @InjectMocks
-    CommentCommandFacade commentCommandFacade;
+    private CommentCommandFacade commentCommandFacade;
 
     @Test
     void 입력받은_게시글과_유저에대해_댓글을_생성한다() {

@@ -16,10 +16,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(QueryDslTestConfig.class)
 class BoardImageRepositoryTest {
     @Autowired
-    BoardImageRepository boardImageRepository;
+    private BoardImageRepository boardImageRepository;
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     void findByBoardIdAndImageId() {
