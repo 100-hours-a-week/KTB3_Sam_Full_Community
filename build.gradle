@@ -82,6 +82,8 @@ def jacocoExcludes = [
         '**/common/**',
         '**/*Properties.class',
         '**/*Config.class',
+        '**/*ExcludePathMatcher.class',
+        '**/*ExcludePathMatcher.rule',
         '**/auth/customfilters/**',
         '**/repository/inmemory/**',
         '**/springmvcpractice/**',
