@@ -3,15 +3,11 @@ package com.example.community.facade;
 import com.example.community.dto.PageInfo;
 import com.example.community.dto.PagedData;
 import com.example.community.dto.response.CommentInfoResponse;
-import com.example.community.entity.Board;
 import com.example.community.entity.Comment;
-import com.example.community.service.BoardService;
 import com.example.community.service.CommentService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
