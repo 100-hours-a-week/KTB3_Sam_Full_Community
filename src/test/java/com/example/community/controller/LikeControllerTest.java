@@ -1,6 +1,7 @@
 package com.example.community.controller;
 
 import com.example.community.auth.jwt.JwtUtil;
+import com.example.community.common.exception.GlobalExceptionHandler;
 import com.example.community.entity.Board;
 import com.example.community.entity.Like;
 import com.example.community.entity.User;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -46,6 +48,7 @@ class LikeControllerTest {
     void setUp() {
         mvc = MockMvcBuilders
                 .standaloneSetup(likeController)
+                .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
     }
 
@@ -67,6 +70,7 @@ class LikeControllerTest {
 
         //when,then
         mvc.perform(post("/boards/{boardId}/like", boardId)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .requestAttr("accessToken", "accessToken"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.likeId").value(10L))
@@ -86,6 +90,7 @@ class LikeControllerTest {
 
         //when,then
         mvc.perform(delete("/boards/{boardId}/like", boardId)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .requestAttr("accessToken", "accessToken"))
                 .andExpect(status().isNoContent());
     }
@@ -102,6 +107,7 @@ class LikeControllerTest {
 
         //when,then
         mvc.perform(get("/boards/{boardId}/like", boardId)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .requestAttr("accessToken", "accessToken"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.isLiked").value(true));
