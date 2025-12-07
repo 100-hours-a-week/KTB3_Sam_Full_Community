@@ -1,5 +1,7 @@
 package com.example.community.service;
 
+import com.example.community.common.exception.BaseException;
+import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.Board;
 import com.example.community.entity.Comment;
 import com.example.community.entity.User;
@@ -185,5 +187,31 @@ class CommentServiceTest {
 
         // then
         then(commentRepository).should(times(1)).deleteById(commentId);
+    }
+
+
+    @Test
+    void 입력받은_유저의_댓글이_아닌경우_삭제가_진행되지않는다() {
+        // given
+        Long userId = 1L;
+        Long otherUserId = 2L;
+        Long commentId = 10L;
+
+        User user = new User("email", "password", "nickname");
+        ReflectionTestUtils.setField(user, "id", userId);
+
+        Board board = new Board("title", "content", user);
+        Comment comment = new Comment(user, board, "content");
+
+        given(commentRepository.findById(commentId))
+                .willReturn(Optional.of(comment));
+
+
+        //when
+        final BaseException result = assertThrows(BaseException.class, () ->  commentService.deleteById(otherUserId, commentId));
+
+
+        // then
+        assertThat(result.getErrorCode()).isEqualTo(ErrorCode.INVALID_REQUEST);
     }
 }
