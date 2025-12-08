@@ -185,7 +185,8 @@ ERD는 다음 사진과 같이 구성되어 있습니다.
 
    branch와 메소드의 coverageVerification 통과 기준을 80%로 설정해둔 뒤에, 작성한 로직들에 대해 테스트 커버리지를 아래 사진과 같이 측정하였습니다.
 
-   (사진)
+   <img width="1103" height="326" alt="스크린샷 2025-12-08 오전 8 14 52" src="https://github.com/user-attachments/assets/3c557be1-3b3c-4e1c-b339-8d3918547fa7" />
+
 
    기존 Mockito 방식에 비해 BDDMockito 방식이 give-when-then을 확인하기에 용이하다 생각해 BDDMockito를 활용해 테스트 코드를 작성했습니다.
 
@@ -193,11 +194,13 @@ ERD는 다음 사진과 같이 구성되어 있습니다.
 
    Controller의 경우 inside server test의 MockMVC in Standalone Mode방법을 활용해 내부로직이 잘 동작하는지 확인했으며
 
-   (사진)
+   <img width="715" height="410" alt="스크린샷 2025-12-08 오후 2 49 18" src="https://github.com/user-attachments/assets/059a8b24-996c-4781-8295-9be4ffa3059b" />
+
 
    추후에 배포 이전에 통합테스트와 E2E테스트를 통해 outside server test를 구현해 외부에서 들어오는 요청에 대한 검증 여부를 테스트할 예정입니다.
 
-   (사진)
+   <img width="688" height="546" alt="스크린샷 2025-12-08 오후 2 53 10" src="https://github.com/user-attachments/assets/3800d961-6ac7-46ca-b16a-954530789c96" />
+
 
    @DataJpaTest의 경우 JPA관련 전체 repository bean들을 불러와서 repository 계층에 대한 검증을 진행하고,  저는 QueryDsl을 활용해서 로직을 작성해둔 Repository들이 있기에 아래와 같이 QueryDslTestConfig를 설정해 EntityManager를 주입받은 jpaQueryFactory를 생성할 수 있도록 해 오류가 발생하지않도록 한 뒤, 각 Repository 테스트 코드에 설정해주었습니다.
 
