@@ -165,7 +165,7 @@ ERD는 다음 사진과 같이 구성되어 있습니다.
 
    매 요청마다 유저 확인을 위해 쿼리를 하나씩 보내는것이 비효율적이라 생각했고,
 
-   아래 코드와 같이 loadbyUserName 메소드를 @Override하는 과정에서 userId를 key로 하는 캐싱을 구현 해 쿼리를 줄일 수 있도록 구현했습니다.
+   아래 코드와 같이 loadUserByUserName 메소드를 @Override하는 과정에서 userId를 key로 하는 캐싱을 구현 해 쿼리를 줄일 수 있도록 구현했습니다.
 
     ```java
         @Override
@@ -176,4 +176,47 @@ ERD는 다음 사진과 같이 구성되어 있습니다.
     
             return new CustomUserDetails(user);
         }
+    ```
+
+---
+6. **Jacoco를 활용한 테스트 커버리지 측정**
+
+   작성했던 비즈니스 로직을 비롯해 Controller를 통해 들어오는 요청에 대해 unit test 코드를 작성해 내부 로직의 동작여부를 확인했습니다.
+
+   branch와 메소드의 coverageVerification 통과 기준을 80%로 설정해둔 뒤에, 작성한 로직들에 대해 테스트 커버리지를 아래 사진과 같이 측정하였습니다.
+
+   (사진)
+
+   기존 Mockito 방식에 비해 BDDMockito 방식이 give-when-then을 확인하기에 용이하다 생각해 BDDMockito를 활용해 테스트 코드를 작성했습니다.
+
+   @DataJpaTest를 통해 Repository의 쿼리가 실제로 잘 동작하는지 확인했으며, Service와 Facade에 대해 branch를 나누어 내부 로직이 잘 동작하는지 확인했습니다.
+
+   Controller의 경우 inside server test의 MockMVC in Standalone Mode방법을 활용해 내부로직이 잘 동작하는지 확인했으며
+
+   (사진)
+
+   추후에 배포 이전에 통합테스트와 E2E테스트를 통해 outside server test를 구현해 외부에서 들어오는 요청에 대한 검증 여부를 테스트할 예정입니다.
+
+   (사진)
+
+   @DataJpaTest의 경우 JPA관련 전체 repository bean들을 불러와서 repository 계층에 대한 검증을 진행하고,  저는 QueryDsl을 활용해서 로직을 작성해둔 Repository들이 있기에 아래와 같이 QueryDslTestConfig를 설정해 EntityManager를 주입받은 jpaQueryFactory를 생성할 수 있도록 해 오류가 발생하지않도록 한 뒤, 각 Repository 테스트 코드에 설정해주었습니다.
+
+    ```java
+    @TestConfiguration
+    public class QueryDslTestConfig {
+        @PersistenceContext
+        private EntityManager em;
+    
+        @Bean
+        public JPAQueryFactory jpaQueryFactory() {
+            return new JPAQueryFactory(em);
+        }
+    }
+    ```
+
+   또한 proxy의 경우 내부 객체 정보는 비어있더라도, 객체의 Id는 가지고있기때문에 fetch join 검증시에 정말 객체 정보가 잘 불러와졌는지 확인하기 위해 아래와같이 proxy인지 실제 확인하는 코드를 repository assertThat코드에 삽입했습니다.
+
+    ```java
+    assertThat(found.getUser().getClass().getName())
+    		.doesNotContain("HibernateProxy");
     ```
