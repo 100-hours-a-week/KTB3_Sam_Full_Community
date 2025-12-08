@@ -1,10 +1,12 @@
 package com.example.community.controller;
 
-import com.example.community.auth.JwtUtil;
+import com.example.community.auth.jwt.JwtUtil;
 import com.example.community.common.SuccessCode;
 import com.example.community.dto.response.APIResponse;
+import com.example.community.dto.response.BoardLikedCheckResponse;
 import com.example.community.dto.response.LikePostResponse;
 import com.example.community.entity.Like;
+import com.example.community.facade.LikeCommandFacade;
 import com.example.community.service.LikeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,18 +16,17 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "좋아요 API", description = "좋아요 추가,삭제 API")
 @RestController
 public class LikeController {
+    private final LikeCommandFacade likeCommandFacade;
     private final LikeService likeService;
     private final JwtUtil jwtUtil;
 
-    LikeController(LikeService likeService, JwtUtil jwtUtil) {
+    LikeController(LikeCommandFacade likeCommandFacade,LikeService likeService, JwtUtil jwtUtil) {
+        this.likeCommandFacade = likeCommandFacade;
         this.likeService = likeService;
         this.jwtUtil = jwtUtil;
     }
@@ -43,8 +44,8 @@ public class LikeController {
                                                                   @Parameter(description = "좋아요 추가할 게시글 ID", required = true, example = "3")
                                                                   @PathVariable("boardId") Long boardId) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        Like like = likeService.postLike(userId, boardId);
-        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_LIKED, LikePostResponse.from(like)));
+        Like like = likeCommandFacade.post(userId, boardId);
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_LIKED, LikePostResponse.of(like,boardId,userId)));
     }
 
     @Operation(summary = "좋아요 삭제", description = "입력받은 유저 ID와 게시글 ID에 해당하는 좋아요를 삭제합니다.")
@@ -59,7 +60,18 @@ public class LikeController {
                                                         @Parameter(description = "좋아요 삭제할 게시글 ID", required = true, example = "3")
                                                         @PathVariable("boardId") Long boardId) {
         Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
-        likeService.deleteLike(userId, boardId);
+        likeService.deleteByUserIdAndBoardId(userId, boardId);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "좋아요 여부 조회", description = "입력받은 유저 ID가 게시글 ID에 해당하는 게시글에 좋아요를 눌렀는지 조회합니다.")
+    @GetMapping("/boards/{boardId}/like")
+    @SecurityRequirement(name = "JWT")
+    public ResponseEntity<APIResponse<BoardLikedCheckResponse>> checkBoardLiked (HttpServletRequest servletRequest,
+                                                                        @Parameter(description = "좋아요 조회할 게시글 ID", required = true)
+                                                        @PathVariable("boardId") Long boardId) {
+        Long userId = jwtUtil.extractUserId((String) servletRequest.getAttribute("accessToken"));
+        boolean isLiked = likeService.checkBoardLiked(userId, boardId);
+        return ResponseEntity.ok(APIResponse.success(SuccessCode.BOARD_LIKED, BoardLikedCheckResponse.from(isLiked)));
     }
 }

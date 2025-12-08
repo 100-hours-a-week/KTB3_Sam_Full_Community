@@ -1,17 +1,49 @@
 package com.example.community.entity;
 
+import com.example.community.entity.interfaces.BoardLinked;
+import com.example.community.entity.interfaces.Identifiable;
+import com.example.community.entity.interfaces.UserLinked;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
-public class Like extends BaseEntity{
+@Entity
+@Table(name = "likes")
+public class Like extends BaseEntity implements BoardLinked, UserLinked, Identifiable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "like_id")
     private Long id;
-    private Long boardId;
-    private Long userId;
 
-    public Like(Long userId, Long boardId) {
-        this.userId = userId;
-        this.boardId = boardId;
+    @ManyToOne
+    @JoinColumn(name = "board_id")
+    private Board board;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    Like() {}
+
+    public Like(User user, Board board) {
+        this.user = user;
+        this.board = board;
     }
+
+    @Override
+    public Long getBoardId() {
+        return this.board.getId();
+    }
+
+    @Override
+    public Long getUserId() {
+        return this.user.getId();
+    }
+
+    @Override
+    public void setId(Long id) {this.id = id;}
+
+    public void setUser(User user) {this.user = user;}
+
+    public void setBoard(Board board) {this.board = board;}
 }

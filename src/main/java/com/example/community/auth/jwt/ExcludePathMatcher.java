@@ -1,4 +1,4 @@
-package com.example.community.auth;
+package com.example.community.auth.jwt;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,11 @@ public class ExcludePathMatcher {
             Rule.of("POST", "/users"),
             Rule.of("GET", "/swagger-ui.html"),
             Rule.of("GET", "/swagger-ui/**"),
-            Rule.of("GET", "/v3/api-docs/**")
+            Rule.of("GET", "/v3/api-docs/**"),
+            Rule.of("GET", "/users/email/**"),
+            Rule.of("GET", "/users/nickname/**"),
+            Rule.of("GET", "/images/**"),
+            Rule.of("POST", "/images")
     );
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();

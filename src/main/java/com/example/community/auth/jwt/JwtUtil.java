@@ -1,4 +1,4 @@
-package com.example.community.auth;
+package com.example.community.auth.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

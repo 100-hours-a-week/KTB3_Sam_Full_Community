@@ -1,85 +1,27 @@
 package com.example.community.repository;
 
 import com.example.community.entity.Like;
-import org.springframework.stereotype.Repository;
+import com.example.community.repository.interfaces.LikeCustomRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 
-@Repository
-public class LikeRepository {
-    private Map<Long, Like> likeDB;
-    private Map<Long, List<Long>> boardIndexMap;
-    private long sequence = 0L;
+public interface LikeRepository extends JpaRepository<Like, Long>, LikeCustomRepository {
+    @Query("select l from Like l join fetch l.user join fetch l.board where l.user.id = :userId and l.board.id = :boardId")
+    Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId);
 
-    LikeRepository() {
-        this.likeDB = new LinkedHashMap<>();
-        this.boardIndexMap = new ConcurrentHashMap<>();
-    }
+    @Query("select l from Like l join fetch l.board where l.board.id in :boardIds")
+    List<Like> findAllByBoardIds(@Param("boardIds") List<Long> boardIds);
 
-    public Like save(Like like) {
-        if(like.getId() == null) {
-            like.setId(++sequence);
-            if(!boardIndexMap.containsKey(like.getBoardId())) {
-                List<Long> likeIds = new ArrayList<>();
-                likeIds.add(like.getId());
-                boardIndexMap.put(like.getBoardId(), likeIds);
-            } else {
-                boardIndexMap.get(like.getBoardId()).add(like.getId());
-            }
-        }
-        likeDB.put(like.getId(), like);
-        return like;
-    }
+    @Query("select l from Like l join fetch l.board where l.board.id = :boardId")
+    List<Like> findAllByBoardId(Long boardId);
 
-    public List<Like> findAll() {
-        return new ArrayList<>(likeDB.values());
-    }
-
-    public Optional<Like> findById(Long id) {
-        return Optional.ofNullable(likeDB.get(id));
-    }
-
-    public Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId) {
-        List<Long> likeIds = boardIndexMap.get(boardId);
-        return likeIds.stream()
-                .map(likeDB::get)
-                .filter(Objects::nonNull)
-                .filter(like -> like.getUserId().equals(userId))
-                .findFirst();
-    }
-
-    public void deleteById(Long id) {
-        Like like = likeDB.remove(id);
-        boardIndexMap.get(like.getBoardId()).remove(id);
-    }
-
-    public void deleteByBoardIdWithIndex(Long boardId) {
-        List<Long> deleteLikeIds = boardIndexMap.remove(boardId);
-        deleteLikeIds.forEach(likeDB::remove);
-    }
-
-    public void deleteByBoardIdWithoutIndex(Long boardId) {
-        likeDB.values().removeIf(like -> like.getBoardId().equals(boardId));
-    }
-
-    public List<Like> findAllByBoardId(Long boardId) {
-        List<Long> foundLikeIds = boardIndexMap.get(boardId);
-        return foundLikeIds.stream()
-                .map(likeDB::get)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
-
-    public List<Like> findAllByBoardIds(List<Long> boardIds) {
-        return boardIds.stream()
-                .flatMap(boardId -> {
-                    List<Long> ids = boardIndexMap.get(boardId);
-                    return ids.stream()
-                            .map(likeDB::get)
-                            .filter(Objects::nonNull);
-                })
-                .collect(Collectors.toList());
-    }
+    @Modifying
+    @Query("delete from Like l where l.board.id = :boardId")
+    void deleteByBoardId(@Param("boardId") Long boardId);
 }
