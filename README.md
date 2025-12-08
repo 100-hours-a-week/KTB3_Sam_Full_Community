@@ -5,13 +5,18 @@
 kateboo는 카카오테크 부트캠프 인원들이 편하게 자신이 공부한 내용들을 공유하고,
 학습하고 의견을 주고받을 수 있도록 하기위해서 만든 커뮤니티 게시판입니다.
 
-(서비스 영상)
+
+
+https://github.com/user-attachments/assets/ff1c53dc-95cc-4e11-8412-ddb9417c50b0
+
+
 
 ---
 
 ### ERD 설계
 
-(사진)
+<img width="1900" height="1212" alt="Community" src="https://github.com/user-attachments/assets/4f70ca46-c75f-4c39-94f1-61f72cdd1e3e" />
+
 
 ERD는 다음 사진과 같이 구성되어 있습니다.
 
@@ -137,11 +142,13 @@ ERD는 다음 사진과 같이 구성되어 있습니다.
 
    JwtCustomFilter 구현 후, API들을 fetch 하는 과정에서 아래 사진과 같이 인증 문제가 발생했습니다.
 
-   (사진)
+   <img width="729" height="47" alt="스크린샷 2025-12-08 오후 11 00 28" src="https://github.com/user-attachments/assets/c6e1fcea-5035-45bc-8b33-f1a1e8de6910" />
+
 
    클라이언트는 실제 API요청을 보내기전에 해당 리소스가 실제로 있는지 확인하기 위해 아래 사진과 같이 Preflight요청을 보내게 됩니다.
 
-   (사진)
+   <img width="763" height="518" alt="스크린샷 2025-12-09 오전 12 50 23" src="https://github.com/user-attachments/assets/1e8e02fc-4038-4ca0-9447-491cd9e858f8" />
+
     
    해당 내용에 토큰이 첨부되어있을리가 없으니 요청이 DispatcherServlet을 통해 Controller로 들어가기 전 JwtCustomFilter에 의해 걸러진 것 입니다.
 
