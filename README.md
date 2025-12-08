@@ -157,7 +157,7 @@ ERD는 다음 사진과 같이 구성되어 있습니다.
    이 과정에서 최상단에 CorsFilter를 설정해서 preflight를 처리해주면 되겠다는 생각이 들었고, 관련 필터를 구현 해 OPTIONS 요청에 대해 헤더를 설정할 수 있도록 처리한 뒤, Order(0)를 통해 최상단에 CorsFilter가 존재하고 처리가 완료된 요청을 JwtFilter로 넘길 수 있도록 Custom Filter Chain을 구현했습니다.
 
 ---
-5. **loadByUserName 캐싱**
+5. **loadUserByUserName 캐싱**
 
    이전에 Custom으로 구현했던 인증/인가 로직을 Spring security로 바꾸기로 결정해 관련 로직을 구현하던 중 의문이 들었습니다.
 
