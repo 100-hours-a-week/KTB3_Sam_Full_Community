@@ -2,65 +2,24 @@ package com.example.community.repository;
 
 import com.example.community.entity.Board;
 import com.example.community.entity.Comment;
-import org.springframework.stereotype.Repository;
+import com.example.community.repository.interfaces.CommentCustomRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
-@Repository
-public class CommentRepository {
-    private Map<Long, Comment> commentDB;
-    private long sequence = 0L;
+public interface CommentRepository extends JpaRepository<Comment, Long>, CommentCustomRepository {
+    @Query("select c from Comment c join fetch c.user join fetch c.board where c.board.id in :boardIds ")
+    List<Comment> findAllByBoardId(List<Long> boardIds);
 
-    CommentRepository() {
-        this.commentDB = new LinkedHashMap<>();
-    }
+    @Query("select c from Comment c join fetch c.user u join fetch u.userImage ui join fetch c.board b where b.id= :boardId")
+    List<Comment> findAllByBoardId(Long boardId);
 
-    public Comment save(Comment comment) {
-        if(comment.getId() == null) {
-            comment.setId(++sequence);
-        }
-        commentDB.put(comment.getId(), comment);
-        return comment;
-    }
-
-    public List<Comment> findAll() {
-        return new ArrayList<>(commentDB.values());
-    }
-
-    public Optional<Comment> findById(Long id) {
-        return Optional.ofNullable(commentDB.get(id));
-    }
-
-    public void deleteById(Long id) {
-        commentDB.remove(id);
-    }
-
-    public void deleteByBoardId(Long boardId) {
-        commentDB.values().removeIf(comment -> comment.getBoardId().equals(boardId));
-    }
-
-    public List<Comment> findAllByBoardId(Long boardId) {
-        return commentDB.values().stream()
-                .filter(comment -> comment.getBoardId().equals(boardId))
-                .toList();
-    }
-
-    public List<Comment> findAllByBoardIds(List<Long> boardIds) {
-        return commentDB.values().stream()
-                .filter(comment -> boardIds.contains(comment.getBoardId()))
-                .toList();
-    }
-
-    public List<Comment> findPageByBoardId(Long boardId, int page, int size) {
-        return commentDB.values().stream()
-                .filter(comment -> comment.getBoardId().equals(boardId))
-                .skip((long) (page-1) * size)
-                .limit(size)
-                .collect(Collectors.toList());
-    }
-
-    public int count() {
-        return commentDB.size();
-    }
+    @Modifying
+    @Query("delete from Comment c where c.board.id = :boardId")
+    void deleteByBoardId(Long boardId);
 }

@@ -1,5 +1,8 @@
-package com.example.community.auth;
+package com.example.community.auth.customfilters;
 
+import com.example.community.auth.jwt.ExcludePathMatcher;
+import com.example.community.auth.jwt.JwtUtil;
+import com.example.community.auth.jwt.TokenBlackList;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -12,12 +15,12 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class JwtFilter implements Filter {
+public class JwtCustomFilter implements Filter {
     private final JwtUtil jwtUtil;
     private final ExcludePathMatcher excludePathMatcher;
     private final TokenBlackList tokenBlackList;
 
-    public JwtFilter(JwtUtil jwtUtil, ExcludePathMatcher excludePathMatcher, TokenBlackList tokenBlackList) {
+    public JwtCustomFilter(JwtUtil jwtUtil, ExcludePathMatcher excludePathMatcher, TokenBlackList tokenBlackList) {
         this.jwtUtil = jwtUtil;
         this.excludePathMatcher = excludePathMatcher;
         this.tokenBlackList = tokenBlackList;

@@ -5,9 +5,9 @@ import com.example.community.dto.PagedData;
 import com.example.community.dto.response.CommentInfoResponse;
 import com.example.community.entity.Comment;
 import com.example.community.service.CommentService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -19,13 +19,14 @@ public class CommentQueryFacade {
     }
 
     @Transactional(readOnly = true)
-    public PagedData getCommentsPageByBoardId(Long boardId, int page, int size) {
-        List<CommentInfoResponse> commentInfoResponses = commentService.findPageByBoardId(boardId, page,size).stream()
-                .map(CommentInfoResponse::from)
+    public PagedData getAllPagedCommentsByBoardId(Long boardId, int page, int size) {
+        Page<Comment> comments = commentService.findPageByBoardId(boardId, page,size);
+
+        List<CommentInfoResponse> commentInfoResponses = comments.stream()
+                .map(comment ->
+                        CommentInfoResponse.from(comment, comment.getUser().getNickname(), comment.getUser().getUserImage().getImage().getId()))
                 .toList();
 
-        int totalElements = commentService.count();
-        PageInfo pageInfo = PageInfo.from(commentInfoResponses, totalElements, page,size);
-        return new PagedData(commentInfoResponses, pageInfo);
+        return new PagedData(commentInfoResponses, PageInfo.from(comments));
     }
 }

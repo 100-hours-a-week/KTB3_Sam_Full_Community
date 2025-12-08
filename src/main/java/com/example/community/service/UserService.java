@@ -3,7 +3,12 @@ package com.example.community.service;
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.entity.User;
+import com.example.community.event.UserDeletedEvent;
+import com.example.community.event.UserSavedEvent;
 import com.example.community.repository.UserRepository;
+import com.example.community.repository.inmemory.InMemoryUserRepository;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,16 +17,26 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final ApplicationEventPublisher eventPublisher;
+    private final PasswordEncoder passwordEncoder;
 
-    UserService(UserRepository userRepository) {
+    UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.eventPublisher = eventPublisher;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public User registerUser(String email, String password, String nickname, Long profileImageId) {
         validateEmail(email);
         validateNickname(nickname);
-        return userRepository.save(new User(email,password, nickname, profileImageId));
+
+        String encodedPassword = passwordEncoder.encode(password);
+        User user = userRepository.save(new User(email,encodedPassword, nickname));
+
+        eventPublisher.publishEvent(new UserSavedEvent(user.getId(), profileImageId));
+
+        return user;
     }
 
     @Transactional(readOnly = true)
@@ -30,18 +45,15 @@ public class UserService {
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
     }
 
-    public List<User> getUserByIds(List<Long> userIds) {
-        return userRepository.findByIds(userIds);
-    }
-
     @Transactional
     public void modifyUser(Long userId,String nickname, Long profileImageId ) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
 
-        user.updateUser(nickname,profileImageId);
-        user.recordModificationTime();
+        user.updateUser(nickname);
         userRepository.save(user);
+
+        eventPublisher.publishEvent(new UserSavedEvent(user.getId(), profileImageId));
     }
 
     @Transactional
@@ -51,7 +63,8 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
 
-        user.updatePassword(password);
+        String encodedPassword = passwordEncoder.encode(password);
+        user.updatePassword(encodedPassword);
         userRepository.save(user);
     }
 
@@ -59,8 +72,18 @@ public class UserService {
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER));
-
+        eventPublisher.publishEvent(new UserDeletedEvent(userId));
         userRepository.deleteById(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean checkEmailDuplicated(String email) {
+        return userRepository.existByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean checkNicknameDuplicated(String nickname) {
+        return userRepository.existByNickname(nickname);
     }
 
 

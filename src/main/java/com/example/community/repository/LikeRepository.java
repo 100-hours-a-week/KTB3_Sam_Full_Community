@@ -1,60 +1,27 @@
 package com.example.community.repository;
 
-import com.example.community.entity.Comment;
 import com.example.community.entity.Like;
-import org.springframework.stereotype.Repository;
+import com.example.community.repository.interfaces.LikeCustomRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
-@Repository
-public class LikeRepository {
-    private Map<Long, Like> likeDB;
-    private long sequence = 0L;
+public interface LikeRepository extends JpaRepository<Like, Long>, LikeCustomRepository {
+    @Query("select l from Like l join fetch l.user join fetch l.board where l.user.id = :userId and l.board.id = :boardId")
+    Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId);
 
-    LikeRepository() {
-        this.likeDB = new LinkedHashMap<>();
-    }
+    @Query("select l from Like l join fetch l.board where l.board.id in :boardIds")
+    List<Like> findAllByBoardIds(@Param("boardIds") List<Long> boardIds);
 
-    public Like save(Like like) {
-        if(like.getId() == null) {
-            like.setId(++sequence);
-        }
-        likeDB.put(like.getId(), like);
-        return like;
-    }
+    @Query("select l from Like l join fetch l.board where l.board.id = :boardId")
+    List<Like> findAllByBoardId(Long boardId);
 
-    public List<Like> findAll() {
-        return new ArrayList<>(likeDB.values());
-    }
-
-    public Optional<Like> findById(Long id) {
-        return Optional.ofNullable(likeDB.get(id));
-    }
-
-    public Optional<Like> findByUserIdAndBoardId(Long userId, Long boardId) {
-        return likeDB.values().stream()
-                .filter(like -> like.getUserId().equals(userId)
-                        && like.getBoardId().equals(boardId))
-                .findFirst();
-    }
-
-    public void deleteById(Long id) {
-        likeDB.remove(id);
-    }
-
-    public void deleteByBoardId(Long boardId) {
-        likeDB.values().removeIf(like -> like.getBoardId().equals(boardId));
-    }
-
-    public List<Like> findAllByBoardId(Long boardId) {
-        return likeDB.values().stream()
-                .filter(like -> like.getBoardId().equals(boardId))
-                .toList();
-    }
-
-    public List<Like> findAllByBoardIds(List<Long> boardIds) {
-        return likeDB.values().stream()
-                .filter(like -> boardIds.contains(like.getBoardId()))
-                .toList();
-    }
+    @Modifying
+    @Query("delete from Like l where l.board.id = :boardId")
+    void deleteByBoardId(@Param("boardId") Long boardId);
 }

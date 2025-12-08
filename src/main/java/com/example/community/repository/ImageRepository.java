@@ -1,31 +1,13 @@
 package com.example.community.repository;
 
 import com.example.community.entity.Image;
-import com.example.community.entity.User;
-import org.springframework.stereotype.Repository;
+import com.example.community.repository.interfaces.ImageCustomRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import java.util.List;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
-
-@Repository
-public class ImageRepository {
-    private Map<Long, Image> imageDB;
-    private long sequence = 0L;
-
-    ImageRepository() {
-        this.imageDB = new LinkedHashMap<>();
-    }
-
-    public Image save(Image image) {
-        if(image.getId() == null) {
-            image.setId(++sequence);
-        }
-        imageDB.put(image.getId(), image);
-        return image;
-    }
-
-    public Optional<Image> findById(Long id) {
-        return Optional.ofNullable(imageDB.get(id));
-    }
+public interface ImageRepository extends JpaRepository<Image,Long>, ImageCustomRepository {
+    @Query("select i from Image i where i.id in :imageIds")
+    List<Image> findByIds(@Param("imageIds") List<Long> imageIds);
 }

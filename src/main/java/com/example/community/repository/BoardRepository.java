@@ -1,53 +1,21 @@
 package com.example.community.repository;
 
 import com.example.community.entity.Board;
-import org.springframework.stereotype.Repository;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.example.community.repository.interfaces.BoardCustomRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import java.util.Optional;
 
-@Repository
-public class BoardRepository {
-    private Map<Long, Board> boardDB;
-    private long sequence = 0L;
+public interface BoardRepository extends JpaRepository<Board, Long>, BoardCustomRepository {
+    @Query("select b from Board b join fetch b.user u join fetch u.userImage ui join fetch ui.image i where b.id = :boardId")
+    Optional<Board> findById(@Param("boardId") Long boardId);
 
-    BoardRepository() {
-        this.boardDB = new LinkedHashMap<>();
-    }
+    @Query("select b from Board b where b.title = :title")
+    Optional<Board> findByTitle(@Param("title") String title);
 
-    public Board save(Board board) {
-        if(board.getId() == null) {
-            board.setId(++sequence);
-        }
-        boardDB.put(board.getId(), board);
-        return board;
-    }
-
-    public List<Board> findAll() {
-        return new ArrayList<>(boardDB.values());
-    }
-
-    public Optional<Board> findById(Long id) {
-        return Optional.ofNullable(boardDB.get(id));
-    }
-
-    public void deleteById(Long id) {
-        boardDB.remove(id);
-    }
-
-    public Optional<Board> findByTitle(String title) {
-        return boardDB.values().stream()
-                .filter(board -> title.equals(board.getTitle()))
-                .findFirst();
-    }
-
-    public List<Board> findPage(int page, int size) {
-        return boardDB.values().stream()
-                .skip((long) (page-1) * size)
-                .limit(size)
-                .collect(Collectors.toList());
-    }
-
-    public int count() {
-        return boardDB.size();
-    }
+    @Modifying
+    @Query("delete from Board b where b.user.id = :userId")
+    void deleteByUserId(@Param("userId") Long userId);
 }
