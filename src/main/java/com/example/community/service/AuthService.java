@@ -1,12 +1,13 @@
 package com.example.community.service;
 
-import com.example.community.auth.JwtUtil;
-import com.example.community.auth.TokenBlackList;
+import com.example.community.auth.jwt.JwtUtil;
+import com.example.community.auth.jwt.TokenBlackList;
 import com.example.community.common.exception.BaseException;
 import com.example.community.common.exception.ErrorCode;
 import com.example.community.dto.AuthToken;
 import com.example.community.entity.User;
 import com.example.community.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +16,13 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final TokenBlackList tokenBlackList;
+    private final PasswordEncoder passwordEncoder;
 
-    AuthService(UserRepository userRepository, JwtUtil jwtUtil, TokenBlackList tokenBlackList) {
+    AuthService(UserRepository userRepository, JwtUtil jwtUtil, TokenBlackList tokenBlackList, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
         this.tokenBlackList = tokenBlackList;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -47,7 +50,7 @@ public class AuthService {
     }
 
     private void validatePassword(User user, String password) {
-        if(!user.getPassword().equals(password)) {
+        if(!passwordEncoder.matches(password, user.getPassword())) {
             throw new BaseException(ErrorCode.INVALID_PASSWORD);
         }
     }
