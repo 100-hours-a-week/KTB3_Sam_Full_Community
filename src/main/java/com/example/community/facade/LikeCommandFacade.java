@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LikeCommandFacade {
-    private LikeService likeService;
-    private UserService userService;
-    private BoardService boardService;
+    private final LikeService likeService;
+    private final UserService userService;
+    private final BoardService boardService;
 
     LikeCommandFacade(LikeService likeService, UserService userService, BoardService boardService) {
         this.likeService = likeService;

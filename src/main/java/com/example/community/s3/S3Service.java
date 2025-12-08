@@ -28,9 +28,6 @@ public class S3Service {
     }
 
     private String getPreSignedUrl(String folder, String filename) {
-        if (filename == null || filename.isEmpty()) {
-            return null;
-        }
         return preSigner
                 .presignGetObject(getObjectPresignRequest(folder, filename))
                 .url()
@@ -48,10 +45,6 @@ public class S3Service {
     }
 
     private String getPreSignedPutUrl(String folder, String filename) {
-        if (filename == null || filename.isEmpty()) {
-            return null;
-        }
-
         return preSigner
                 .presignPutObject(putObjectPresignRequest(folder, filename))
                 .url()

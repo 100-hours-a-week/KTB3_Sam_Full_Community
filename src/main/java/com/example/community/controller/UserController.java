@@ -1,6 +1,6 @@
 package com.example.community.controller;
 
-import com.example.community.auth.JwtUtil;
+import com.example.community.auth.jwt.JwtUtil;
 import com.example.community.common.SuccessCode;
 import com.example.community.dto.request.PasswordModifyRequest;
 import com.example.community.dto.request.UserModifyRequest;
